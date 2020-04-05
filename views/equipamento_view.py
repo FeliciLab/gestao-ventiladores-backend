@@ -23,10 +23,10 @@ class EquipamentoDetail(Resource):
         Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).update(**body) # aqui é esse id  ou mesmo o numero_ordem_servico ? eu acho
         return '', 200
 
-    def delete(self, numero_ordem_servico):
-        movie = Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).delete() # aqui é esse id  ou mesmo o numero_ordem_servico ? eu acho
+    def delete(self, id):
+        Equipamento.objects.get(numero_ordem_servico=id).delete() # aqui é esse id  ou mesmo o numero_ordem_servico ? eu acho
         return '', 200
 
-    def get(self, numero_ordem_servico):
-        movies = Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).to_json() # aqui é esse id  ou mesmo o numero_ordem_servico ? eu acho
+    def get(self, id):
+        movies = Equipamento.objects.get(numero_ordem_servico=id).to_json() # aqui é esse id  ou mesmo o numero_ordem_servico ? eu acho
         return Response(movies, mimetype="application/json", status=200)

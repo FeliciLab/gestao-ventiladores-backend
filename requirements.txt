@@ -1,8 +1,3 @@
-# This file may be used to create an environment using:
-# $ conda create --name <env> --file <this file>
-# platform: linux-64
-_libgcc_mutex=0.1=main
-ca-certificates=2020.1.1=0
 certifi=2019.11.28=py38_1
 click=7.1.1=py_0
 flask=1.1.1=py_1
