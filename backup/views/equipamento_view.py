@@ -1,5 +1,5 @@
 from flask import Response, request
-from models.equipamento_modelo import Equipamento
+from models.triagem_modelo import Equipamento
 from flask_restful import Resource
 
 
