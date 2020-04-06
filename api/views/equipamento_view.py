@@ -1,9 +1,8 @@
 from flask import Response, request
-from models.triagem_modelo import Equipamento
 from flask_restful import Resource
+from ..models.equipamento_model import Equipamento
 
 
-# Modelo sem parâmetro
 class EquipamentoList(Resource):
     def get(self):
         equipamentos = Equipamento.objects().to_json()
@@ -13,10 +12,9 @@ class EquipamentoList(Resource):
         body = request.get_json()
         equipamento = Equipamento(**body).save()
         numero_ordem_servico = equipamento.numero_ordem_servico # aqui é esse id  ou mesmo o numero_ordem_servico ? eu acho
-        return {'numero_ordem_servico': numero_ordem_servico}, 201
+        return {'equipamento': equipamento}, 201
 
 
-# Modelo com parâmetro
 class EquipamentoDetail(Resource):
     def put(self, numero_ordem_servico):
         body = request.get_json()
@@ -24,7 +22,7 @@ class EquipamentoDetail(Resource):
         return '', 200
 
     def delete(self, numero_ordem_servico):
-        movie = Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).delete() # aqui é esse id  ou mesmo o numero_ordem_servico ? eu acho
+        Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).delete() # aqui é esse id  ou mesmo o numero_ordem_servico ? eu acho
         return '', 200
 
     def get(self, numero_ordem_servico):
