@@ -19,15 +19,15 @@ class FabricanteList(Resource):
             return make_response(jsonify(result), 201)
 
 class FabricanteDetail(Resource):
-    def put(self, fabricante):
+    def put(self, fabricante_nome):
         body = request.get_json()
-        fabricante_model.Fabricante.objects.get(fabricante=fabricante).update(**body)
+        fabricante_model.Fabricante.objects.get(fabricante_nome=fabricante_nome).update(**body)
         return '', 200
 
-    def delete(self, fabricante):
-        fabricante_model.Fabricante.objects.get(fabricante=fabricante).delete()
+    def delete(self, fabricante_nome):
+        fabricante_model.Fabricante.objects.get(fabricante_nome=fabricante_nome).delete()
         return '', 204
 
-    def get(self, fabricante):
-        equipamento = fabricante_model.Fabricante.objects.get(fabricante=fabricante).to_json()
+    def get(self, fabricante_nome):
+        equipamento = fabricante_model.Fabricante.objects.get(fabricante_nome=fabricante_nome).to_json()
         return Response(equipamento, mimetype="application/json", status=200)
