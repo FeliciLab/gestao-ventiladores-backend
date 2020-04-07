@@ -22,7 +22,7 @@ class AcaoAvaliacao(db.EmbeddedDocument):
     descricao_da_avaliacao = db.StringField(required=False)
 
 class Clinico(db.EmbeddedDocument):
-    classificao_ventilador = db.ListField(db.EmbeddedDocumentField(AcaoAvaliacao), required=False)
+    classificao_ventilador = db.StringField(db.EmbeddedDocumentField(AcaoAvaliacao), required=False)
     resultados_do_teste = db.StringField(required=False)
     acessorios_necessitados = db.StringField(required=False)
 
