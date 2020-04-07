@@ -1,0 +1,88 @@
+
+"url": "localhost:5000/api/equipamentos" #rota
+"method": "GET"
+
+"url": "localhost:5000/api/equipamentos/2" #rota + esse 2 é o valor OS
+"method": "GET
+
+# fazer cadastro de triagem (form 1)
+"url": "localhost:5000/api/equipamentos" #rota
+"method": "POST"
+"header" : "Content-Type": "application/json"
+"body": 
+	{
+		"numero_ordem_servico":"1",
+	  	"triagem":{
+	          "foto_equipamento_chegada":"foto1",
+	          "tipo":"tipo1",
+	          "unidade_de_origem":"origem1",
+	          "numero_do_patrimonio":"numeropatrimonio1",
+	          "numero_de_serie":"numero1",
+	          "instituicao_de_origem":"1",
+	          "responsavel_contato_da_instituicao_de_origem":"1",
+	          "estado_de_conservacao":"1",
+	          "marca":"1",
+	          "modelo":"1",
+	          "acessorios":"1",
+	          "foto_apos_limpeza":"1",
+	          "observacao":"1",
+	          "responsavel_pelo_preenchimento":"1"
+	          }
+	}
+
+			
+# fazer avaliacao clinica (form 2)
+
+"url": "localhost:5000/api/equipamentos/2", #rota + esse 2 é o valor OS
+"method": "PUT"
+"header" : "Content-Type": "application/json"
+"body": 
+	{	
+		"clinico": {
+		"classificao_ventilador": "x",
+		"resultados_do_teste": "x",           
+		"acessorios_necessitados": "x"       
+		}
+	}
+
+
+# fazer avaliacao tecnico (form 3)
+
+"url": "localhost:5000/api/equipamentos/2", #rota + esse 2 é o valor OS
+"method": "PUT"
+"header" : "Content-Type": "application/json"
+"body": 
+	{	
+		"tecnico": {
+			"resultado_do_teste": "x",
+			"demanda_por_insumo": "x",
+			"demanda_por_servico": "x"
+		}
+	}
+
+
+# fabricante e modelo
+
+"url": "localhost:5000/api/fabricantes" #rota + esse CONSUL é o fabricante
+"method": "GET
+
+"url": "localhost:5000/api/fabricantes/CONSUL" #rota + esse CONSUL é o fabricante
+"method": "GET
+
+"url": "localhost:5000/api/fabricantes" #rota
+"method": "POST"
+"header" : "Content-Type": "application/json"
+"body": 
+	{
+	   "fabricante_nome": "fabricante",
+	   "modelo": ["modelo a", "modelo b"]
+	}
+
+"url": "localhost:5000/api/fabricantes" #rota
+"method": "PUT"
+"header" : "Content-Type": "application/json"
+"body": 
+	{
+		"fabricante_nome": "fabricante",
+	    "modelo": ["modelo a", "modelo b"]
+	}
