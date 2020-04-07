@@ -1,5 +1,5 @@
 from config.db import db
-#from flask_bcrypt import generate_password_hash, check_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
 
 class Usuario(db.Document):
     nome = db.StringField(required=True)

@@ -1,7 +1,7 @@
 from config.db import db
 
 class Triagem(db.EmbeddedDocument):
-    foto_equipamento_chegada = db.StringField()  # verificar se tem um tipo especifico para links, faz sentido ser único ?
+    foto_equipamento_chegada = db.StringField(required=False)  # verificar se tem um tipo especifico para links, faz sentido ser único ?
     tipo = db.StringField(required=True)
     unidade_de_origem = db.StringField(required=True)
     numero_do_patrimonio = db.StringField(required=True)
@@ -12,27 +12,29 @@ class Triagem(db.EmbeddedDocument):
     marca = db.StringField(required=True)
     modelo = db.StringField(required=True)
     acessorios = db.StringField(required=True)
-    foto_apos_limpeza = db.StringField()
-    observacao = db.StringField()
-    responsavel_pelo_preenchimento = db.StringField(required=True)
+    foto_apos_limpeza = db.StringField(required=False)
+    observacao = db.StringField(required=False)
+    responsavel_pelo_preenchimento = db.StringField(required=False) # Responsável pelo preenchimento deve ser false?
 
 class AcaoAvaliacao(db.EmbeddedDocument):
     descricao_acao = db.StringField(required=True)
     passou = db.BooleanField(required=True)
-    descricao_da_avaliacao = db.StringField()
+    descricao_da_avaliacao = db.StringField(required=False)
 
 class Clinico(db.EmbeddedDocument):
-    acoes_avaliacao = db.ListField(db.EmbeddedDocumentField(AcaoAvaliacao))
-    informar_os_resultados_do_teste = db.StringField()
+    classificao_ventilador = db.ListField(db.EmbeddedDocumentField(AcaoAvaliacao), required=False)
+    resultados_do_teste = db.StringField(required=False)
+    acessorios_necessitados = db.StringField(required=False)
 
 class Tecnico(db.EmbeddedDocument):
-    defeito_observado = db.StringField()
-    acoes_necessarias = db.StringField()
+    resultado_do_teste = db.StringField(required=False)
+    demanda_por_insumo = db.StringField(required=False)
+    demanda_por_servico = db.StringField(required=False)
 
 class Equipamento(db.Document):
     numero_ordem_servico = db.StringField(required=True, unique=True)
     # FORMULARIO DE TRIAGEM DE EQUIPAMENTO
-    equipamento = db.EmbeddedDocumentField(Triagem, required=True)
+    triagem = db.EmbeddedDocumentField(Triagem, required=True)
     # FORMULARIO DE DIAGNOSTICO CLINICO
     clinico = db.EmbeddedDocumentField(Clinico, required=False)
     # FORMULARIO DE DIAGNOSTICO TECNICO

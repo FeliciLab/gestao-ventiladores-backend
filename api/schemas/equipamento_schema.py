@@ -1,12 +1,13 @@
-from api import ma
 from ..models import equipamento_model
-from marshmallow import fields
+from marshmallow import Schema, fields
 
 
-class EmployeeSchema(ma.ModelSchema):
+class EquipamentoSchema(Schema):
     class Meta:
-        model = employee_model.Employee
-        fields = ("id", "name", "age", "projects")
+        model = equipamento_model.Equipamento
+        fields = ("numero_ordem_servico", "triagem", "clinico", "tecnico")
 
-    name = fields.String(required=True)
-    age = fields.String(required=True)
+    numero_ordem_servico = fields.String(required=True)
+    triagem = fields.Dict(required=True)
+    clinico = fields.Dict(required=False)
+    tecnico = fields.Dict(required=False)

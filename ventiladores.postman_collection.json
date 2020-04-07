@@ -1,0 +1,62 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ventiladores",
+		"_postman_id": "0b5734f7-2dd6-bac4-e601-a3d26d55cd8c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:5000/api/equipamentos/xx",
+			"request": {
+				"url": "http://127.0.0.1:5000/api/equipamentos/xx",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer .eyJpYXQiOjE1ODYxMTQwNDEsIm5iZiI6MTU4NjExNDA0MSwianRpIjoiMmQ4MDc3NGEtNWQ0Ni00NjcyLThiNjctZTg2YjNhZTMyYjA5IiwiZXhwIjoxNTg2MjAwNDQxLCJpZGVudGl0eSI6IjVlOGEyZGU3YzlhNWExYzJjMDdiMWM2ZSIsImZyZXNoIjpmYWxzZSwidHlwZSI6ImFjY2VzcyJ9.ES5rT34OPU5z6OxONWKN-pECatpXTwpQXVbKcS6XWj4",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"clinico\":{\r\n\t   \"acoes_avaliacao\":[\r\n\t      {\r\n\t         \"descricao_acao\":\"MONTAR E VERIFICAR A INTEGRUIDADE DO CIRTUITO\",\r\n\t         \"passou\": false,\r\n\t         \"descricao_da_avaliacao\":\"string\"\r\n\t      }]\r\n   }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/api/equipamentos",
+			"request": {
+				"url": "http://127.0.0.1:5000/api/equipamentos",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "",
+						"value": "",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"numero_ordem_servico\":\"xxx\",\r\n   \"triagem\":{\r\n      \"foto_equipamento_chegada\":\"foto1\",\r\n      \"tipo\":\"tipo1\",\r\n      \"unidade_de_origem\":\"origem1\",\r\n      \"numero_do_patrimonio\":\"numeropatrimonio1\",\r\n      \"numero_de_serie\":\"numero1\",\r\n      \"instituicao_de_origem\":\"1\",\r\n      \"responsavel_contato_da_instituicao_de_origem\":\"1\",\r\n      \"estado_de_conservacao\":\"1\",\r\n      \"marca\":\"1\",\r\n      \"modelo\":\"1\",\r\n      \"acessorios\":\"1\",\r\n      \"foto_apos_limpeza\":\"1\",\r\n      \"observacao\":\"1\",\r\n      \"responsavel_pelo_preenchimento\":\"1\"\r\n   }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
