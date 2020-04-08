@@ -3,6 +3,7 @@ from flask_restful import Resource
 from ..models import equipamento_model # Não se utiliza na view, somente em servico
 from ..schemas import equipamento_schema
 from ..services import equipamento_service
+from utils import importador_de_equipamentos
 
 class EquipamentoList(Resource):
     def get(self): # OK
@@ -21,6 +22,7 @@ class EquipamentoList(Resource):
         else:
             novo_equipamento = equipamento_service.registrar_equipamento(body)
             return Response(novo_equipamento, mimetype="application/json", status=201)
+
 
 class EquipamentoDetail(Resource):
     def get(self, numero_ordem_servico): # OK
@@ -44,3 +46,18 @@ class EquipamentoDetail(Resource):
             return make_response(jsonify("Equipamento não encontrado..."), 404)
         equipamento_service.deletar_equipamento(numero_ordem_servico)
         return make_response('', 204)
+
+
+class EquipamentoImportacao(Resource):
+
+    def post(self):
+        body = request.json
+        resultado_da_importacao_dt = importador_de_equipamentos.tratar_importacao(body)
+
+        if "erro" in resultado_da_importacao_dt:
+            make_response(jsonify(resultado_da_importacao_dt["erro"]), 404)
+        else:
+            make_response(jsonify(resultado_da_importacao_dt["ok"]), 200)
+
+
+
