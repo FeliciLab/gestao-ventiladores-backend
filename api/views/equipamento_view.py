@@ -49,7 +49,6 @@ class EquipamentoDetail(Resource):
 
 
 class EquipamentoImportacao(Resource):
-
     def post(self):
         body = request.json
         resultado_da_importacao_dt = importador_de_equipamentos.tratar_importacao(body)

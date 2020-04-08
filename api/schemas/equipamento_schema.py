@@ -5,9 +5,10 @@ from marshmallow import Schema, fields
 class EquipamentoSchema(Schema):
     class Meta:
         model = equipamento_model.Equipamento
-        fields = ("numero_ordem_servico", "triagem", "clinico", "tecnico")
+        fields = ("numero_ordem_servico", "data_hora", "triagem", "clinico", "tecnico")
 
     numero_ordem_servico = fields.String(required=True)
+    numero_ordem_servico = fields.String(required=False)
     triagem = fields.Dict(required=True)
     clinico = fields.Dict(required=False)
     tecnico = fields.Dict(required=False)

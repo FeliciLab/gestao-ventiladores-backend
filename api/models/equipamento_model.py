@@ -1,7 +1,8 @@
 from config.db import db
+from datetime import datetime
 
 class Triagem(db.EmbeddedDocument):
-    foto_equipamento_chegada = db.StringField(required=False)  # verificar se tem um tipo especifico para links, faz sentido ser único ?
+    foto_equipamento_chegada = db.ListField(required=True)  # verificar se tem um tipo especifico para links, faz sentido ser único ?
     tipo = db.StringField(required=True)
     unidade_de_origem = db.StringField(required=True)
     numero_do_patrimonio = db.StringField(required=True)
@@ -9,10 +10,11 @@ class Triagem(db.EmbeddedDocument):
     instituicao_de_origem = db.StringField(required=True)
     responsavel_contato_da_instituicao_de_origem = db.StringField(required=True)
     estado_de_conservacao = db.StringField(required=True)
+    fabricante = db.StringField(required=True)
     marca = db.StringField(required=True)
     modelo = db.StringField(required=True)
-    acessorios = db.StringField(required=True)
-    foto_apos_limpeza = db.StringField(required=False)
+    acessorios = db.ListField(required=True)
+    foto_apos_limpeza = db.ListField(required=True)
     observacao = db.StringField(required=False)
     responsavel_pelo_preenchimento = db.StringField(required=False) # Responsável pelo preenchimento deve ser false?
 
@@ -33,6 +35,7 @@ class Tecnico(db.EmbeddedDocument):
 
 class Equipamento(db.Document):
     numero_ordem_servico = db.StringField(required=True, unique=True)
+    data_hora = db.DateTimeField(default=datetime.utcnow)
     # FORMULARIO DE TRIAGEM DE EQUIPAMENTO
     triagem = db.EmbeddedDocumentField(Triagem, required=True)
     # FORMULARIO DE DIAGNOSTICO CLINICO

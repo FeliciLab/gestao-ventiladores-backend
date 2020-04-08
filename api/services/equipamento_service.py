@@ -19,3 +19,6 @@ def atualizar_equipamento(atualizacao, numero_ordem_servico):
 
 def deletar_equipamento(numero_ordem_servico):
     equipamento_model.Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).delete()
+
+def adicionar_marca_modelo_fabricante():
+    pass
