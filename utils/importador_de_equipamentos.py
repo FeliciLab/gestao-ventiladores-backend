@@ -1,15 +1,9 @@
-from pipenv.vendor import requests
-import csv
-from urllib.request import urlopen
 import pandas as pd
 from api.services.equipamento_service import registrar_equipamento
-import requests
-import io
 import numpy as np
 
 class ImportadorDeEquipamentos():
     pass
-
 
 def tratar_importacao(body):
     if "url_triagens" in body:
@@ -31,7 +25,7 @@ def tratar_importacao(body):
                     "responsavel_contato_da_instituicao_de_origem": linha[
                         "Informe o responsável e o contato da institução de origem:"],
                     "estado_de_conservacao": linha["Selecione o estado de conservação do equipamento"],
-                    "fabricante": "",
+                    "fabricante": linha["Selecione a marca do equipamento:"],
                     "marca": linha["Selecione a marca do equipamento:"],
                     "modelo": linha["Selecione o modelo do equipamento"],
                     "acessorios": linha["Selecione os acessórios do equipamento que o acompanha:"],
@@ -63,11 +57,3 @@ def tratar_importacao(body):
 def transforma_string_em_lista(dado):
     if isinstance(dado, str):
         return [dado]
-
-#url_triagens = body["url_triagens"]
-#  response = urlopen(url_triagens)
-#  cr = csv.reader(response)
-#  for row in cr:
-#      print(row)
-# # pd.read_csv(cr)
-#  #triagens_csv = requests.get(url_triagens)
