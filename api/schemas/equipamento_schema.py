@@ -16,24 +16,26 @@ class EquipamentoSchema(Schema):
 class TriagemSchema(Schema):
     class Meta:
         model = equipamento_model.Triagem
-        fields = ("foto_equipamento_chegada", "tipo", "unidade_de_origem", "numero_do_patrimonio",
-                  "numero_de_serie", "instituicao_de_origem", "responsavel_contato_da_instituicao_de_origem",
+        fields = ("nome_equipamento", "foto_equipamento_chegada", "tipo", "unidade_de_origem", "numero_do_patrimonio",
+                  "numero_de_serie", "instituicao_de_origem", "nome_responsavel", "contato_responsavel",
                   "estado_de_conservacao", "fabricante", "marca", "modelo", "acessorios", "foto_apos_limpeza",
                   "observacao", "responsavel_pelo_preenchimento")
 
-    foto_equipamento_chegada = fields.List(fields.String(), required=True)
+    nome_equipamento = fields.String(required=True)
+    foto_equipamento_chegada = fields.String(required=True)
     tipo = fields.String(required=True)
     unidade_de_origem = fields.String(required=True)
     numero_do_patrimonio = fields.String(required=True)
     numero_de_serie = fields.String(required=True)
     instituicao_de_origem = fields.String(required=True)
-    responsavel_contato_da_instituicao_de_origem = fields.String(required=True)
+    nome_responsavel = fields.String(required=True)
+    contato_responsavel = fields.String(required=True)
     estado_de_conservacao = fields.String(required=True)
     fabricante = fields.String(required=True)
     marca = fields.String(required=True)
     modelo = fields.String(required=True)
-    acessorios = fields.List(fields.String(), required=True)
-    foto_apos_limpeza = fields.List(fields.String(), required=True)
+    acessorios = fields.List(fields.String(),required=False)
+    foto_apos_limpeza = fields.String(required=True)
     observacao = fields.String(required=False)
     responsavel_pelo_preenchimento = fields.String(required=False)
 

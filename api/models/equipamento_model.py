@@ -2,21 +2,23 @@ from config.db import db
 from datetime import datetime
 
 class Triagem(db.EmbeddedDocument):
-    foto_equipamento_chegada = db.ListField(db.StringField(),required=True)  # verificar se tem um tipo especifico para links, faz sentido ser único ?
+    nome_equipamento = db.StringField(required=True)
+    foto_equipamento_chegada = db.StringField(required=True)
     tipo = db.StringField(required=True)
     unidade_de_origem = db.StringField(required=True)
     numero_do_patrimonio = db.StringField(required=True)
     numero_de_serie = db.StringField(required=True)
     instituicao_de_origem = db.StringField(required=True)
-    responsavel_contato_da_instituicao_de_origem = db.StringField(required=True)
+    nome_responsavel = db.StringField(required=True)
+    contato_responsavel = db.StringField(required=True)
     estado_de_conservacao = db.StringField(required=True)
     fabricante = db.StringField(required=True)
     marca = db.StringField(required=True)
     modelo = db.StringField(required=True)
-    acessorios = db.ListField(db.StringField(),required=True)
-    foto_apos_limpeza = db.ListField(db.StringField(),required=True)
+    acessorios = db.ListField(db.StringField(), required=False)
+    foto_apos_limpeza = db.StringField(required=True)
     observacao = db.StringField(required=False)
-    responsavel_pelo_preenchimento = db.StringField(required=False) # Responsável pelo preenchimento deve ser false?
+    responsavel_pelo_preenchimento = db.StringField(required=False)
 
 class Clinico(db.EmbeddedDocument):
     classificao_ventilador = db.StringField(required=False)
