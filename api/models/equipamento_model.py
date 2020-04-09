@@ -15,7 +15,7 @@ class Triagem(db.EmbeddedDocument):
     fabricante = db.StringField(required=True)
     marca = db.StringField(required=True)
     modelo = db.StringField(required=True)
-    acessorios = db.ListField(db.StringField(), required=False)
+    acessorios = db.ListField(db.DictField(), required=False)
     foto_apos_limpeza = db.StringField(required=True)
     observacao = db.StringField(required=False)
     responsavel_pelo_preenchimento = db.StringField(required=False)
