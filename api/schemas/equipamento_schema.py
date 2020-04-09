@@ -34,7 +34,7 @@ class TriagemSchema(Schema):
     fabricante = fields.String(required=True)
     marca = fields.String(required=True)
     modelo = fields.String(required=True)
-    acessorios = fields.List(fields.String(),required=False)
+    acessorios = fields.List(fields.String(), required=False)
     foto_apos_limpeza = fields.String(required=True)
     observacao = fields.String(required=False)
     responsavel_pelo_preenchimento = fields.String(required=False)
