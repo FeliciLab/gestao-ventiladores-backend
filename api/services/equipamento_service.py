@@ -1,4 +1,5 @@
 from ..models import equipamento_model
+from datetime import datetime
 
 def listar_equipamentos():
     return equipamento_model.Equipamento.objects().to_json()
@@ -12,6 +13,9 @@ def listar_equipamento_id(numero_ordem_servico):
         return equipamento
 
 def registrar_equipamento(body):
+    body['created_at'] = body.get('created_at', datetime.now())
+    body['updated_at'] = body.get('updated_at', datetime.now())
+    # Falta criar a situação onde as datas vem vazias, Exemplo: updated_at: ''
     return equipamento_model.Equipamento(**body).save().to_json()
 
 def atualizar_equipamento(atualizacao, numero_ordem_servico):

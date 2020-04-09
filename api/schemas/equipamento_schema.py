@@ -1,17 +1,26 @@
 from ..models import equipamento_model
 from marshmallow import Schema, fields
-
+from datetime import datetime
 
 class EquipamentoSchema(Schema):
     class Meta:
         model = equipamento_model.Equipamento
-        fields = ("numero_ordem_servico", "data_hora", "triagem", "clinico", "tecnico", "foto_equipamento_chegada")
+        fields = ("numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico", "foto_equipamento_chegada",
+                  "status")
 
     numero_ordem_servico = fields.String(required=True)
-    data_hora = fields.DateTime(required=True)
+    created_at = fields.DateTime(required=False)
+    updated_at = fields.DateTime(required=False)
     triagem = fields.Dict(required=True)
     clinico = fields.Dict(required=False)
     tecnico = fields.Dict(required=False)
+    status = fields.String(required=False)
+
+    def ajustando_datas_criacao_atualizacao(self, date):
+        if isinstance(date, str):
+            return datetime.now()
+        else:
+            return date
 
 class TriagemSchema(Schema):
     class Meta:

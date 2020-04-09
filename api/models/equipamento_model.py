@@ -32,7 +32,9 @@ class Tecnico(db.EmbeddedDocument):
 
 class Equipamento(db.Document):
     numero_ordem_servico = db.StringField(required=True, unique=True)
-    data_hora = db.DateTimeField(default=datetime.utcnow())
+    created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
+    updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
+    status = db.StringField(required=False)
     # FORMULARIO DE TRIAGEM DE EQUIPAMENTO
     triagem = db.EmbeddedDocumentField(Triagem, required=True)
     # FORMULARIO DE DIAGNOSTICO CLINICO
