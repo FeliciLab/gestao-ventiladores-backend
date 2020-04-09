@@ -1,16 +1,17 @@
 from flask import Flask
 from flask_restful import Api
-from config.db import initialize_db
 from config.routes import initialize_routes
+from flask_mongoengine import MongoEngine
+import env_config
 
 app = Flask(__name__)
 api = Api(app)
 
-app.config['MONGODB_SETTINGS'] = {
-    'host': 'mongodb://localhost/gestao-de-ventiladores'
-}
+DB_URI = env_config.mongodb_host
 
-initialize_db(app)
+app.config["MONGODB_HOST"] = DB_URI
+
+db = MongoEngine(app)
 initialize_routes(api)
 
 if __name__ == '__main__':
