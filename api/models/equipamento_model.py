@@ -2,7 +2,7 @@ from config.db import db
 from datetime import datetime
 
 class Triagem(db.EmbeddedDocument):
-    foto_equipamento_chegada = db.ListField(required=True)  # verificar se tem um tipo especifico para links, faz sentido ser único ?
+    foto_equipamento_chegada = db.ListField(db.StringField(),required=True)  # verificar se tem um tipo especifico para links, faz sentido ser único ?
     tipo = db.StringField(required=True)
     unidade_de_origem = db.StringField(required=True)
     numero_do_patrimonio = db.StringField(required=True)
@@ -13,8 +13,8 @@ class Triagem(db.EmbeddedDocument):
     fabricante = db.StringField(required=True)
     marca = db.StringField(required=True)
     modelo = db.StringField(required=True)
-    acessorios = db.ListField(required=True)
-    foto_apos_limpeza = db.ListField(required=True)
+    acessorios = db.ListField(db.StringField(),required=True)
+    foto_apos_limpeza = db.ListField(db.StringField(),required=True)
     observacao = db.StringField(required=False)
     responsavel_pelo_preenchimento = db.StringField(required=False) # Responsável pelo preenchimento deve ser false?
 
