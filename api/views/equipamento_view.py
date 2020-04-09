@@ -1,6 +1,5 @@
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
-from ..models import equipamento_model # Não se utiliza na view, somente em servico
 from ..schemas import equipamento_schema
 from ..services import equipamento_service
 from utils import importador_de_equipamentos
@@ -16,9 +15,13 @@ class EquipamentoList(Resource):
         if equipamento_cadatrado:
             return make_response(jsonify("Equipamento já cadastrado..."), 403)
         es = equipamento_schema.EquipamentoSchema()
-        erro_validacao = es.validate(request.json)
-        if erro_validacao:
-            return make_response(jsonify(erro_validacao), 400)
+        et = equipamento_schema.TriagemSchema()
+        erro_equipamento = es.validate(request.json)
+        erro_triagem = et.validate(request.json["triagem"])
+        if erro_equipamento:
+            return make_response(jsonify(erro_equipamento), 400)
+        elif erro_triagem:
+            return make_response(jsonify(erro_triagem), 400)
         else:
             novo_equipamento = equipamento_service.registrar_equipamento(body)
             return Response(novo_equipamento, mimetype="application/json", status=201)
@@ -36,6 +39,15 @@ class EquipamentoDetail(Resource):
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrado..."), 404)
         body = request.get_json()
+        if 'clinico' in body:
+            erro_clinico = equipamento_schema.ClinicoSchema().validate(body['clinico'])
+            if erro_clinico:
+                return make_response(jsonify(erro_clinico), 400)
+        elif 'tecnico' in body:
+            erro_tecnico = equipamento_schema.TecnicoSchema().validate(body['tecnico'])
+            if erro_tecnico:
+                return make_response(jsonify(erro_tecnico), 400)
+            et = equipamento_schema.TriagemSchema().validate(body)
         equipamento_service.atualizar_equipamento(body, numero_ordem_servico)
         equipamento_atualizado = equipamento_service.listar_equipamento_id(numero_ordem_servico)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)

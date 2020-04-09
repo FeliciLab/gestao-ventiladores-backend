@@ -18,11 +18,6 @@ class Triagem(db.EmbeddedDocument):
     observacao = db.StringField(required=False)
     responsavel_pelo_preenchimento = db.StringField(required=False) # Responsável pelo preenchimento deve ser false?
 
-class AcaoAvaliacao(db.EmbeddedDocument):
-    descricao_acao = db.StringField(required=True)
-    passou = db.BooleanField(required=True)
-    descricao_da_avaliacao = db.StringField(required=False)
-
 class Clinico(db.EmbeddedDocument):
     classificao_ventilador = db.StringField(required=False)
     resultados_do_teste = db.StringField(required=False)
@@ -35,7 +30,7 @@ class Tecnico(db.EmbeddedDocument):
 
 class Equipamento(db.Document):
     numero_ordem_servico = db.StringField(required=True, unique=True)
-    data_hora = db.DateTimeField(default=datetime.utcnow)
+    data_hora = db.DateTimeField(default=datetime.utcnow())
     # FORMULARIO DE TRIAGEM DE EQUIPAMENTO
     triagem = db.EmbeddedDocumentField(Triagem, required=True)
     # FORMULARIO DE DIAGNOSTICO CLINICO
