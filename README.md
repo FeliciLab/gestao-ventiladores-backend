@@ -118,3 +118,14 @@ python run.py
 	    "modelo": ["modelo a", "modelo b"]
 	}
 ```
+
+### fazer importacao da triagem
+```json
+"url": "localhost:5000/api/equipamentos/equipamentosimportacao" #rota
+"method": "POST"
+"header" : "Content-Type": "application/json"
+"body": 
+	{
+	    "url_triagens": "<url_triagens>"
+	}
+```
