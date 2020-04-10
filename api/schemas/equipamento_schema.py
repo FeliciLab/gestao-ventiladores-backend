@@ -22,6 +22,16 @@ class EquipamentoSchema(Schema):
         else:
             return date
 
+class AcessorioSchema(Schema):
+    class Meta:
+        model = equipamento_model.Acessorio
+        fields = ("descricao", "acompanha", "quantidade", "estado_de_conservacao")
+
+    descricao = fields.String(required=True)
+    acompanha = fields.Boolean(required=True)
+    quantidade = fields.Integer(required=True)
+    estado_de_conservacao = fields.String(required=True)
+
 class TriagemSchema(Schema):
     class Meta:
         model = equipamento_model.Triagem
