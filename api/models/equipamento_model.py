@@ -1,6 +1,12 @@
 from config.db import db
 from datetime import datetime
 
+class Acessorio(db.EmbeddedDocument):
+    descricao = db.StringField(required=True)
+    acompanha = db.BooleanField(required=True)
+    quantidade = db.IntField(required=True)
+    estado_de_conservacao = db.StringField(required=True)
+
 class Triagem(db.EmbeddedDocument):
     nome_equipamento = db.StringField(required=True)
     foto_equipamento_chegada = db.StringField(required=True)
@@ -15,7 +21,7 @@ class Triagem(db.EmbeddedDocument):
     fabricante = db.StringField(required=True)
     marca = db.StringField(required=True)
     modelo = db.StringField(required=True)
-    acessorios = db.ListField(db.DictField(), required=False)
+    acessorios = db.EmbeddedDocumentListField(Acessorio, required=False)
     foto_apos_limpeza = db.StringField(required=True)
     observacao = db.StringField(required=False)
     responsavel_pelo_preenchimento = db.StringField(required=False)

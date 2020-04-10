@@ -17,16 +17,18 @@ class EquipamentoList(Resource):
             return make_response(jsonify("Equipamento já cadastrado..."), 403)
         es = equipamento_schema.EquipamentoSchema()
         et = equipamento_schema.TriagemSchema()
-        erro_equipamento = es.validate(request.json)
-        erro_triagem = et.validate(request.json["triagem"])
+        ea = equipamento_schema.AcessorioSchema()
+        erro_equipamento = es.validate(body)
+        erro_triagem = et.validate(body["triagem"])
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
         elif erro_triagem:
             return make_response(jsonify(erro_triagem), 400)
-        else:
-            novo_equipamento = equipamento_service.registrar_equipamento(body)
-            return Response(novo_equipamento, mimetype="application/json", status=201)
-
+        for acessorio in body["triagem"]["acessorios"]:
+            if ea.validate(acessorio):
+                return make_response(jsonify(ea.validate(acessorio)), 400)
+        novo_equipamento = equipamento_service.registrar_equipamento(body)
+        return Response(novo_equipamento, mimetype="application/json", status=201)
 
 class EquipamentoDetail(Resource):
     def get(self, numero_ordem_servico): # OK
