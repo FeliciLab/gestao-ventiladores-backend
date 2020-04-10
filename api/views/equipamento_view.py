@@ -2,7 +2,8 @@ from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from ..schemas import equipamento_schema
 from ..services import equipamento_service
-from utils import importador_de_equipamentos
+from ..utils import importador_de_equipamentos
+
 
 class EquipamentoList(Resource):
     def get(self): # OK
