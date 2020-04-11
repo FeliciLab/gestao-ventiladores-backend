@@ -1,4 +1,4 @@
 mongodb_db = ''
 mongo_db_user = ''
 mongo_db_pass = ''
-mongodb_host = 'mongodb+srv://'+ mongo_db_user +':'+ mongo_db_pass +'@perdido-5fohw.gcp.mongodb.net/'+ mongodb_db + '?authSource=admin&replicaSet=perdido-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true'
+mongodb_host = 'mongodb+srv://' + mongo_db_user + ':' + mongo_db_pass + '@perdido-5fohw.gcp.mongodb.net/' + mongodb_db + '?retryWrites=true&w=majority'
