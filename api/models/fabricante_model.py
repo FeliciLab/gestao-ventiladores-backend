@@ -2,8 +2,8 @@ from config.db import db
 
 
 class MarcasFabricante(db.EmbeddedDocument):
-    marca = db.StringField(required=True, unique=True)
-    modelos = db.ListField(required=True)
+    marca = db.StringField(required=True)
+    modelos = db.ListField(db.StringField(),required=True)
 
 class Fabricante(db.Document):
     # TODO pegar o pdf lista pecas dentro da pasta CentralDeVentiladores e pegar os dados de fabricante com seus modelos

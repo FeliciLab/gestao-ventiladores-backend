@@ -3,16 +3,16 @@ from flask_restful import Resource
 from ..schemas import equipamento_schema
 from ..services import equipamento_service
 from flasgger import swag_from
-from documentacao.exemplo import teste
+#from documentacao.exemplo import teste
 from ..utils.importador_de_equipamentos import tratar_importacao
 
 class EquipamentoList(Resource):
-    @swag_from(teste)
+ #   @swag_from(teste)
     def get(self): # OK
         equipamentos = equipamento_service.listar_equipamentos()
         return Response(equipamentos, mimetype="application/json", status=200)
 
-    @swag_from('../../documentacao/equipamento_post.yml')
+#    @swag_from('../../documentacao/equipamento_post.yml')
     def post(self): # OK
         body = request.json
         equipamento_cadatrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
