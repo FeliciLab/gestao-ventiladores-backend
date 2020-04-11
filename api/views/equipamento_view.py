@@ -3,17 +3,18 @@ from flask_restful import Resource
 from ..schemas import equipamento_schema
 from ..services import equipamento_service
 from flasgger import swag_from
-#from documentacao.exemplo import teste
+# from documentacao.exemplo import teste
 from ..utils.importador_de_equipamentos import tratar_importacao
 
+
 class EquipamentoList(Resource):
- #   @swag_from(teste)
-    def get(self): # OK
+    #   @swag_from(teste)
+    def get(self):  # OK
         equipamentos = equipamento_service.listar_equipamentos()
         return Response(equipamentos, mimetype="application/json", status=200)
 
-#    @swag_from('../../documentacao/equipamento_post.yml')
-    def post(self): # OK
+    #    @swag_from('../../documentacao/equipamento_post.yml')
+    def post(self):  # OK
         body = request.json
         equipamento_cadatrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
         if equipamento_cadatrado:
@@ -33,8 +34,9 @@ class EquipamentoList(Resource):
         novo_equipamento = equipamento_service.registrar_equipamento(body)
         return Response(novo_equipamento, mimetype="application/json", status=201)
 
+
 class EquipamentoDetail(Resource):
-    def get(self, numero_ordem_servico): # OK
+    def get(self, numero_ordem_servico):  # OK
         equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrado..."), 404)
@@ -65,14 +67,14 @@ class EquipamentoDetail(Resource):
         equipamento_service.deletar_equipamento(numero_ordem_servico)
         return make_response('', 204)
 
+
 class EquipamentoImportacao(Resource):
     def post(self):
         body = request.json
         resultado_da_importacao_dt = tratar_importacao(body)
 
-        if "ok" in resultado_da_importacao_dt:
-            make_response(jsonify(resultado_da_importacao_dt["ok"]), 200)
+        if "ok" in resultado_da_importacao_dt.keys():
+           return Response(resultado_da_importacao_dt["ok"], mimetype="application/json", status=200)
         else:
-            make_response(jsonify(resultado_da_importacao_dt["erro"]), 404)
-
-
+            make_response(jsonify(), 404)
+            return make_response(jsonify(resultado_da_importacao_dt["erro"]), 400)
