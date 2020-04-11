@@ -1,6 +1,5 @@
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
-from ..models import fabricante_model
 from ..schemas import fabricante_schema
 from ..services import fabricante_service
 
@@ -10,15 +9,20 @@ class FabricanteList(Resource):
         fabricantes = fabricante_service.listar_fabricantes()
         return Response(fabricantes, mimetype="application/json", status=200)
 
-    def post(self):
+    def post(self): # OK
         body = request.json
-        fs = fabricante_schema.FabricanteSchema()
-        validate = fs.validate(request.json)
-        if validate:
-            return make_response(jsonify(validate), 400)
-        else:
-            result =fabricante_service.registar_fabricante(body)
-            return make_response(jsonify(result), 201)
+        fabricante_cadastrado = fabricante_service.listar_fabricante_id(body["fabricante_nome"])
+        if fabricante_cadastrado:
+            return make_response(jsonify("Fabricante já cadastrado..."), 403)
+        validacao_fabricante = fabricante_schema.FabricanteSchema().validate(request.json)
+        if validacao_fabricante:
+            return make_response(jsonify(validacao_fabricante), 400)
+        validacao_marca = fabricante_schema.MarcaSchema()
+        for marca in request.json['marcas']:
+            if validacao_marca.validate(marca):
+                return make_response(jsonify(validacao_marca), 400)
+        fabricante_registrado = fabricante_service.registar_fabricante(body)
+        return Response(fabricante_registrado, mimetype="application/json", status=201)
 
 class FabricanteDetail(Resource):
     def put(self, fabricante_nome):

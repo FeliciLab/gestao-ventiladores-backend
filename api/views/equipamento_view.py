@@ -67,3 +67,10 @@ class EquipamentoDetail(Resource):
         equipamento_service.deletar_equipamento(numero_ordem_servico)
         return make_response('', 204)
 
+class EquipamentoFind(Resource):
+    def post(self):
+        body = request.json
+        if "status" not in body:
+            return make_response(jsonify("Não existe a chave status no body"), 404)
+        equipamentos = equipamento_service.lista_equipamentos_status(body['status'])
+        return Response(equipamentos, mimetype="application/json", status=200)
