@@ -24,5 +24,8 @@ def atualizar_equipamento(atualizacao, numero_ordem_servico):
 def deletar_equipamento(numero_ordem_servico):
     equipamento_model.Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).delete()
 
+def lista_equipamentos_status(status):
+    return equipamento_model.Equipamento.objects(status=status).to_json()
+
 def adicionar_marca_modelo_fabricante():
     pass
