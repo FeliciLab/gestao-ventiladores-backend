@@ -11,7 +11,7 @@ class ImportadorDeEquipamentos():
     pass
 
 
-def tratar_importacao(body):
+def importar_triagem(body):
     try:
         if "url_triagens" in body:
             url_triagens = body["url_triagens"]
@@ -159,3 +159,7 @@ def __insert_or_update_fabricante_db(linha):
         __update_fabricante_db(linha, fabricante_string)
     else:
         __add_fabricate_db(linha)
+
+
+def importar_diagnostino_clinico_e_tecnico(body):
+    return None

@@ -4,7 +4,7 @@ from ..schemas import equipamento_schema
 from ..services import equipamento_service
 from flasgger import swag_from
 # from documentacao.exemplo import teste
-from ..utils.importador_de_equipamentos import tratar_importacao
+from ..utils.importador_de_equipamentos import importar_triagem
 
 
 class EquipamentoList(Resource):
@@ -67,14 +67,3 @@ class EquipamentoDetail(Resource):
         equipamento_service.deletar_equipamento(numero_ordem_servico)
         return make_response('', 204)
 
-
-class EquipamentoImportacao(Resource):
-    def post(self):
-        body = request.json
-        resultado_da_importacao_dt = tratar_importacao(body)
-
-        if "ok" in resultado_da_importacao_dt.keys():
-           return Response(resultado_da_importacao_dt["ok"], mimetype="application/json", status=200)
-        else:
-            make_response(jsonify(), 404)
-            return make_response(jsonify(resultado_da_importacao_dt["erro"]), 400)
