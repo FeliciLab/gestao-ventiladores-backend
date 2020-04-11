@@ -13,9 +13,9 @@ class ImportadorDeEquipamentos():
 
 def importar_triagem(body):
     try:
-        if "url_triagens" in body:
-            url_triagens = body["url_triagens"]
-            triagens_df = pd.read_csv(url_triagens)
+        if "url" in body:
+            url = body["url"]
+            triagens_df = pd.read_csv(url)
             triagens_df = triagens_df.replace(np.nan, '', regex=True)
 
             for index_linha, linha in triagens_df.iterrows():
@@ -56,20 +56,6 @@ def importar_triagem(body):
         return {"erro": Exception.__traceback__}
 
     return {"ok": "Importacao realizada com sucesso!"}
-
-    #     return {"ok": "Importacao realizada com sucesso"}
-    # elif "url_diagnosticos_clinicos" in body:
-    #     pass
-    # elif "url_diagnosticos_tecnicos" in body:
-    #     pass
-    # else:
-    #     return {"erro": "Erro no body. Verificar o json enviado no body."}
-
-
-#
-# def transforma_string_em_lista(dado):
-#     if isinstance(dado, str):
-#         return [dado]
 
 def __transformando_data(data):
     data = data[6:10] + data[2:6] + data[:2] + data[10:]
@@ -162,4 +148,13 @@ def __insert_or_update_fabricante_db(linha):
 
 
 def importar_diagnostino_clinico_e_tecnico(body):
-    return None
+    try:
+        if "url" in body:
+            url = body["url"]
+
+            triagens_df = pd.read_csv(url)
+            triagens_df = triagens_df.replace(np.nan, '', regex=True)
+    except Exception:
+        return {"erro": Exception.__traceback__}
+
+    return {"ok": "Importacao realizada com sucesso!"}
