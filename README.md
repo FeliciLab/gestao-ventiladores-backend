@@ -8,23 +8,36 @@
 - MongoDB
 
 ### 1 - Criar e ativar o ambiente virtual:
-- Windows
-- virtualenv <nome_da_virtualenv>
-- <nome_da_virtualenv>\Scripts\activate
+Windows
+```
+virtualenv <nome_da_virtualenv>
+<nome_da_virtualenv>\Scripts\activate
+```
 
-- Ubuntu
-- python3 -m venv <nome_da_virtualenv>
-- source <nome_da_virtualenv>/bin/activate
+Ubuntu
+```
+python3 -m venv <nome_da_virtualenv>
+source <nome_da_virtualenv>/bin/activate
+```
 
 ### 2 - Instalação dos módulos python:
+```
 pip install -r requirements.txt
+```
 
 ### 3 - Export a variável de ambiente:
-- set FLASK_APP=run.py (Windows)
-- export FLASK_APP=run.py (Ubuntu)
-
+Windows
+```
+set FLASK_APP=run.py
+```
+Ubuntu
+```
+export FLASK_APP=run.py
+```
 ### 4 - Execute a api:
+```
 python run.py
+```
 
 ## API
 
@@ -133,37 +146,20 @@ python run.py
 
 ```
 
-### fabricante e modelo
-
+### Fazer importacao da triagem
 ```json
-"url": "localhost:5000/api/fabricantes" #rota + esse CONSUL é o fabricante
-"method": "GET
-
-"url": "localhost:5000/api/fabricantes/CONSUL" #rota + esse CONSUL é o fabricante
-"method": "GET
-
-"url": "localhost:5000/api/fabricantes" #rota
+"url": "localhost:5000/api/importar/triagem"
 "method": "POST"
 "header" : "Content-Type": "application/json"
 "body": 
 	{
-	   "fabricante_nome": "fabricante",
-	   "modelo": ["modelo a", "modelo b"]
-	}
-
-"url": "localhost:5000/api/fabricantes" #rota
-"method": "PUT"
-"header" : "Content-Type": "application/json"
-"body": 
-	{
-		"fabricante_nome": "fabricante",
-	    "modelo": ["modelo a", "modelo b"]
+	    "url_triagens": "<url_triagens>"
 	}
 ```
 
-### fazer importacao da triagem
+### Fazer importacao do diagnostico
 ```json
-"url": "localhost:5000/api/equipamentos/equipamentosimportacao" #rota
+"url": "localhost:5000/api/importar/diagnostico"
 "method": "POST"
 "header" : "Content-Type": "application/json"
 "body": 
