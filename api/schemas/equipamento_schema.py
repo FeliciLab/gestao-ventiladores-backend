@@ -76,6 +76,8 @@ class DiagnosticoSchema(Schema):
     demanda_insumos = fields.String(required=True)
     acao_orientacao = fields.String(required=True)
     observacoes = fields.String(required=True)
+    acessorios_extras = fields.List(fields.Dict, required=True)
+    itens = fields.List(fields.Dict, required=True)
 
 
 class AcessorioExtraSchema(Schema):
@@ -86,7 +88,6 @@ class AcessorioExtraSchema(Schema):
     quantidade = fields.Integer(required=True)
     nome = fields.String(required=True)
 
-
 class ItemSchema(Schema):
     class Meta:
         model = equipamento_model.Item
@@ -95,9 +96,9 @@ class ItemSchema(Schema):
     nome = fields.String(required=True)
     tipo = fields.String(required=True)
     quantidade = fields.Integer(required=True)
-    descricao = fields.Integer(required=True)
+    descricao = fields.String(required=True)
     valor = fields.Float(required=True)
-    prioridade = fields.Integer(required=True)
+    prioridade = fields.String(required=True)
 
 # class ClinicoSchema(Schema):
 #     class Meta:

@@ -70,8 +70,16 @@ class EquipamentoDetail(Resource):
             erro_diagnostico = equipamento_schema.DiagnosticoSchema().validate(body['diagnostico'])
             if erro_diagnostico:
                 return make_response(jsonify(erro_diagnostico), 400)
-                #todo eu acho que eu tbm tenho que verificar os acessorios_extras e os itens
-
+        if 'acessorios_extras' in body['diagnostico']:
+            for acessorios_extra in body['diagnostico']['acessorios_extras']:
+                erro_acessorio_extra = equipamento_schema.AcessorioExtraSchema().validate(acessorios_extra)
+                if erro_acessorio_extra:
+                    return make_response(jsonify(erro_acessorio_extra), 400)
+        if 'itens' in body['diagnostico']:
+            for itens in body['diagnostico']['itens']:
+                item = equipamento_schema.ItemSchema().validate(itens)
+                if item:
+                    return make_response(jsonify(item), 400)
         equipamento_service.atualizar_equipamento(body, numero_ordem_servico)
         equipamento_atualizado = equipamento_service.listar_equipamento_id(numero_ordem_servico)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)
