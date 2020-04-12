@@ -16,7 +16,9 @@ def importar_triagem(body):
 
             for index_linha, linha in triagens_df.iterrows():
                 body = {
-                    "numero_ordem_servico": str(linha["Número da Ordem de Serviço"]),
+
+                    # "numero_ordem_servico": str(float(linha["Número da Ordem de Serviço"])),
+                    "numero_ordem_servico": str(linha["Número da Ordem de Serviço"]).zfill(4),
                     "created_at": __transformando_data(linha["Carimbo de data/hora"]),
                     "updated_at": __transformando_data(linha["Carimbo de data/hora"]),
                     "status": "triagem",
@@ -164,7 +166,7 @@ def importar_diagnostino(body):
                 if linha["Unnamed: 1"] is "":
                     continue
 
-                numero_ordem_servico = str(int(linha["Unnamed: 1"]))
+                numero_ordem_servico = str(int(linha["Unnamed: 1"])).zfill(4)
                 body = {
                     "resultado_tecnico": linha["Defeito observado:"],
                     "demanda_servicos": "",
