@@ -29,16 +29,20 @@ python run.py
 ## API
 
 ### Retornar todos os equipamentos
+```json
 "url": "localhost:5000/api/equipamentos"
 "method": "GET"
+```
 
 ### Retornar um equipamentoe específico
+```json
 "url": "localhost:5000/api/equipamentos/<numero_ordem_servico>"
 "method": "GET
+```
 
 ### Fazer cadastro do equipamento - triagem (form 1)
 ```json
-"url": "localhost:5000/api/equipamentos" #rota
+"url": "localhost:5000/api/equipamentos"
 "method": "POST"
 "header" : "Content-Type": "application/json"
 "body": 
@@ -82,9 +86,9 @@ python run.py
 }
 ```
 
-### Fazer diagnostico clinico/tecnico (form 2)
+### Fazer diagnostico - clinico/tecnico (form 2)
 ```json
-"url": "localhost:5000/api/equipamentos/1", #rota + esse 1 é o valor OS
+"url": "localhost:5000/api/equipamentos/<numero_ordem_servico>"
 "method": "PUT"
 "header" : "Content-Type": "application/json"
 "body": 
@@ -113,6 +117,18 @@ python run.py
       }
     ]
   }
+}
+
+```
+
+### Retornar os equipamentos pelo seu status
+```json
+"url": "localhost:5000/api/equipamentos/find"
+"method": "POST"
+"header" : "Content-Type": "application/json"
+"body": 
+{
+	"status":"string"
 }
 
 ```
