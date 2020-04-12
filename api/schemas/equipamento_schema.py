@@ -2,18 +2,22 @@ from ..models import equipamento_model
 from marshmallow import Schema, fields
 from datetime import datetime
 
+
 class EquipamentoSchema(Schema):
     class Meta:
         model = equipamento_model.Equipamento
-        fields = ("numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico", "foto_equipamento_chegada",
-                  "status")
+        fields = (
+            "numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico",
+            "foto_equipamento_chegada",
+            "status")
 
     numero_ordem_servico = fields.String(required=True)
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)
     triagem = fields.Dict(required=True)
-    clinico = fields.Dict(required=False)
-    tecnico = fields.Dict(required=False)
+    diagnostico = fields.Dict(required=False)
+    # clinico = fields.Dict(required=False)
+    # tecnico = fields.Dict(required=False)
     status = fields.String(required=False)
 
     def ajustando_datas_criacao_atualizacao(self, date):
@@ -21,6 +25,7 @@ class EquipamentoSchema(Schema):
             return datetime.now()
         else:
             return date
+
 
 class AcessorioSchema(Schema):
     class Meta:
@@ -31,6 +36,7 @@ class AcessorioSchema(Schema):
     acompanha = fields.Boolean(required=True)
     quantidade = fields.Integer(required=True)
     estado_de_conservacao = fields.String(required=True)
+
 
 class TriagemSchema(Schema):
     class Meta:
@@ -58,20 +64,56 @@ class TriagemSchema(Schema):
     observacao = fields.String(required=False)
     responsavel_pelo_preenchimento = fields.String(required=False)
 
-class ClinicoSchema(Schema):
+
+class DiagnosticoSchema(Schema):
     class Meta:
-        model = equipamento_model.Clinico
-        fields = ("classificao_ventilador", "resultados_do_teste", "acessorios_necessitados")
+        model = equipamento_model.Triagem
+        fields = ("resultado_tecnico", "demanda_servicos", "demanda_insumos", "acao_orientacao", "observacoes",
+                  "acessorios_extras", "itens")
 
-    classificao_ventilador = fields.String(required=True)
-    resultados_do_teste = fields.String(required=True)
-    acessorios_necessitados = fields.String(required=True)
+    resultado_tecnico = fields.String(required=True)
+    demanda_servicos = fields.String(required=True)
+    demanda_insumos = fields.String(required=True)
+    acao_orientacao = fields.String(required=True)
+    observacoes = fields.String(required=True)
+    acessorios_extras = fields.List(fields.Dict, required=True)
+    itens = fields.List(fields.Dict, required=True)
 
-class TecnicoSchema(Schema):
+
+class AcessorioExtraSchema(Schema):
     class Meta:
-        model = equipamento_model.Tecnico
-        fields = ("resultado_do_teste", "demanda_por_insumo", "demanda_por_servico")
+        model = equipamento_model.AcessorioExtra
+        fields = ("quantidade", "nome")
 
-    resultado_do_teste = fields.String(required=True)
-    demanda_por_insumo = fields.String(required=True)
-    demanda_por_servico = fields.String(required=True)
+    quantidade = fields.Integer(required=True)
+    nome = fields.String(required=True)
+
+class ItemSchema(Schema):
+    class Meta:
+        model = equipamento_model.Item
+        fields = ("nome", "tipo", "quantidade", "descricao", "valor", "prioridade")
+
+    nome = fields.String(required=True)
+    tipo = fields.String(required=True)
+    quantidade = fields.Integer(required=True)
+    descricao = fields.String(required=True)
+    valor = fields.Float(required=True)
+    prioridade = fields.String(required=True)
+
+# class ClinicoSchema(Schema):
+#     class Meta:
+#         model = equipamento_model.Clinico
+#         fields = ("classificao_ventilador", "resultados_do_teste", "acessorios_necessitados")
+#
+#     classificao_ventilador = fields.String(required=True)
+#     resultados_do_teste = fields.String(required=True)
+#     acessorios_necessitados = fields.String(required=True)
+#
+# class TecnicoSchema(Schema):
+#     class Meta:
+#         model = equipamento_model.Tecnico
+#         fields = ("resultado_do_teste", "demanda_por_insumo", "demanda_por_servico")
+#
+#     resultado_do_teste = fields.String(required=True)
+#     demanda_por_insumo = fields.String(required=True)
+#     demanda_por_servico = fields.String(required=True)

@@ -2,13 +2,9 @@ import json
 
 import pandas as pd
 
-from ..services import fabricante_service
-from ..services.equipamento_service import registrar_equipamento
+from ..services import fabricante_service, equipamento_service
 import numpy as np
-
-
-class ImportadorDeEquipamentos():
-    pass
+from datetime import datetime
 
 
 def importar_triagem(body):
@@ -20,7 +16,9 @@ def importar_triagem(body):
 
             for index_linha, linha in triagens_df.iterrows():
                 body = {
-                    "numero_ordem_servico": str(linha["Número da Ordem de Serviço"]),
+
+                    # "numero_ordem_servico": str(float(linha["Número da Ordem de Serviço"])),
+                    "numero_ordem_servico": str(linha["Número da Ordem de Serviço"]).zfill(4),
                     "created_at": __transformando_data(linha["Carimbo de data/hora"]),
                     "updated_at": __transformando_data(linha["Carimbo de data/hora"]),
                     "status": "triagem",
@@ -51,11 +49,12 @@ def importar_triagem(body):
 
                 __insert_or_update_fabricante_db(linha)
 
-                registrar_equipamento(body)
+                equipamento_service.registrar_equipamento(body)
     except Exception:
         return {"erro": Exception.__traceback__}
 
     return {"ok": "Importacao realizada com sucesso!"}
+
 
 def __transformando_data(data):
     data = data[6:10] + data[2:6] + data[:2] + data[10:]
@@ -147,14 +146,96 @@ def __insert_or_update_fabricante_db(linha):
         __add_fabricate_db(linha)
 
 
-def importar_diagnostino_clinico_e_tecnico(body):
+def __adapt_time(data_and_time_string):
+    datetime_object = datetime.strptime(data_and_time_string, '%m/%d/%Y %H:%M:%S')
+    return datetime_object.strftime("%Y-%m-%dT%H:%M:%S.000+00:00")
+    # data_string = data_and_time_string.split(" ")[0].replace("/", "-")
+    # time_string = data_and_time_string.split(" ")[1]
+    # return data_string+"T"+time_string
+
+
+def importar_diagnostino(body):
     try:
         if "url" in body:
             url = body["url"]
 
-            triagens_df = pd.read_csv(url)
-            triagens_df = triagens_df.replace(np.nan, '', regex=True)
+            diagnosticos_df = pd.read_csv(url)
+            diagnosticos_df = diagnosticos_df.replace(np.nan, '', regex=True)
+
+            for index_linha, linha in diagnosticos_df.iterrows():
+                if linha["Unnamed: 1"] is "":
+                    continue
+
+                numero_ordem_servico = str(int(linha["Unnamed: 1"])).zfill(4)
+                body = {
+                    "resultado_tecnico": linha["Defeito observado:"],
+                    "demanda_servicos": "",
+                    "demanda_insumos": linha["Demanda por Insumos:"],
+                    "acao_orientacao": linha["Açao:"],
+                    "observacoes": linha["Observação: "],
+                    "acessorios_extras": __get_acessorios_extras(linha["Acessórios que necessita: "]),
+                    "itens": __get_itens(linha["Demanda por peças: "]),
+
+                }
+
+                # __atualizar_campo_update_at(numero_ordem_servico, linha["Timestamp"])
+                equipamento_service.atualizar_equipamento(
+                    {
+                        "status": "diagnostico",
+                        "updated_at": __adapt_time(linha["Timestamp"]),
+                        "diagnostico": body
+                    },
+                    numero_ordem_servico)
+
+
     except Exception:
         return {"erro": Exception.__traceback__}
 
     return {"ok": "Importacao realizada com sucesso!"}
+
+
+def __atualizar_campo_update_at(numero_ordem_servico, update_at):
+    equipamento_service.atualizar_equipamento({"updated_at": update_at}, numero_ordem_servico)
+
+
+def __get_acessorios_extras(acessorios_extras_string):
+    if acessorios_extras_string is "":
+        return []
+
+    acessorios_extras_list = list()
+
+    for quantidade_e_acessorio_extra_string in acessorios_extras_string.split("\n"):
+        if quantidade_e_acessorio_extra_string is "":
+            continue
+
+        quantidade = int(quantidade_e_acessorio_extra_string[0:2])
+        acessorio_extra_nome = quantidade_e_acessorio_extra_string[3:]
+
+        acessorios_extras_list.append(
+            {"quantidade": quantidade,
+             "nome": acessorio_extra_nome.strip()}
+        )
+    return acessorios_extras_list
+
+
+def __get_itens(item_string):
+    if item_string is "":
+        return []
+
+    item_list = list()
+    separator_char = ","
+    if "\n" in item_string in item_string:
+        separator_char = "\n"
+
+    for item_nome in item_string.split(separator_char):
+        nome = item_nome
+        item_list.append(
+            {"nome": nome.strip(),
+             "tipo": "",
+             "descricao": "",
+             "valor": 0,
+             "prioridade": "",
+             "quantidade": 0,
+             }
+        )
+    return item_list

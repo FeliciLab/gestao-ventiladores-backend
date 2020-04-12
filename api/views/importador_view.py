@@ -20,7 +20,7 @@ class TriagemImportacao(Resource):
 class DiagnosticoClinicoETecnicoImportacao(Resource):
     def post(self):
         body = request.json
-        resultado_da_importacao_dt = importador_de_equipamentos.importar_diagnostino_clinico_e_tecnico(body)
+        resultado_da_importacao_dt = importador_de_equipamentos.importar_diagnostino(body)
 
         if "ok" in resultado_da_importacao_dt.keys():
             return Response(resultado_da_importacao_dt["ok"], mimetype="application/json", status=200)

@@ -42,23 +42,48 @@ class EquipamentoDetail(Resource):
             return make_response(jsonify("Equipamento não encontrado..."), 404)
         return Response(equipamento, mimetype="application/json", status=200)
 
+    # def put(self, numero_ordem_servico):
+    #     equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
+    #     if equipamento is None:
+    #         return make_response(jsonify("Equipamento não encontrado..."), 404)
+    #     body = request.get_json()
+    #     if 'clinico' in body:
+    #         erro_clinico = equipamento_schema.ClinicoSchema().validate(body['clinico'])
+    #         if erro_clinico:
+    #             return make_response(jsonify(erro_clinico), 400)
+    #     elif 'tecnico' in body:
+    #         erro_tecnico = equipamento_schema.TecnicoSchema().validate(body['tecnico'])
+    #         if erro_tecnico:
+    #             return make_response(jsonify(erro_tecnico), 400)
+    #         et = equipamento_schema.TriagemSchema().validate(body)
+    #     equipamento_service.atualizar_equipamento(body, numero_ordem_servico)
+    #     equipamento_atualizado = equipamento_service.listar_equipamento_id(numero_ordem_servico)
+    #     return Response(equipamento_atualizado, mimetype="application/json", status=200)
+
+
     def put(self, numero_ordem_servico):
         equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrado..."), 404)
         body = request.get_json()
-        if 'clinico' in body:
-            erro_clinico = equipamento_schema.ClinicoSchema().validate(body['clinico'])
-            if erro_clinico:
-                return make_response(jsonify(erro_clinico), 400)
-        elif 'tecnico' in body:
-            erro_tecnico = equipamento_schema.TecnicoSchema().validate(body['tecnico'])
-            if erro_tecnico:
-                return make_response(jsonify(erro_tecnico), 400)
-            et = equipamento_schema.TriagemSchema().validate(body)
+        if 'diagnostico' in body:
+            erro_diagnostico = equipamento_schema.DiagnosticoSchema().validate(body['diagnostico'])
+            if erro_diagnostico:
+                return make_response(jsonify(erro_diagnostico), 400)
+        if 'acessorios_extras' in body['diagnostico']:
+            for acessorios_extra in body['diagnostico']['acessorios_extras']:
+                erro_acessorio_extra = equipamento_schema.AcessorioExtraSchema().validate(acessorios_extra)
+                if erro_acessorio_extra:
+                    return make_response(jsonify(erro_acessorio_extra), 400)
+        if 'itens' in body['diagnostico']:
+            for itens in body['diagnostico']['itens']:
+                item = equipamento_schema.ItemSchema().validate(itens)
+                if item:
+                    return make_response(jsonify(item), 400)
         equipamento_service.atualizar_equipamento(body, numero_ordem_servico)
         equipamento_atualizado = equipamento_service.listar_equipamento_id(numero_ordem_servico)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)
+
 
     def delete(self, numero_ordem_servico):
         equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
