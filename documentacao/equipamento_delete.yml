@@ -1,0 +1,7 @@
+Deleta um equipamento específico confome o número de ordem de servico passado.
+---
+tags:
+  - Equipamentos
+responses:
+  204:
+    description: Ao deletar não existe retorno

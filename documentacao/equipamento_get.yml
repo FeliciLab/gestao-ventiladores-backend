@@ -1,0 +1,10 @@
+Retorna um equipamento específico confome o número de ordem de servico passado.
+---
+tags:
+  - Equipamentos
+
+responses:
+  200:
+    description:
+    schema:
+      $ref: '#/definitions/Equipamento'

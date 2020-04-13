@@ -1,0 +1,14 @@
+Cadatra um equipamento - triagem.
+---
+tags:
+  - Equipamentos
+parameters:
+  - in: body
+    name: Equipamento
+    schema:
+        $ref: '#/definitions/Equipamento'
+responses:
+  200:
+    description:
+    schema:
+      $ref: '#/definitions/Equipamento'

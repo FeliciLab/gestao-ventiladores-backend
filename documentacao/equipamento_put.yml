@@ -1,0 +1,15 @@
+Atualiza o equipamento passando os dados de diagnostico clinico/tecnico.
+---
+tags:
+  - Equipamentos
+parameters:
+  - in: body
+    name: Equipamento
+    schema:
+        $ref: '#/definitions/Equipamento'
+
+responses:
+  200:
+    description:
+    schema:
+      $ref: '#/definitions/Equipamento'

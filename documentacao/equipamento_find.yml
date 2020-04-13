@@ -1,0 +1,17 @@
+Retorna os equipamentos cadastrados conforme o status procurado.
+---
+tags:
+  - Equipamentos
+parameters:
+  - in: body
+    schema:
+      required:
+        - status
+      properties:
+        status:
+          type: string
+responses:
+  200:
+    description:
+    schema:
+      $ref: '#/definitions/Equipamento'

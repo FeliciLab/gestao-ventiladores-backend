@@ -4,8 +4,10 @@ from config.routes import initialize_routes
 from flask_mongoengine import MongoEngine
 from env_config import mongodb_host
 from flask_cors import CORS
+from flasgger import Swagger
 
 app = Flask(__name__)
+swagger = Swagger(app)
 CORS(app)
 
 api = Api(app)
