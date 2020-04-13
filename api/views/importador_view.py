@@ -1,4 +1,3 @@
-from importlib.resources import Resource
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 
