@@ -69,14 +69,14 @@ class DiagnosticoSchema(Schema):
     class Meta:
         model = equipamento_model.Triagem
         fields = ("resultado_tecnico", "demanda_servicos", "demanda_insumos", "acao_orientacao", "observacoes",
-                  "acessorios_extras", "itens")
+                  "itens")
 
     resultado_tecnico = fields.String(required=True)
     demanda_servicos = fields.String(required=True)
     demanda_insumos = fields.String(required=True)
     acao_orientacao = fields.String(required=True)
     observacoes = fields.String(required=True)
-    acessorios_extras = fields.List(fields.Dict, required=True)
+    #acessorios_extras = fields.List(fields.Dict, required=True)
     itens = fields.List(fields.Dict, required=True)
 
 
@@ -91,7 +91,7 @@ class AcessorioExtraSchema(Schema):
 class ItemSchema(Schema):
     class Meta:
         model = equipamento_model.Item
-        fields = ("nome", "tipo", "quantidade", "descricao", "valor", "prioridade")
+        fields = ("nome", "tipo", "quantidade", "descricao", "valor", "prioridade", "unidade_medida")
 
     nome = fields.String(required=True)
     tipo = fields.String(required=True)
@@ -99,21 +99,5 @@ class ItemSchema(Schema):
     descricao = fields.String(required=True)
     valor = fields.Float(required=True)
     prioridade = fields.String(required=True)
+    unidade_medida = fields.String(required=True)
 
-# class ClinicoSchema(Schema):
-#     class Meta:
-#         model = equipamento_model.Clinico
-#         fields = ("classificao_ventilador", "resultados_do_teste", "acessorios_necessitados")
-#
-#     classificao_ventilador = fields.String(required=True)
-#     resultados_do_teste = fields.String(required=True)
-#     acessorios_necessitados = fields.String(required=True)
-#
-# class TecnicoSchema(Schema):
-#     class Meta:
-#         model = equipamento_model.Tecnico
-#         fields = ("resultado_do_teste", "demanda_por_insumo", "demanda_por_servico")
-#
-#     resultado_do_teste = fields.String(required=True)
-#     demanda_por_insumo = fields.String(required=True)
-#     demanda_por_servico = fields.String(required=True)

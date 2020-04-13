@@ -46,12 +46,13 @@ class AcessorioExtra(db.EmbeddedDocument):
     nome = db.StringField(required=True)
 
 class Item(db.EmbeddedDocument):
+    quantidade = db.IntField(required=True)
     nome = db.StringField(required=True)
     tipo = db.StringField(required=True)
-    quantidade = db.IntField(required=True)
     descricao = db.StringField(required=True)
     valor = db.FloatField(required=True)
     prioridade = db.StringField(required=True)
+    unidade_medida = db.StringField(required=True)
 
 
 class Diagnostico(db.EmbeddedDocument):
@@ -60,7 +61,7 @@ class Diagnostico(db.EmbeddedDocument):
     demanda_insumos = db.StringField(required=True)
     acao_orientacao = db.StringField(required=True)
     observacoes = db.StringField()
-    acessorios_extras = db.EmbeddedDocumentListField(AcessorioExtra)
+    #acessorios_extras = db.EmbeddedDocumentListField(AcessorioExtra)
     itens = db.EmbeddedDocumentListField(Item)
 
 

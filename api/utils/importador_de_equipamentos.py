@@ -172,22 +172,22 @@ def importar_diagnostino(body):
             diagnosticos_df = diagnosticos_df.replace(np.nan, '', regex=True)
 
             for index_linha, linha in diagnosticos_df.iterrows():
-                if linha["Unnamed: 1"] is "":
+                if linha["OS N°:"] is "":
                     continue
 
-                numero_ordem_servico = str(int(linha["Unnamed: 1"])).zfill(4)
+                numero_ordem_servico = str(int(linha["OS N°:"])).zfill(4)
                 body = {
                     "resultado_tecnico": linha["Defeito observado:"],
                     "demanda_servicos": "",
-                    "demanda_insumos": linha["Demanda por Insumos:"],
+                    "demanda_insumos": linha["Insumos utilizados no diagnostico:"],
                     "acao_orientacao": linha["Açao:"],
                     "observacoes": linha["Observação: "],
-                    "acessorios_extras": __get_acessorios_extras(linha["Acessórios que necessita: "]),
+                    #"acessorios_extras": __get_acessorios_extras(linha["Acessórios que necessita: "]),
                     "itens": __get_itens(linha["Demanda por peças: "]),
 
                 }
 
-                # __atualizar_campo_update_at(numero_ordem_servico, linha["Timestamp"])
+                __atualizar_campo_update_at(numero_ordem_servico, linha["Timestamp"])
                 equipamento_service.atualizar_equipamento(
                     {
                         "status": "diagnostico",
@@ -245,6 +245,7 @@ def __get_itens(item_string):
              "valor": 0,
              "prioridade": "",
              "quantidade": 0,
+             "unidade_medida": ""
              }
         )
     return item_list
