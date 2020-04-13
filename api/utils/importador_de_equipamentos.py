@@ -182,8 +182,7 @@ def importar_diagnostino(body):
                     "demanda_insumos": linha["Insumos utilizados no diagnostico:"],
                     "acao_orientacao": linha["Açao:"],
                     "observacoes": linha["Observação: "],
-                    #"acessorios_extras": __get_acessorios_extras(linha["Acessórios que necessita: "]),
-                    "itens": __get_itens(linha["Demanda por peças: "]),
+                    "itens": __get_itens(linha["Demanda por peças: "]) + __get_acessorios_extras(linha["Acessórios que necessita: "]),
 
                 }
 
@@ -221,8 +220,15 @@ def __get_acessorios_extras(acessorios_extras_string):
         acessorio_extra_nome = quantidade_e_acessorio_extra_string[3:]
 
         acessorios_extras_list.append(
-            {"quantidade": quantidade,
-             "nome": acessorio_extra_nome.strip()}
+            {
+                "quantidade": quantidade,
+                "nome": acessorio_extra_nome.strip(),
+                "tipo": "acessorio",
+                "descricao": "",
+                "valor": 0.0,
+                "prioridade": "baixa",
+                "unidade_medida": ""
+            }
         )
     return acessorios_extras_list
 
@@ -239,13 +245,14 @@ def __get_itens(item_string):
     for item_nome in item_string.split(separator_char):
         nome = item_nome
         item_list.append(
-            {"nome": nome.strip(),
-             "tipo": "",
-             "descricao": "",
-             "valor": 0,
-             "prioridade": "",
-             "quantidade": 0,
-             "unidade_medida": ""
+            {
+                "nome": nome.strip(),
+                "tipo": "pecas",
+                "descricao": "",
+                "valor": 0,
+                "prioridade": "baixa",
+                "quantidade": 1,
+                "unidade_medida": ""
              }
         )
     return item_list
