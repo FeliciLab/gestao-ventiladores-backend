@@ -47,7 +47,16 @@ def importar_triagem(body):
                     }
                 }
 
-                __insert_or_update_fabricante_db(linha)
+                equipamento_foi_cadastrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
+                if equipamento_foi_cadastrado:
+                    equipamento_service.deletar_equipamento(body['numero_ordem_servico'])
+
+                #fabricante_foi_cadastrado = fabricante_service.listar_fabricante_id(body['triagem']['fabricante'])
+                #if fabricante_foi_cadastrado:
+                #    fabricante_service.deletar_fabricante(body['triagem']['fabricante'])
+
+                # O ERRO ESTÁ AQUIIII
+                #__insert_or_update_fabricante_db(linha)
 
                 equipamento_service.registrar_equipamento(body)
     except Exception:
