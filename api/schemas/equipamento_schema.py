@@ -16,8 +16,6 @@ class EquipamentoSchema(Schema):
     updated_at = fields.DateTime(required=False)
     triagem = fields.Dict(required=True)
     diagnostico = fields.Dict(required=False)
-    # clinico = fields.Dict(required=False)
-    # tecnico = fields.Dict(required=False)
     status = fields.String(required=False)
 
     def ajustando_datas_criacao_atualizacao(self, date):
