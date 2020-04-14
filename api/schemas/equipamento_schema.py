@@ -40,9 +40,9 @@ class TriagemSchema(Schema):
     class Meta:
         model = equipamento_model.Triagem
         fields = ("nome_equipamento", "foto_antes_limpeza", "tipo", "numero_do_patrimonio",
-                  "numero_de_serie", "instituicao_de_origem", "nome_responsavel", "contato_responsavel",
-                  "estado_de_conservacao", "fabricante", "marca", "modelo", "acessorios", "foto_apos_limpeza",
-                  "observacao", "responsavel_pelo_preenchimento", "nome_instituicao_origem", "tipo_instituicao_origem",
+                  "numero_de_serie", "nome_responsavel", "contato_responsavel",
+                  "estado_de_conservacao", "fabricante", "marca", "modelo", "acessorios",
+                  "foto_apos_limpeza", "nome_instituicao_origem", "tipo_instituicao_origem",
                   "municipio_origem")
 
     nome_equipamento = fields.String(required=True)
@@ -50,7 +50,6 @@ class TriagemSchema(Schema):
     tipo = fields.String(required=True)
     numero_do_patrimonio = fields.String(required=True)
     numero_de_serie = fields.String(required=True)
-    instituicao_de_origem = fields.String(required=True)
     nome_responsavel = fields.String(required=True)
     contato_responsavel = fields.String(required=True)
     estado_de_conservacao = fields.String(required=True)
@@ -59,8 +58,6 @@ class TriagemSchema(Schema):
     modelo = fields.String(required=True)
     acessorios = fields.List(fields.Dict, required=True)
     foto_apos_limpeza = fields.String(required=True)
-    observacao = fields.String(required=True)
-    responsavel_pelo_preenchimento = fields.String(required=True)
     nome_instituicao_origem = fields.String(required=True)
     tipo_instituicao_origem = fields.String(required=True)
     municipio_origem = fields.String(required=True)
@@ -77,7 +74,6 @@ class DiagnosticoSchema(Schema):
     demanda_insumos = fields.String(required=True)
     acao_orientacao = fields.String(required=True)
     observacoes = fields.String(required=True)
-    #acessorios_extras = fields.List(fields.Dict, required=True)
     itens = fields.List(fields.Dict, required=True)
 
 
