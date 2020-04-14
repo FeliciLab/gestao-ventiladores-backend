@@ -23,7 +23,7 @@ class DiagnosticoClinicoETecnicoImportacao(Resource):
         resultado_da_importacao_dt = importador_de_equipamentos.importar_diagnostino(body)
 
         if "ok" in resultado_da_importacao_dt:
-            return make_response(jsonify("Importacao sucesso..."), 404)
+            return make_response(jsonify("Importacao sucesso..."), 200)
         else:
             make_response(jsonify(), 404)
-            return make_response(jsonify("Fracasso importacao..."), 404)
+            return make_response(jsonify("Fracasso importacao..."), 400)

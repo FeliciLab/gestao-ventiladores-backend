@@ -73,6 +73,7 @@ class EquipamentoDetail(Resource):
         equipamento_service.deletar_equipamento(numero_ordem_servico)
         return make_response('', 204)
 
+
 class EquipamentoFind(Resource):
     @swag_from('../../documentacao/equipamento/equipamento_find.yml')
     def post(self):

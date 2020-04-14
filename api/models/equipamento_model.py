@@ -27,6 +27,9 @@ class Triagem(db.EmbeddedDocument):
     foto_apos_limpeza = db.StringField(required=True)
     observacao = db.StringField(required=False)
     responsavel_pelo_preenchimento = db.StringField(required=False)
+    nome_instituicao_origem = db.StringField(required=False)
+    tipo_instituicao_origem = db.StringField(required=False)
+    municipio_origem = db.StringField(required=False)
 
 
 class AcessorioExtra(db.EmbeddedDocument):

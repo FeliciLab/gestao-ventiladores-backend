@@ -34,7 +34,9 @@ def importar_triagem(body):
                         "nome_responsavel": linha["Informe o responsável e o contato da institução de origem:"],
                         "contato_responsavel": "",  # it field does not exist in csv
                         "estado_de_conservacao": linha["Selecione o estado de conservação do equipamento"],
-
+                        "municipio_origem": "",
+                        "nome_instituicao_origem": "",
+                        "tipo_instituicao_origem": "",
                         "fabricante": linha["Selecione a marca do equipamento:"],
                         "marca": linha["Selecione a marca do equipamento:"],
                         "modelo": linha["Selecione o modelo do equipamento"],
