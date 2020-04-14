@@ -1,0 +1,31 @@
+Retorna todos os fabricantes já cadastrados.
+---
+tags:
+  - Fabricantes
+definitions:
+  Fabricante:
+    type: object
+    properties:
+      marcas:
+        type: object
+        $ref: '#/definitions/Marca'
+
+      nome_fabricante:
+        type: string
+
+  Marca:
+    type: object
+    properties:
+      marca:
+        type: string
+      type: array
+      modelos:
+        type: string
+        properties:
+          id:
+            type: string
+
+responses:
+  200:
+    schema:
+      $ref: '#/definitions/Fabricante'

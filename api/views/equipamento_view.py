@@ -2,17 +2,16 @@ from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from ..schemas import equipamento_schema
 from ..services import equipamento_service
-from ..utils.importador_de_equipamentos import importar_triagem
 from flasgger import swag_from
 
 
 class EquipamentoList(Resource):
-    @swag_from('../../documentacao/equipamentos_get.yml')
+    @swag_from('../../documentacao/equipamento/equipamentos_get.yml')
     def get(self):
         equipamentos = equipamento_service.listar_equipamentos()
         return Response(equipamentos, mimetype="application/json", status=200)
 
-    @swag_from('../../documentacao/equipamentos_post.yml')
+    @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
     def post(self):
         body = request.json
         equipamento_cadatrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
@@ -35,14 +34,14 @@ class EquipamentoList(Resource):
 
 
 class EquipamentoDetail(Resource):
-    @swag_from('../../documentacao/equipamento_get.yml')
+    @swag_from('../../documentacao/equipamento/equipamento_get.yml')
     def get(self, numero_ordem_servico):
         equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrado..."), 404)
         return Response(equipamento, mimetype="application/json", status=200)
 
-    @swag_from('../../documentacao/equipamento_put.yml')
+    @swag_from('../../documentacao/equipamento/equipamento_put.yml')
     def put(self, numero_ordem_servico):
         equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
         if equipamento is None:
@@ -66,7 +65,7 @@ class EquipamentoDetail(Resource):
         equipamento_atualizado = equipamento_service.listar_equipamento_id(numero_ordem_servico)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)
 
-    @swag_from('../../documentacao/equipamento_delete.yml')
+    @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
     def delete(self, numero_ordem_servico):
         equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
         if equipamento is None:
@@ -75,7 +74,7 @@ class EquipamentoDetail(Resource):
         return make_response('', 204)
 
 class EquipamentoFind(Resource):
-    @swag_from('../../documentacao/equipamento_find.yml')
+    @swag_from('../../documentacao/equipamento/equipamento_find.yml')
     def post(self):
         body = request.json
         if "status" not in body:

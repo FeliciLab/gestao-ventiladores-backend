@@ -1,0 +1,15 @@
+Atualiza o fabricante passando os dados de fabricante.
+---
+tags:
+  - Fabricantes
+parameters:
+  - in: body
+    name: Fabricantes
+    schema:
+        $ref: '#/definitions/Fabricante'
+
+responses:
+  200:
+    description:
+    schema:
+      $ref: '#/definitions/Fabricante'

@@ -1,0 +1,12 @@
+Importa os dados de triagem conforme a url passada.
+---
+tags:
+  - Importacoes
+parameters:
+  - in: body
+    name: Importacao
+    schema:
+        $ref: '#/definitions/Importacao'
+responses:
+  200:
+    description: Importar diagnostico

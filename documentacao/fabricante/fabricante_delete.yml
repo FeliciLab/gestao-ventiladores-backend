@@ -1,0 +1,7 @@
+Deleta um fabricante específico confome o nome do fabricante passado.
+---
+tags:
+  - Fabricantes
+responses:
+  204:
+    description: Ao deletar não existe retorno

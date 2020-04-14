@@ -29,21 +29,10 @@ class Triagem(db.EmbeddedDocument):
     responsavel_pelo_preenchimento = db.StringField(required=False)
 
 
-# class Clinico(db.EmbeddedDocument):
-#     classificao_ventilador = db.StringField(required=False)
-#     resultados_do_teste = db.StringField(required=False)
-#     acessorios_necessitados = db.StringField(required=False)
-#
-#
-# class Tecnico(db.EmbeddedDocument):
-#     resultado_do_teste = db.StringField(required=False)
-#     demanda_por_insumo = db.StringField(required=False)
-#     demanda_por_servico = db.StringField(required=False)
-#
-
 class AcessorioExtra(db.EmbeddedDocument):
     quantidade = db.IntField(required=True)
     nome = db.StringField(required=True)
+
 
 class Item(db.EmbeddedDocument):
     quantidade = db.IntField(required=True)
@@ -61,7 +50,6 @@ class Diagnostico(db.EmbeddedDocument):
     demanda_insumos = db.StringField(required=True)
     acao_orientacao = db.StringField(required=True)
     observacoes = db.StringField()
-    #acessorios_extras = db.EmbeddedDocumentListField(AcessorioExtra)
     itens = db.EmbeddedDocumentListField(Item)
 
 
@@ -69,14 +57,8 @@ class Equipamento(db.Document):
     numero_ordem_servico = db.StringField(required=True, unique=True)
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
-    #data_hora = db.DateTimeField(default=datetime.utcnow(), required=False)
     status = db.StringField(required=False)
     # FORMULARIO DE TRIAGEM DE EQUIPAMENTO
     triagem = db.EmbeddedDocumentField(Triagem, required=True)
     # FORMULARIO DE DIAGNOSTICO DE EQUIPAMENTO
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)
-
-    # FORMULARIO DE DIAGNOSTICO CLINICO
-    # clinico = db.EmbeddedDocumentField(Clinico, required=False)
-    # FORMULARIO DE DIAGNOSTICO TECNICO
-    # tecnico = db.EmbeddedDocumentField(Tecnico, required=False)

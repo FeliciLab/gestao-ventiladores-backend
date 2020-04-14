@@ -1,10 +1,10 @@
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
-
 from api.utils import importador_de_equipamentos
-
+from flasgger import swag_from
 
 class TriagemImportacao(Resource):
+    @swag_from('../../documentacao/importacao/importacao_triagem.yml')
     def post(self):
         body = request.json
         resultado_da_importacao_dt = importador_de_equipamentos.importar_triagem(body)
@@ -17,6 +17,7 @@ class TriagemImportacao(Resource):
 
 
 class DiagnosticoClinicoETecnicoImportacao(Resource):
+    @swag_from('../../documentacao/importacao/importacao_diagnostico.yml')
     def post(self):
         body = request.json
         resultado_da_importacao_dt = importador_de_equipamentos.importar_diagnostino(body)

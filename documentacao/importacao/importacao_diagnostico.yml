@@ -1,0 +1,21 @@
+Importa os dados de diagnostico conforme a url passada.
+---
+tags:
+  - Importacoes
+
+definitions:
+  Importacao:
+    type: object
+    properties:
+      url:
+        type: string
+
+parameters:
+  - in: body
+    name: Importacao
+    schema:
+        $ref: '#/definitions/Importacao'
+
+responses:
+  200:
+    description: Importar diagnostico

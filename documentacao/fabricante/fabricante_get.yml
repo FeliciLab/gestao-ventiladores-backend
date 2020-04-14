@@ -1,0 +1,10 @@
+Retorna um fabricante específico confome o nome do fabricante passado.
+---
+tags:
+  - Fabricantes
+
+responses:
+  200:
+    description:
+    schema:
+      $ref: '#/definitions/Fabricante'

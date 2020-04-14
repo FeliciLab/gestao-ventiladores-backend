@@ -1,0 +1,14 @@
+Cadatra um fabricante.
+---
+tags:
+  - Fabricantes
+parameters:
+  - in: body
+    name: Fabricante
+    schema:
+        $ref: '#/definitions/Fabricante'
+responses:
+  200:
+    description:
+    schema:
+      $ref: '#/definitions/Fabricante'
