@@ -10,25 +10,23 @@ class Acessorio(db.EmbeddedDocument):
 
 
 class Triagem(db.EmbeddedDocument):
-    nome_equipamento = db.StringField(required=True)
-    foto_equipamento_chegada = db.StringField(required=True)
-    tipo = db.StringField(required=True)
-    numero_do_patrimonio = db.StringField(required=True)
     numero_de_serie = db.StringField(required=True)
-    instituicao_de_origem = db.StringField(required=True)
-    nome_responsavel = db.StringField(required=True)
-    contato_responsavel = db.StringField(required=True)
-    estado_de_conservacao = db.StringField(required=True)
-    fabricante = db.StringField(required=True)
+    nome_equipamento = db.StringField(required=True)
+    numero_do_patrimonio = db.StringField(required=True)
+    tipo = db.StringField(required=True)
     marca = db.StringField(required=True)
     modelo = db.StringField(required=True)
-    acessorios = db.EmbeddedDocumentListField(Acessorio, required=False)
-    foto_apos_limpeza = db.StringField(required=True)
-    observacao = db.StringField(required=False)
-    responsavel_pelo_preenchimento = db.StringField(required=False)
+    fabricante = db.StringField(required=True)
+    municipio_origem = db.StringField(required=False)
     nome_instituicao_origem = db.StringField(required=False)
     tipo_instituicao_origem = db.StringField(required=False)
-    municipio_origem = db.StringField(required=False)
+    nome_responsavel = db.StringField(required=True)
+    nome_responsavel = db.StringField(required=False)
+    contato_responsavel = db.StringField(required=True)
+    estado_de_conservacao = db.StringField(required=True)
+    acessorios = db.EmbeddedDocumentListField(Acessorio, required=False)
+    foto_antes_limpeza = db.StringField(required=True)
+    foto_apos_limpeza = db.StringField(required=True)
 
 
 class AcessorioExtra(db.EmbeddedDocument):
@@ -64,3 +62,6 @@ class Equipamento(db.Document):
     triagem = db.EmbeddedDocumentField(Triagem, required=True)
     # FORMULARIO DE DIAGNOSTICO DE EQUIPAMENTO
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)
+
+
+
