@@ -39,7 +39,7 @@ class AcessorioSchema(Schema):
 class TriagemSchema(Schema):
     class Meta:
         model = equipamento_model.Triagem
-        fields = ("nome_equipamento", "foto_equipamento_chegada", "tipo", "unidade_de_origem", "numero_do_patrimonio",
+        fields = ("nome_equipamento", "foto_equipamento_chegada", "tipo", "numero_do_patrimonio",
                   "numero_de_serie", "instituicao_de_origem", "nome_responsavel", "contato_responsavel",
                   "estado_de_conservacao", "fabricante", "marca", "modelo", "acessorios", "foto_apos_limpeza",
                   "observacao", "responsavel_pelo_preenchimento", "nome_instituicao_origem", "tipo_instituicao_origem",
@@ -48,7 +48,6 @@ class TriagemSchema(Schema):
     nome_equipamento = fields.String(required=True)
     foto_equipamento_chegada = fields.String(required=True)
     tipo = fields.String(required=True)
-    unidade_de_origem = fields.String(required=True)
     numero_do_patrimonio = fields.String(required=True)
     numero_de_serie = fields.String(required=True)
     instituicao_de_origem = fields.String(required=True)

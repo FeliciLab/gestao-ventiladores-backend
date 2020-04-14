@@ -13,7 +13,6 @@ class Triagem(db.EmbeddedDocument):
     nome_equipamento = db.StringField(required=True)
     foto_equipamento_chegada = db.StringField(required=True)
     tipo = db.StringField(required=True)
-    unidade_de_origem = db.StringField(required=True)
     numero_do_patrimonio = db.StringField(required=True)
     numero_de_serie = db.StringField(required=True)
     instituicao_de_origem = db.StringField(required=True)
