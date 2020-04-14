@@ -16,8 +16,6 @@ def importar_triagem(body):
 
             for index_linha, linha in triagens_df.iterrows():
                 body = {
-
-                    # "numero_ordem_servico": str(float(linha["Número da Ordem de Serviço"])),
                     "numero_ordem_servico": str(linha["Número da Ordem de Serviço"]).zfill(4),
                     "created_at": __transformando_data(linha["Carimbo de data/hora"]),
                     "updated_at": __transformando_data(linha["Carimbo de data/hora"]),
@@ -27,18 +25,17 @@ def importar_triagem(body):
                         "foto_equipamento_chegada": __get_url_da_primeira_foto(
                             linha["Fotografe o equipamento no momento da chegada: "]),
                         "tipo": linha["Selecione o tipo do equipamento:"],
-                        "unidade_de_origem": linha["Selecione a unidade de origem do equipamento:"],
                         "numero_do_patrimonio": str(linha["Se público, informe o número do patrimônio:"]),
                         "numero_de_serie": linha["Informe o número de série:"],
                         "instituicao_de_origem": linha["Informe o nome da instituição de origem:"],
                         "nome_responsavel": linha["Informe o responsável e o contato da institução de origem:"],
                         "contato_responsavel": "",  # it field does not exist in csv
                         "estado_de_conservacao": linha["Selecione o estado de conservação do equipamento"],
-                        "municipio_origem": "",
-                        "nome_instituicao_origem": "",
-                        "tipo_instituicao_origem": "",
                         "fabricante": linha["Selecione a marca do equipamento:"],
                         "marca": linha["Selecione a marca do equipamento:"],
+                        "municipio_origem": "",
+                        "nome_instituicao_origem": linha["Selecione a unidade de origem do equipamento:"],
+                        "tipo_instituicao_origem": "",
                         "modelo": linha["Selecione o modelo do equipamento"],
 
                         "acessorios": __get_acessorios(
@@ -53,11 +50,11 @@ def importar_triagem(body):
                 if equipamento_foi_cadastrado:
                     equipamento_service.deletar_equipamento(body['numero_ordem_servico'])
 
-                #fabricante_foi_cadastrado = fabricante_service.listar_fabricante_id(body['triagem']['fabricante'])
-                #if fabricante_foi_cadastrado:
-                #    fabricante_service.deletar_fabricante(body['triagem']['fabricante'])
+                fabricante_foi_cadastrado = fabricante_service.listar_fabricante_id(body['triagem']['fabricante'])
+                if fabricante_foi_cadastrado:
+                    fabricante_service.deletar_fabricante(body['triagem']['fabricante'])
 
-                # O ERRO ESTÁ AQUIIII
+                # O erro está aqui
                 #__insert_or_update_fabricante_db(linha)
 
                 equipamento_service.registrar_equipamento(body)
