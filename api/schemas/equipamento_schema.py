@@ -45,22 +45,22 @@ class TriagemSchema(Schema):
                   "foto_apos_limpeza", "nome_instituicao_origem", "tipo_instituicao_origem",
                   "municipio_origem")
 
-    nome_equipamento = fields.String(required=True)
-    foto_antes_limpeza = fields.String(required=True)
-    tipo = fields.String(required=True)
-    numero_do_patrimonio = fields.String(required=True)
-    numero_de_serie = fields.String(required=True)
-    nome_responsavel = fields.String(required=True)
-    contato_responsavel = fields.String(required=True)
-    estado_de_conservacao = fields.String(required=True)
-    fabricante = fields.String(required=True)
-    marca = fields.String(required=True)
-    modelo = fields.String(required=True)
-    acessorios = fields.List(fields.Dict, required=True)
-    foto_apos_limpeza = fields.String(required=True)
-    nome_instituicao_origem = fields.String(required=True)
-    tipo_instituicao_origem = fields.String(required=True)
-    municipio_origem = fields.String(required=True)
+    nome_equipamento = fields.String(required=False)
+    foto_antes_limpeza = fields.String(required=False)
+    tipo = fields.String(required=False)
+    numero_do_patrimonio = fields.String(required=False)
+    numero_de_serie = fields.String(required=False)
+    nome_responsavel = fields.String(required=False)
+    contato_responsavel = fields.String(required=False)
+    estado_de_conservacao = fields.String(required=False)
+    fabricante = fields.String(required=False)
+    marca = fields.String(required=False)
+    modelo = fields.String(required=False)
+    acessorios = fields.List(fields.Dict, required=False)
+    foto_apos_limpeza = fields.String(required=False)
+    nome_instituicao_origem = fields.String(required=False)
+    tipo_instituicao_origem = fields.String(required=False)
+    municipio_origem = fields.String(required=False)
 
 
 class DiagnosticoSchema(Schema):
@@ -76,14 +76,6 @@ class DiagnosticoSchema(Schema):
     observacoes = fields.String(required=True)
     itens = fields.List(fields.Dict, required=True)
 
-
-class AcessorioExtraSchema(Schema):
-    class Meta:
-        model = equipamento_model.AcessorioExtra
-        fields = ("quantidade", "nome")
-
-    quantidade = fields.Integer(required=True)
-    nome = fields.String(required=True)
 
 class ItemSchema(Schema):
     class Meta:

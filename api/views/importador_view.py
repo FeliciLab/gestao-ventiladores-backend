@@ -1,4 +1,4 @@
-from flask import Response, request, make_response, jsonify
+from flask import request, make_response, jsonify
 from flask_restful import Resource
 from api.utils import importador_de_equipamentos
 from flasgger import swag_from
@@ -10,10 +10,11 @@ class TriagemImportacao(Resource):
         resultado_da_importacao_dt = importador_de_equipamentos.importar_triagem(body)
 
         if "ok" in resultado_da_importacao_dt.keys():
-            return Response(resultado_da_importacao_dt["ok"], mimetype="application/json", status=200)
+            return make_response(jsonify("Importacao com sucesso..."), 200)
+        elif "validate" in resultado_da_importacao_dt:
+            return make_response(jsonify(resultado_da_importacao_dt["validate"]), 400)
         else:
-            make_response(jsonify(), 404)
-            return make_response(jsonify(resultado_da_importacao_dt["erro"]), 400)
+            return make_response(jsonify("Erro na importacao..."), 400)
 
 
 class DiagnosticoClinicoETecnicoImportacao(Resource):
@@ -24,6 +25,7 @@ class DiagnosticoClinicoETecnicoImportacao(Resource):
 
         if "ok" in resultado_da_importacao_dt:
             return make_response(jsonify("Importacao sucesso..."), 200)
+        elif "validate" in resultado_da_importacao_dt:
+            return make_response(jsonify(resultado_da_importacao_dt["validate"]), 400)
         else:
-            make_response(jsonify(), 404)
-            return make_response(jsonify("Fracasso importacao..."), 400)
+            return make_response(jsonify("Erro na importacao..."), 400)

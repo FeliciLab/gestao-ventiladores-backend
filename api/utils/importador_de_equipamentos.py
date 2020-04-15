@@ -1,7 +1,7 @@
 import json
 
 import pandas as pd
-
+from ..schemas import equipamento_schema
 from ..services import fabricante_service, equipamento_service
 import numpy as np
 from datetime import datetime
@@ -22,12 +22,11 @@ def importar_triagem(body):
                     "status": "triagem",
                     "triagem": {
                         "nome_equipamento": "",  # it field does not exist in csv
-                        "foto_equipamento_chegada": __get_url_da_primeira_foto(
+                        "foto_antes_limpeza": __get_url_da_primeira_foto(
                             linha["Fotografe o equipamento no momento da chegada: "]),
                         "tipo": linha["Selecione o tipo do equipamento:"],
                         "numero_do_patrimonio": str(linha["Se público, informe o número do patrimônio:"]),
                         "numero_de_serie": linha["Informe o número de série:"],
-                        "instituicao_de_origem": linha["Informe o nome da instituição de origem:"],
                         "nome_responsavel": linha["Informe o responsável e o contato da institução de origem:"],
                         "contato_responsavel": "",  # it field does not exist in csv
                         "estado_de_conservacao": linha["Selecione o estado de conservação do equipamento"],
@@ -37,12 +36,9 @@ def importar_triagem(body):
                         "nome_instituicao_origem": linha["Selecione a unidade de origem do equipamento:"],
                         "tipo_instituicao_origem": "",
                         "modelo": linha["Selecione o modelo do equipamento"],
-
                         "acessorios": __get_acessorios(
                             linha["Selecione os acessórios do equipamento que o acompanha:"]),
-                        "foto_apos_limpeza": __get_url_da_primeira_foto("Fotografe o equipamento após a limpeza: "),
-                        "observacao": linha["Se preciso, deixe uma observação:"],
-                        "responsavel_pelo_preenchimento": linha["Responsável pelo Preenchimento"]
+                        "foto_apos_limpeza": __get_url_da_primeira_foto("Fotografe o equipamento após a limpeza: ")
                     }
                 }
 
@@ -55,7 +51,19 @@ def importar_triagem(body):
                     fabricante_service.deletar_fabricante(body['triagem']['fabricante'])
 
                 # O erro está aqui
-                #__insert_or_update_fabricante_db(linha)
+                __insert_or_update_fabricante_db(linha)
+                es = equipamento_schema.EquipamentoSchema()
+                et = equipamento_schema.TriagemSchema()
+                ea = equipamento_schema.AcessorioSchema()
+                erro_equipamento = es.validate(body)
+                erro_triagem = et.validate(body["triagem"])
+                if erro_equipamento:
+                    return {'validate': erro_equipamento}
+                elif erro_triagem:
+                    return {'validate': erro_triagem}
+                for acessorio in body["triagem"]["acessorios"]:
+                    if ea.validate(acessorio):
+                        return {'validate': acessorio}
 
                 equipamento_service.registrar_equipamento(body)
     except Exception:
@@ -157,9 +165,6 @@ def __insert_or_update_fabricante_db(linha):
 def __adapt_time(data_and_time_string):
     datetime_object = datetime.strptime(data_and_time_string, '%m/%d/%Y %H:%M:%S')
     return datetime_object.strftime("%Y-%m-%dT%H:%M:%S.000+00:00")
-    # data_string = data_and_time_string.split(" ")[0].replace("/", "-")
-    # time_string = data_and_time_string.split(" ")[1]
-    # return data_string+"T"+time_string
 
 
 def importar_diagnostino(body):
@@ -185,7 +190,17 @@ def importar_diagnostino(body):
 
                 }
 
-                __atualizar_campo_update_at(numero_ordem_servico, linha["Timestamp"])
+                #__atualizar_campo_update_at(numero_ordem_servico, linha["Timestamp"])
+
+                ed = equipamento_schema.DiagnosticoSchema()
+                et = equipamento_schema.ItemSchema()
+                erro_diagnostico = ed.validate(body)
+                if erro_diagnostico:
+                    return {'validate': erro_diagnostico}
+                for item in body["itens"]:
+                    if et.validate(item):
+                        return {'validate': item}
+
                 equipamento_service.atualizar_equipamento(
                     {
                         "status": "diagnostico",

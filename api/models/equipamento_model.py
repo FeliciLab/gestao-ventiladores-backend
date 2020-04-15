@@ -10,29 +10,23 @@ class Acessorio(db.EmbeddedDocument):
 
 
 class Triagem(db.EmbeddedDocument):
-    numero_de_serie = db.StringField(required=True)
-    nome_equipamento = db.StringField(required=True)
-    numero_do_patrimonio = db.StringField(required=True)
-    tipo = db.StringField(required=True)
-    marca = db.StringField(required=True)
-    modelo = db.StringField(required=True)
-    fabricante = db.StringField(required=True)
+    numero_de_serie = db.StringField(required=False)
+    nome_equipamento = db.StringField(required=False)
+    numero_do_patrimonio = db.StringField(required=False)
+    tipo = db.StringField(required=False)
+    marca = db.StringField(required=False)
+    modelo = db.StringField(required=False)
+    fabricante = db.StringField(required=False)
     municipio_origem = db.StringField(required=False)
     nome_instituicao_origem = db.StringField(required=False)
     tipo_instituicao_origem = db.StringField(required=False)
-    nome_responsavel = db.StringField(required=True)
     nome_responsavel = db.StringField(required=False)
-    contato_responsavel = db.StringField(required=True)
-    estado_de_conservacao = db.StringField(required=True)
+    nome_responsavel = db.StringField(required=False)
+    contato_responsavel = db.StringField(required=False)
+    estado_de_conservacao = db.StringField(required=False)
     acessorios = db.EmbeddedDocumentListField(Acessorio, required=False)
-    foto_antes_limpeza = db.StringField(required=True)
-    foto_apos_limpeza = db.StringField(required=True)
-
-
-class AcessorioExtra(db.EmbeddedDocument):
-    quantidade = db.IntField(required=True)
-    nome = db.StringField(required=True)
-
+    foto_antes_limpeza = db.StringField(required=False)
+    foto_apos_limpeza = db.StringField(required=False)
 
 class Item(db.EmbeddedDocument):
     quantidade = db.IntField(required=True)
@@ -54,7 +48,7 @@ class Diagnostico(db.EmbeddedDocument):
 
 
 class Equipamento(db.Document):
-    numero_ordem_servico = db.StringField(required=True, unique=True)
+    numero_ordem_servico = db.StringField(required=False, unique=False)
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     status = db.StringField(required=False)
