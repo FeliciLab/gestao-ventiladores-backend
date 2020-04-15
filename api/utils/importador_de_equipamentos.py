@@ -42,16 +42,8 @@ def importar_triagem(body):
                     }
                 }
 
-                equipamento_foi_cadastrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
-                if equipamento_foi_cadastrado:
-                    equipamento_service.deletar_equipamento(body['numero_ordem_servico'])
-
-                fabricante_foi_cadastrado = fabricante_service.listar_fabricante_id(body['triagem']['fabricante'])
-                if fabricante_foi_cadastrado:
-                    fabricante_service.deletar_fabricante(body['triagem']['fabricante'])
-
-                # O erro está aqui
-                __insert_or_update_fabricante_db(linha)
+                # O erro está aqui, precisa ser corrigido
+                #__insert_or_update_fabricante_db(linha)
                 es = equipamento_schema.EquipamentoSchema()
                 et = equipamento_schema.TriagemSchema()
                 ea = equipamento_schema.AcessorioSchema()
@@ -64,6 +56,14 @@ def importar_triagem(body):
                 for acessorio in body["triagem"]["acessorios"]:
                     if ea.validate(acessorio):
                         return {'validate': acessorio}
+
+                equipamento_foi_cadastrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
+                if equipamento_foi_cadastrado:
+                    equipamento_service.deletar_equipamento(body['numero_ordem_servico'])
+
+                fabricante_foi_cadastrado = fabricante_service.listar_fabricante_id(body['triagem']['fabricante'])
+                if fabricante_foi_cadastrado:
+                    fabricante_service.deletar_fabricante(body['triagem']['fabricante'])
 
                 equipamento_service.registrar_equipamento(body)
     except Exception:
@@ -190,7 +190,7 @@ def importar_diagnostino(body):
 
                 }
 
-                #__atualizar_campo_update_at(numero_ordem_servico, linha["Timestamp"])
+                __atualizar_campo_update_at(numero_ordem_servico, linha["Timestamp"])
 
                 ed = equipamento_schema.DiagnosticoSchema()
                 et = equipamento_schema.ItemSchema()
@@ -263,7 +263,7 @@ def __get_itens(item_string):
                 "nome": nome.strip(),
                 "tipo": "pecas",
                 "descricao": "",
-                "valor": 0,
+                "valor": 0.0,
                 "prioridade": "baixa",
                 "quantidade": 1,
                 "unidade_medida": ""

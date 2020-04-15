@@ -48,7 +48,7 @@ class Diagnostico(db.EmbeddedDocument):
 
 
 class Equipamento(db.Document):
-    numero_ordem_servico = db.StringField(required=False, unique=False)
+    numero_ordem_servico = db.StringField(required=False, unique=True)
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     status = db.StringField(required=False)
