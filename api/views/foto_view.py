@@ -1,19 +1,51 @@
-from flask import make_response, jsonify, request, Response
+import os
+from config import app
+from flask import make_response, jsonify, request, Response, url_for, flash
 from flask_restful import Resource
-from ..schemas import equipamento_schema
-from ..services import equipamento_service
-from flasgger import swag_from
-from ..models import equipamento_model
-from datetime import datetime
+from werkzeug.utils import secure_filename, redirect
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 class TriagemImagem(Resource):
+    def get(self):
+        body = request.args
+        print(body)
+        return 'get'
+
     def post(self):
-        body = request.json
-        if '_id' in body:
-            # Atualizar documento
-            equipamento_service.atualizar_foto_equipamento_id(body, body["_id"])
-            equipamento = equipamento_service.listar_equipamento(body["_id"])
-        else:
-            # Criar documento
-           equipamento_service.registrar_equipamento_foto(body)
-        return Response(equipamento, mimetype="application/json", status=200)
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+
+        args = request.form
+        print(args)
+
+        file = request.files['foto_antes_limpeza']
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file',
+                                    filename=filename))
+
+        return 'post'
+
+        # print(body)
+        # if '_id' in body:
+        #     # Atualizar documento
+        #     equipamento_service.atualizar_foto_equipamento_id(body,
+        #     body["_id"])
+        #     equipamento = equipamento_service.listar_equipamento(body["_id"])
+        # else:
+        #     # Criar documento
+        #    equipamento_service.registrar_equipamento_foto(body)
+        # return Response(equipamento, mimetype="application/json", status=200)

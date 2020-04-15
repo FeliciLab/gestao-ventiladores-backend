@@ -1,4 +1,5 @@
-from flask import Flask
+from config import app
+
 from flask_restful import Api
 from config.routes import initialize_routes
 from flask_mongoengine import MongoEngine
@@ -6,7 +7,11 @@ from env_config import mongodb_host
 from flask_cors import CORS
 from flasgger import Swagger
 
-app = Flask(__name__)
+UPLOAD_FOLDER = '/storage'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 swagger = Swagger(app)
 CORS(app)
 
