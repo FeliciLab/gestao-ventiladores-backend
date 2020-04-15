@@ -1,9 +1,6 @@
 import os
-from config import app
 from flask import make_response, jsonify, request, Response, url_for, flash
 from flask_restful import Resource
-from werkzeug.utils import secure_filename, redirect
-
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 
@@ -19,26 +16,19 @@ class TriagemImagem(Resource):
         return 'get'
 
     def post(self):
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-
+        print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         args = request.form
         print(args)
-
         file = request.files['foto_antes_limpeza']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
 
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
+        from werkzeug.utils import secure_filename
+        filename = secure_filename(file.filename)
 
-        return 'post'
+        file.save(
+            os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'storage', filename)
+        )
 
+        return url_for('upload_files', filename=filename)
         # print(body)
         # if '_id' in body:
         #     # Atualizar documento
