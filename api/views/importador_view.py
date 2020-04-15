@@ -8,7 +8,7 @@ class TriagemImportacao(Resource):
     def post(self):
         body = request.json
         resultado_da_importacao_dt = importador_de_equipamentos.importar_triagem(body)
-
+        print(resultado_da_importacao_dt)
         if "ok" in resultado_da_importacao_dt.keys():
             return make_response(jsonify("Importacao com sucesso..."), 200)
         elif "validate" in resultado_da_importacao_dt:

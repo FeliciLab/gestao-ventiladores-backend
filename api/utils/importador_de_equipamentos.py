@@ -32,9 +32,9 @@ def importar_triagem(body):
                         "estado_de_conservacao": linha["Selecione o estado de conservação do equipamento"],
                         "fabricante": linha["Selecione a marca do equipamento:"],
                         "marca": linha["Selecione a marca do equipamento:"],
-                        "municipio_origem": "",
-                        "nome_instituicao_origem": linha["Selecione a unidade de origem do equipamento:"],
-                        "tipo_instituicao_origem": "",
+                        "municipio_origem": linha["Informe Cidade de origem: "],
+                        "nome_instituicao_origem": linha["Informe o nome da instituição de origem:"],
+                        "tipo_instituicao_origem": linha["Selecione a unidade de origem do equipamento:"],
                         "modelo": linha["Selecione o modelo do equipamento"],
                         "acessorios": __get_acessorios(
                             linha["Selecione os acessórios do equipamento que o acompanha:"]),
