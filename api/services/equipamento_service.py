@@ -1,6 +1,6 @@
 from ..models import equipamento_model
 from datetime import datetime
-
+import random
 
 def listar_equipamentos():
     return equipamento_model.Equipamento.objects().to_json()
@@ -30,6 +30,18 @@ def registrar_equipamento(body):
     # Falta criar a situação onde as datas vem vazias, Exemplo: updated_at: ''
     return equipamento_model.Equipamento(**body).save().to_json()
 
+def registrar_equipamento_foto(body):
+    equipamento = equipamento_model.Equipamento()
+    triagem = equipamento_model.Triagem()
+    if 'foto_antes_limpeza' in body:
+        triagem.foto_antes_limpeza = body['foto_antes_limpeza']
+    else:
+        triagem.foto_antes_limpeza = body['foto_apos_limpeza']
+    equipamento.triagem = triagem
+    equipamento.numero_ordem_servico = str(random.getrandbits(128))
+    equipamento.created_at = datetime.now()
+    equipamento.updated_at = datetime.now()
+    return equipamento.save().to_json()
 
 def atualizar_equipamento(atualizacao, numero_ordem_servico):
     equipamento_model.Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).update(**atualizacao)
