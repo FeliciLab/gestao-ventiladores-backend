@@ -74,6 +74,12 @@ def deletar_equipamento(numero_ordem_servico):
 def lista_equipamentos_status(status):
     return equipamento_model.Equipamento.objects(status=status).to_json()
 
+def registrar_equipamento_vazio():
+    equipamento = equipamento_model.Equipamento()
+    equipamento.numero_ordem_servico = str(random.getrandbits(128))
+    triagem = equipamento_model.Triagem()
+    equipamento.triagem = triagem
+    return equipamento.save()
 
 def adicionar_marca_modelo_fabricante():
     pass
