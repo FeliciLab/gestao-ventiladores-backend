@@ -43,7 +43,8 @@ class EquipamentoDetail(Resource):
 
     @swag_from('../../documentacao/equipamento/equipamento_put.yml')
     def put(self, numero_ordem_servico):
-        equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
+        id = numero_ordem_servico
+        equipamento = equipamento_service.listar_equipamento(id)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrado..."), 404)
         body = request.get_json()
@@ -51,18 +52,13 @@ class EquipamentoDetail(Resource):
             erro_diagnostico = equipamento_schema.DiagnosticoSchema().validate(body['diagnostico'])
             if erro_diagnostico:
                 return make_response(jsonify(erro_diagnostico), 400)
-        if 'acessorios_extras' in body['diagnostico']:
-            for acessorios_extra in body['diagnostico']['acessorios_extras']:
-                erro_acessorio_extra = equipamento_schema.AcessorioExtraSchema().validate(acessorios_extra)
-                if erro_acessorio_extra:
-                    return make_response(jsonify(erro_acessorio_extra), 400)
-        if 'itens' in body['diagnostico']:
-            for itens in body['diagnostico']['itens']:
-                item = equipamento_schema.ItemSchema().validate(itens)
-                if item:
-                    return make_response(jsonify(item), 400)
-        equipamento_service.atualizar_equipamento(body, numero_ordem_servico)
-        equipamento_atualizado = equipamento_service.listar_equipamento_id(numero_ordem_servico)
+            if 'itens' in body['diagnostico']:
+                for itens in body['diagnostico']['itens']:
+                    item = equipamento_schema.ItemSchema().validate(itens)
+                    if item:
+                        return make_response(jsonify(item), 400)
+        equipamento_service.atualizar_equipamento_by_id(body, id)
+        equipamento_atualizado = equipamento_service.listar_equipamento(id)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)
 
     @swag_from('../../documentacao/equipamento/equipamento_delete.yml')

@@ -3,10 +3,10 @@ from datetime import datetime
 
 
 class Acessorio(db.EmbeddedDocument):
-    descricao = db.StringField(required=True)
-    acompanha = db.BooleanField(required=True)
-    quantidade = db.IntField(required=True)
-    estado_de_conservacao = db.StringField(required=True)
+    descricao = db.StringField(required=False)
+    acompanha = db.BooleanField(required=False)
+    quantidade = db.IntField(required=False)
+    estado_de_conservacao = db.StringField(required=False)
 
 
 class Triagem(db.EmbeddedDocument):
@@ -38,12 +38,12 @@ class Item(db.EmbeddedDocument):
 
 
 class Diagnostico(db.EmbeddedDocument):
-    resultado_tecnico = db.StringField(required=True)
-    demanda_servicos = db.StringField(required=True)
-    demanda_insumos = db.StringField(required=True)
-    acao_orientacao = db.StringField(required=True)
-    observacoes = db.StringField()
-    itens = db.EmbeddedDocumentListField(Item)
+    resultado_tecnico = db.StringField(required=False)
+    demanda_servicos = db.StringField(required=False)
+    demanda_insumos = db.StringField(required=False)
+    acao_orientacao = db.StringField(required=False)
+    observacoes = db.StringField(required=False)
+    itens = db.EmbeddedDocumentListField(Item, required=False)
 
 
 class Equipamento(db.Document):
@@ -52,7 +52,7 @@ class Equipamento(db.Document):
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     status = db.StringField(required=False)
     # FORMULARIO DE TRIAGEM DE EQUIPAMENTO
-    triagem = db.EmbeddedDocumentField(Triagem, required=True)
+    triagem = db.EmbeddedDocumentField(Triagem, required=False)
     # FORMULARIO DE DIAGNOSTICO DE EQUIPAMENTO
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)
 
