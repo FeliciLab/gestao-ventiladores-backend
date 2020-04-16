@@ -136,7 +136,7 @@ class TriagemImagem(Resource):
         # Criar documento
         result = ""
 
-        if not request.form["_id"] is "":
+        if "_id" in request.form and not request.form["_id"] is "":
             result = replace_photo(request)
 
         else:
