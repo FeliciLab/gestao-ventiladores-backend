@@ -21,5 +21,6 @@ def registar_fabricante(body):
 def atualizar_fabricante(fabricante_nome, atualizacao):
     fabricante_model.Fabricante.objects.get(fabricante_nome=fabricante_nome).update(**atualizacao)
 
+
 def deletar_fabricante(fabricante_nome):
     fabricante_model.Fabricante.objects.get(fabricante_nome=fabricante_nome).delete()

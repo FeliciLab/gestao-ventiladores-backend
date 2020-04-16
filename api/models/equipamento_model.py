@@ -21,7 +21,6 @@ class Triagem(db.EmbeddedDocument):
     nome_instituicao_origem = db.StringField(required=False)
     tipo_instituicao_origem = db.StringField(required=False)
     nome_responsavel = db.StringField(required=False)
-    nome_responsavel = db.StringField(required=False)
     contato_responsavel = db.StringField(required=False)
     estado_de_conservacao = db.StringField(required=False)
     acessorios = db.EmbeddedDocumentListField(Acessorio, required=False)
