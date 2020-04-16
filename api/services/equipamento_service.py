@@ -46,6 +46,9 @@ def registrar_equipamento_foto(body):
 def atualizar_equipamento(atualizacao, numero_ordem_servico):
     equipamento_model.Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).update(**atualizacao)
 
+def atualizar_equipamento_by_id(atualizacao, id):
+    equipamento_model.Equipamento.objects.get(id=id).update(**atualizacao)
+
 def atualizar_equipamento_id(atualizacao, id):
     equipamento_model.Equipamento.objects.get(id=id).update(**atualizacao)
 
