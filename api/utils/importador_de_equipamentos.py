@@ -57,15 +57,11 @@ def importar_triagem(body):
                     if ea.validate(acessorio):
                         return {'validate': acessorio}
 
-                equipamento_foi_cadastrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
-                if equipamento_foi_cadastrado:
-                    equipamento_service.deletar_equipamento(body['numero_ordem_servico'])
-
-                fabricante_foi_cadastrado = fabricante_service.listar_fabricante_id(body['triagem']['fabricante'])
-                if fabricante_foi_cadastrado:
-                    fabricante_service.deletar_fabricante(body['triagem']['fabricante'])
-
-                equipamento_service.registrar_equipamento(body)
+                equipamento_ja_cadastrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
+                if equipamento_ja_cadastrado:
+                    equipamento_service.atualizar_equipamento_ordem_servico(body, body['numero_ordem_servico'])
+                else:
+                    equipamento_service.registrar_equipamento(body)
     except Exception:
         return {"erro": Exception.__traceback__}
 

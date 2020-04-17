@@ -52,6 +52,15 @@ def atualizar_equipamento_by_id(atualizacao, id):
 def atualizar_equipamento_id(atualizacao, id):
     equipamento_model.Equipamento.objects.get(id=id).update(**atualizacao)
 
+def atualizar_equipamento_ordem_servico(atualizacao, numero_ordem_servico):
+    equipamento_model.Equipamento.objects.get(numero_ordem_servico=numero_ordem_servico).update(
+        numero_ordem_servico=atualizacao['numero_ordem_servico'],
+        created_at=atualizacao['created_at'],
+        updated_at=atualizacao['updated_at'],
+        status=atualizacao['status'],
+        triagem=atualizacao['triagem']
+    )
+
 def atualizar_foto_equipamento_id(atualizacao, id):
     equipamento = equipamento_model.Equipamento.objects.get(id=id)
     if 'foto_antes_limpeza' in atualizacao:
