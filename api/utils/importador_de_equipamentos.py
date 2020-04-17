@@ -42,7 +42,7 @@ def importar_triagem(body):
                     }
                 }
 
-                # O erro está aqui, precisa ser corrigido
+                # O erro está aqui
                 #__insert_or_update_fabricante_db(linha)
                 es = equipamento_schema.EquipamentoSchema()
                 et = equipamento_schema.TriagemSchema()
