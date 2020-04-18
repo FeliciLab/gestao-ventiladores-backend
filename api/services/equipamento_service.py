@@ -88,7 +88,6 @@ def lista_equipamentos_status(status):
 
 def registrar_equipamento_vazio():
     equipamento = equipamento_model.Equipamento()
-    equipamento.numero_ordem_servico = str(random.getrandbits(128))
     triagem = equipamento_model.Triagem()
     equipamento.triagem = triagem
     return equipamento.save()
