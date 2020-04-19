@@ -37,7 +37,7 @@ class OrdemServicoList(Resource):
             if erro_acessorio:
                 return make_response(jsonify(erro_acessorio), 400)
         novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
-        return Response(novo_ordem_servico, mimetype="application/json", status=201)
+        return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
 
 
 class OrdemServicoDetail(Resource):
@@ -79,11 +79,11 @@ class OrdemServicoDetail(Resource):
 
     # todo Denis atualizar essa url do swag
     @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
-    def delete(self, numero_ordem_servico):
-        ordem_servico = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico)
+    def delete(self, _id):
+        ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
         if ordem_servico is None:
             return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
-        ordem_servico_service.deletar_ordem_servico(numero_ordem_servico)
+        ordem_servico_service.deletar_ordem_servico(_id)
         return make_response('', 204)
 
 

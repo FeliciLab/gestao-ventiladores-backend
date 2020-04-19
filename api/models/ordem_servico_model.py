@@ -53,7 +53,9 @@ class OrdemServico(db.Document):
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     status = db.StringField(required=False)
+
     # FORMULARIO DE TRIAGEM DE EQUIPAMENTO
     triagem = db.EmbeddedDocumentField(Triagem, required=False)
+
     # FORMULARIO DE DIAGNOSTICO DE EQUIPAMENTO
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)

@@ -1,11 +1,13 @@
-from api.views import ordem_servico_view, fabricante_view, importador_view, foto_view, equipamento_view
+from api.views import ordem_servico_view, fabricante_view, importador_view, foto_view, equipamento_view, \
+    diagnostico_view
 
 
 def initialize_routes(api):
     api.add_resource(ordem_servico_view.OrdemServicoList, '/api/ordem_servicos')
     api.add_resource(ordem_servico_view.OrdemServicoDetail, '/api/ordem_servico/<_id>')
-    #api.add_resource(ordem_servico_view.OrdemServicoDetail, '/api/ordem_servico/<_id>/diagnostico')
     api.add_resource(ordem_servico_view.OrdemServicoFind, '/api/ordem_servico/find')
+
+    api.add_resource(diagnostico_view.DiagnosticoDetail, '/api/ordem_servico/diagnostico/<_id>')
 
     #api.add_resource(ordem_servico_view.OrdemServicoFiltragem, '/api/ordem_servico/filtragem')
 

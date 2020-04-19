@@ -39,7 +39,7 @@ def registrar_ordem_servico(body):
     body['created_at'] = body.get('created_at', datetime.now())
     body['updated_at'] = body.get('updated_at', datetime.now())
     # Falta criar a situação onde as datas vem vazias, Exemplo: updated_at: ''
-    return ordem_servico_model.OrdemServico(**body).save().to_json()
+    return ordem_servico_model.OrdemServico(**body).save()
 
 
 
@@ -47,7 +47,7 @@ def registrar_ordem_servico(body):
 #     ordem_servico_model.OrdemServico.objects.get(id=numero_ordem_servico).update(**atualizacao)
 
 
-def atualizar_ordem_servico(atualizacao, _id):
+def atualizar_ordem_servico(_id, atualizacao):
      ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
 
 
