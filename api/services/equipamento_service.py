@@ -14,6 +14,14 @@ def listar_equipamento(_id):
         return equipamento
 
 
+def consultar_numero_de_serie(numero_de_serie):
+    return equipamento_model.Equipamento.objects(
+        numero_de_serie=numero_de_serie
+    ).only(
+        'id', 'numero_de_serie'
+    ).first()
+
+
 def registar_equipamento(body):
     equipamento = equipamento_model.Equipamento(**body).save()
     return str(equipamento.id)
