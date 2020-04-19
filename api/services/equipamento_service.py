@@ -2,12 +2,12 @@ from api.models import equipamento_model
 
 
 def listar_equipamentos():
-    return equipamento_model.Equipamento.objects.to_json()
+    return equipamento_model.Equipamento.objects
 
 
 def listar_equipamento(_id):
     try:
-        equipamento = equipamento_model.Equipamento.objects.get(id=_id).to_json()
+        equipamento = equipamento_model.Equipamento.objects.get(id=_id)
     except:
         equipamento = None
     finally:
