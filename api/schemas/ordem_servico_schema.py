@@ -18,12 +18,6 @@ class OrdemServicoSchema(Schema):
     diagnostico = fields.Dict(required=False)
     status = fields.String(required=False)
 
-    def ajustando_datas_criacao_atualizacao(self, date):
-        if isinstance(date, str):
-            return datetime.now()
-        else:
-            return date
-
 
 class AcessorioSchema(Schema):
     class Meta:

@@ -96,7 +96,7 @@ def replace_photo(request):
     del ordem_servico["created_at"]
     del ordem_servico["updated_at"]
 
-    ordem_servico_service.atualizar_ordem_servico_by_ordem_servico(ordem_servico, _id)
+    ordem_servico_service.atualizar_ordem_servico(ordem_servico, _id)
 
     file.save(
         os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'storage',

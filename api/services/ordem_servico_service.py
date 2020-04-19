@@ -1,10 +1,9 @@
 from ..models import ordem_servico_model
 from datetime import datetime
-import random
 
 
 def listar_ordem_servico():
-    return ordem_servico_model.OrdemServico.objects()
+    return ordem_servico_model.OrdemServico.objects().to_json()
 
 
 # def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
@@ -20,13 +19,13 @@ def listar_ordem_servico_by_id(_id):
     try:
         ordem_servico = ordem_servico_model.OrdemServico.objects.get(id=_id)
         if not ordem_servico is None:
-            return ordem_servico
+            return ordem_servico.to_json()
     except:
         return None
 
 def listar_ordem_servico_by_numero_ordem_servico(ordem_servico):
     try:
-        ordem_servico = ordem_servico_model.OrdemServico.objects.get(ordem_servico=ordem_servico)
+        ordem_servico = ordem_servico_model.OrdemServico.objects.get(ordem_servico=ordem_servico).to_json()
         if not ordem_servico is None:
             return ordem_servico
     except:
@@ -40,7 +39,7 @@ def registrar_ordem_servico(body):
     body['created_at'] = body.get('created_at', datetime.now())
     body['updated_at'] = body.get('updated_at', datetime.now())
     # Falta criar a situação onde as datas vem vazias, Exemplo: updated_at: ''
-    return ordem_servico_model.OrdemServico(**body).save()
+    return ordem_servico_model.OrdemServico(**body).save().to_json()
 
 
 
@@ -48,11 +47,11 @@ def registrar_ordem_servico(body):
 #     ordem_servico_model.OrdemServico.objects.get(id=numero_ordem_servico).update(**atualizacao)
 
 
-# def atualizar_ordem_servico_by_ordem_servico(atualizacao, _id):
-#     ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
+def atualizar_ordem_servico(atualizacao, _id):
+     ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
 
 
-def atualizar_ordem_servico(_id, atualizacao):
+def atualizar_ordem_servico_importacao(_id, atualizacao):
     return ordem_servico_model.OrdemServico.objects.get(id=_id).update(
         numero_ordem_servico=atualizacao['numero_ordem_servico'],
         created_at=atualizacao['created_at'],
@@ -101,7 +100,7 @@ def deletar_ordem_servico(_id):
 
 
 def listar_ordem_servico_status(status):
-    return ordem_servico_model.OrdemServico.objects(status=status)
+    return ordem_servico_model.OrdemServico.objects(status=status).to_json()
 
 
 def registrar_equipamento_vazio():
@@ -110,6 +109,3 @@ def registrar_equipamento_vazio():
     ordem_servico.triagem = triagem
     return ordem_servico.save()
 
-
-def adicionar_marca_modelo_fabricante():
-    pass

@@ -1,6 +1,6 @@
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
-
+from api.schemas import equipamento_schema
 from api.services import equipamento_service
 
 
@@ -10,7 +10,12 @@ class EquipamentoList(Resource):
         return Response(equipamentos, mimetype="application/json", status=200)
 
     def post(self):
+        # todo como verificar se o equipamento já foi registrado? numero_serie?
         body = request.json
+        # Verificar se o equipamento já existe?
+        erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
+        if erro_equipamento:
+            return make_response(jsonify(erro_equipamento), 400)
         novo_equipamento = equipamento_service.registar_equipamento(body)
         return Response(novo_equipamento, mimetype="application/json", status=201)
 
@@ -28,6 +33,9 @@ class EquipamentoDetail(Resource):
             return make_response(jsonify("Equipamento não encontrada..."), 404)
 
         body = request.get_json()
+        erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
+        if erro_equipamento:
+            return make_response(jsonify(erro_equipamento), 400)
 
         equipamento_service.atualizar_equipamento(body, _id)
         equipamento_atualizado = equipamento_service.listar_equipamento(_id)
@@ -39,3 +47,4 @@ class EquipamentoDetail(Resource):
             return make_response(jsonify("Equipamento não encontrado..."), 404)
         equipamento_service.deletar_equipamento(_id)
         return make_response('', 204)
+
