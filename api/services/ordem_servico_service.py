@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 def listar_ordem_servico():
-    return ordem_servico_model.OrdemServico.objects().to_json()
+    return ordem_servico_model.OrdemServico.objects()
 
 
 # def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
@@ -17,7 +17,7 @@ def listar_ordem_servico():
 
 def listar_ordem_servico_by_id(_id):
     try:
-        ordem_servico = ordem_servico_model.OrdemServico.objects.get(id=_id).to_json()
+        ordem_servico = ordem_servico_model.OrdemServico.objects.get(id=_id)
         if not ordem_servico is None:
             return ordem_servico
     except:
@@ -25,7 +25,7 @@ def listar_ordem_servico_by_id(_id):
 
 def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
     try:
-        ordem_servico = ordem_servico_model.OrdemServico.objects.get(numero_ordem_servico=numero_ordem_servico).to_json()
+        ordem_servico = ordem_servico_model.OrdemServico.objects.get(numero_ordem_servico=numero_ordem_servico)
         if not ordem_servico is None:
             return ordem_servico
     except:
@@ -100,7 +100,7 @@ def deletar_ordem_servico(_id):
 
 
 def listar_ordem_servico_status(status):
-    return ordem_servico_model.OrdemServico.objects(status=status).to_json()
+    return ordem_servico_model.OrdemServico.objects(status=status)
 
 
 def registrar_equipamento_vazio():
