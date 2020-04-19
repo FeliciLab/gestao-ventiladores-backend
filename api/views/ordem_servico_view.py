@@ -13,17 +13,20 @@ def validacao_ordem_servico(body):
     if erro_ordem_servico:
         return make_response(jsonify(erro_ordem_servico), 400)
 
+
 def validacao_triagem(body):
     et = ordem_servico_schema.TriagemSchema()
     erro_triagem = et.validate(body["triagem"])
     if erro_triagem:
         return make_response(jsonify(erro_triagem), 400)
 
+
 def validacao_diagnostico(body):
     ed = ordem_servico_schema.DiagnosticoSchema()
     erro_diagnostico = ed.validate(body["diagnostico"])
     if erro_diagnostico:
         return make_response(jsonify(erro_diagnostico), 400)
+
 
 def validacao_acessorios(body):
     ea = ordem_servico_schema.AcessorioSchema()
@@ -32,12 +35,14 @@ def validacao_acessorios(body):
         if erro_acessorio:
             return make_response(jsonify(erro_acessorio), 400)
 
+
 def validacao_itens(body):
     ei = ordem_servico_schema.ItemSchema()
     for item in body["diagnostico"]["itens"]:
         erro_item = ei.validate(item)
         if erro_item:
             return make_response(jsonify(erro_item), 400)
+
 
 class OrdemServicoList(Resource):
     # todo Denis atualizar essa url do swag
@@ -49,39 +54,56 @@ class OrdemServicoList(Resource):
         ordem_servico = ordem_servico_service.listar_ordem_servico()
         return Response(ordem_servico, mimetype="application/json", status=200)
 
+    """
+        Cadastra uma nova ordem de servico - triagem ou
+        Cadastra uma nova ordem de servico - triagem e diagnostico
+        Adiciona um novo diagnostico ou
+    """
+
     # todo Denis atualizar essa url do swag
     @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
     def post(self):
-        """
-            Cadastra uma nova ordem de servico - triagem ou
-            Cadastra uma nova ordem de servico - triagem e diagnostico
-            Adiciona um novo diagnostico ou
-        """
         body = request.json
-        # Verificar se o equipamento já foi cadastrado
-        ordem_servico_cadastrado = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(body['numero_ordem_servico'])
-        if ordem_servico_cadastrado:
-            return make_response(jsonify("Ordem de Serviço já cadastrada..."), 403)
+        ordem_servico_cadastrado = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(
+            body['numero_ordem_servico'])
 
         if 'triagem' in body and 'diagnostico' in body:
+            if ordem_servico_cadastrado:
+                return make_response(jsonify("Ordem de Serviço já cadastrada..."), 403)
+
             validacao_ordem_servico(body)
             validacao_triagem(body)
             validacao_diagnostico(body)
             validacao_acessorios(body)
             validacao_itens(body)
+
+            novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
+            return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
+
         elif 'triagem' in body:
+            if ordem_servico_cadastrado:
+                return make_response(jsonify("Ordem de Serviço já cadastrada..."), 403)
+
             validacao_ordem_servico(body)
             validacao_triagem(body)
             validacao_acessorios(body)
+
+            novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
+            return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
+
         elif 'diagnostico' in body:
+            if ordem_servico_cadastrado is None:
+                return make_response(jsonify("Ordem de Serviço não cadastrada..."), 403)
+
             validacao_ordem_servico(body)
             validacao_diagnostico(body)
             validacao_itens(body)
+            ordem_servico_cadastrado_dict = json.loads(ordem_servico_cadastrado)
+            novo_ordem_servico = ordem_servico_service.atualizar_ordem_servico(ordem_servico_cadastrado_dict["_id"], body)
+            return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
+
         else:
             return make_response(jsonify('Ordem de servico necessita das chave "triagem" ou "diagnostico"'), 400)
-
-        novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
-        return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
 
 
 class OrdemServicoDetail(Resource):
@@ -114,8 +136,7 @@ class OrdemServicoDetail(Resource):
             erro_acessorio = ea.validate(acessorio)
             if erro_acessorio:
                 return make_response(jsonify(erro_acessorio), 400)
-             # todo denis, essa mesma validacao que tu vai para itens, tu deve fazer para acessorios
-
+            # todo denis, essa mesma validacao que tu vai para itens, tu deve fazer para acessorios
 
         ordem_servico_service.atualizar_ordem_servico(_id, body)
         ordem_servico_atualizado = ordem_servico_service.listar_ordem_servico_by_id(_id)
