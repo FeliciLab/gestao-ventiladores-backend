@@ -17,9 +17,9 @@ def listar_ordem_servico():
 
 def listar_ordem_servico_by_id(_id):
     try:
-        ordem_servico = ordem_servico_model.OrdemServico.objects.get(id=_id)
+        ordem_servico = ordem_servico_model.OrdemServico.objects.get(id=_id).to_json()
         if not ordem_servico is None:
-            return ordem_servico.to_json()
+            return ordem_servico
     except:
         return None
 
