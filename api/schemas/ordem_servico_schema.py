@@ -1,11 +1,11 @@
-from ..models import equipamento_model
+from ..models import ordem_servico_model
 from marshmallow import Schema, fields
 from datetime import datetime
 
 
 class EquipamentoSchema(Schema):
     class Meta:
-        model = equipamento_model.Equipamento
+        model = ordem_servico_model.OrdemServico
         fields = (
             "numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico",
             "foto_equipamento_chegada",
@@ -27,7 +27,7 @@ class EquipamentoSchema(Schema):
 
 class AcessorioSchema(Schema):
     class Meta:
-        model = equipamento_model.Acessorio
+        model = ordem_servico_model.Acessorio
         fields = ("descricao", "acompanha", "quantidade", "estado_de_conservacao")
 
     descricao = fields.String(required=True)
@@ -38,7 +38,7 @@ class AcessorioSchema(Schema):
 
 class TriagemSchema(Schema):
     class Meta:
-        model = equipamento_model.Triagem
+        model = ordem_servico_model.Triagem
         fields = ("nome_equipamento", "foto_antes_limpeza", "tipo", "numero_do_patrimonio",
                   "numero_de_serie", "nome_responsavel", "contato_responsavel",
                   "estado_de_conservacao", "fabricante", "marca", "modelo", "acessorios",
@@ -65,7 +65,7 @@ class TriagemSchema(Schema):
 
 class DiagnosticoSchema(Schema):
     class Meta:
-        model = equipamento_model.Triagem
+        model = ordem_servico_model.Triagem
         fields = ("resultado_tecnico", "demanda_servicos", "demanda_insumos", "acao_orientacao", "observacoes",
                   "itens")
 
@@ -79,7 +79,7 @@ class DiagnosticoSchema(Schema):
 
 class ItemSchema(Schema):
     class Meta:
-        model = equipamento_model.Item
+        model = ordem_servico_model.Item
         fields = ("nome", "tipo", "quantidade", "descricao", "valor", "prioridade", "unidade_medida")
 
     nome = fields.String(required=True)
