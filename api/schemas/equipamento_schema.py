@@ -26,3 +26,4 @@ class EquipamentoSchema(Schema):
 
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)
+

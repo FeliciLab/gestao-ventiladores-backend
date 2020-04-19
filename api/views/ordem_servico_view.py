@@ -7,35 +7,79 @@ from ..services import ordem_servico_service
 from flasgger import swag_from
 
 
+def validacao_ordem_servico(body):
+    es = ordem_servico_schema.OrdemServicoSchema()
+    erro_ordem_servico = es.validate(body)
+    if erro_ordem_servico:
+        return make_response(jsonify(erro_ordem_servico), 400)
+
+def validacao_triagem(body):
+    et = ordem_servico_schema.TriagemSchema()
+    erro_triagem = et.validate(body["triagem"])
+    if erro_triagem:
+        return make_response(jsonify(erro_triagem), 400)
+
+def validacao_diagnostico(body):
+    ed = ordem_servico_schema.DiagnosticoSchema()
+    erro_diagnostico = ed.validate(body["diagnostico"])
+    if erro_diagnostico:
+        return make_response(jsonify(erro_diagnostico), 400)
+
+def validacao_acessorios(body):
+    ea = ordem_servico_schema.AcessorioSchema()
+    for acessorio in body["triagem"]["acessorios"]:
+        erro_acessorio = ea.validate(acessorio)
+        if erro_acessorio:
+            return make_response(jsonify(erro_acessorio), 400)
+
+def validacao_itens(body):
+    ei = ordem_servico_schema.ItemSchema()
+    for item in body["diagnostico"]["itens"]:
+        erro_item = ei.validate(item)
+        if erro_item:
+            return make_response(jsonify(erro_item), 400)
+
 class OrdemServicoList(Resource):
     # todo Denis atualizar essa url do swag
     @swag_from('../../documentacao/equipamento/equipamentos_get.yml')
     def get(self):
+        """
+            Retorna todos as ordens de servico com o equipamento relacionado
+        """
         ordem_servico = ordem_servico_service.listar_ordem_servico()
         return Response(ordem_servico, mimetype="application/json", status=200)
 
     # todo Denis atualizar essa url do swag
     @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
     def post(self):
+        """
+            Cadastra uma nova ordem de servico - triagem ou
+            Cadastra uma nova ordem de servico - triagem e diagnostico
+            Adiciona um novo diagnostico ou
+        """
         body = request.json
-        ordem_servico_cadastrado = ordem_servico_service.\
-            listar_ordem_servico_by_numero_ordem_servico(body['numero_ordem_servico'])
-
+        # Verificar se o equipamento já foi cadastrado
+        ordem_servico_cadastrado = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(body['numero_ordem_servico'])
         if ordem_servico_cadastrado:
             return make_response(jsonify("Ordem de Serviço já cadastrada..."), 403)
-        es = ordem_servico_schema.OrdemServicoSchema()
-        et = ordem_servico_schema.TriagemSchema()
-        ea = ordem_servico_schema.AcessorioSchema()
-        erro_ordem_servico = es.validate(body)
-        erro_triagem = et.validate(body["triagem"])
-        if erro_ordem_servico:
-            return make_response(jsonify(erro_ordem_servico), 400)
-        elif erro_triagem:
-            return make_response(jsonify(erro_triagem), 400)
-        for acessorio in body["triagem"]["acessorios"]:
-            erro_acessorio = ea.validate(acessorio)
-            if erro_acessorio:
-                return make_response(jsonify(erro_acessorio), 400)
+
+        if 'triagem' in body and 'diagnostico' in body:
+            validacao_ordem_servico(body)
+            validacao_triagem(body)
+            validacao_diagnostico(body)
+            validacao_acessorios(body)
+            validacao_itens(body)
+        elif 'triagem' in body:
+            validacao_ordem_servico(body)
+            validacao_triagem(body)
+            validacao_acessorios(body)
+        elif 'diagnostico' in body:
+            validacao_ordem_servico(body)
+            validacao_diagnostico(body)
+            validacao_itens(body)
+        else:
+            return make_response(jsonify('Ordem de servico necessita das chave "triagem" ou "diagnostico"'), 400)
+
         novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
         return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
 

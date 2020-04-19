@@ -1,3 +1,4 @@
+import json
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from api.schemas import equipamento_schema
@@ -16,8 +17,9 @@ class EquipamentoList(Resource):
         erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
-        novo_equipamento = equipamento_service.registar_equipamento(body)
-        return Response(novo_equipamento, mimetype="application/json", status=201)
+        novo_equipamento_id = equipamento_service.registar_equipamento(body)
+        resposta = json.dumps({"_id": novo_equipamento_id})
+        return Response(resposta, mimetype="application/json", status=201)
 
 
 class EquipamentoDetail(Resource):
