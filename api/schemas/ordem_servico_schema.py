@@ -3,7 +3,7 @@ from marshmallow import Schema, fields
 from datetime import datetime
 
 
-class EquipamentoSchema(Schema):
+class OrdemServicoSchema(Schema):
     class Meta:
         model = ordem_servico_model.OrdemServico
         fields = (
@@ -64,10 +64,11 @@ class TriagemSchema(Schema):
 
 
 class DiagnosticoSchema(Schema):
+    # todo Denis, verificar a questao do campo acessorios
     class Meta:
         model = ordem_servico_model.Triagem
         fields = ("resultado_tecnico", "demanda_servicos", "demanda_insumos", "acao_orientacao", "observacoes",
-                  "itens")
+                  "itens", "acessorios")
 
     resultado_tecnico = fields.String(required=True)
     demanda_servicos = fields.String(required=True)

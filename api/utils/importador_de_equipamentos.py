@@ -1,8 +1,8 @@
 import json
 
 import pandas as pd
-from ..schemas import equipamento_schema
-from ..services import fabricante_service, equipamento_service
+from ..schemas import ordem_servico_schema
+from ..services import fabricante_service, ordem_servico_service
 import numpy as np
 from datetime import datetime
 
@@ -44,9 +44,9 @@ def importar_triagem(body):
 
                 # O erro está aqui
                 #__insert_or_update_fabricante_db(linha)
-                es = equipamento_schema.EquipamentoSchema()
-                et = equipamento_schema.TriagemSchema()
-                ea = equipamento_schema.AcessorioSchema()
+                es = ordem_servico_schema.OrdemServicoSchema()
+                et = ordem_servico_schema.TriagemSchema()
+                ea = ordem_servico_schema.AcessorioSchema()
                 erro_equipamento = es.validate(body)
                 erro_triagem = et.validate(body["triagem"])
                 if erro_equipamento:
@@ -57,11 +57,11 @@ def importar_triagem(body):
                     if ea.validate(acessorio):
                         return {'validate': acessorio}
 
-                equipamento_ja_cadastrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
+                equipamento_ja_cadastrado = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(body['numero_ordem_servico'])
                 if equipamento_ja_cadastrado:
-                    equipamento_service.atualizar_equipamento_ordem_servico(body, body['numero_ordem_servico'])
+                    ordem_servico_service.atualizar_ordem_servico(body, body['numero_ordem_servico'])
                 else:
-                    equipamento_service.registrar_equipamento(body)
+                    ordem_servico_service.registrar_ordem_servico(body)
     except Exception:
         return {"erro": Exception.__traceback__}
 
@@ -188,8 +188,8 @@ def importar_diagnostino(body):
 
                 __atualizar_campo_update_at(numero_ordem_servico, linha["Timestamp"])
 
-                ed = equipamento_schema.DiagnosticoSchema()
-                et = equipamento_schema.ItemSchema()
+                ed = ordem_servico_schema.DiagnosticoSchema()
+                et = ordem_servico_schema.ItemSchema()
                 erro_diagnostico = ed.validate(body)
                 if erro_diagnostico:
                     return {'validate': erro_diagnostico}
@@ -197,7 +197,7 @@ def importar_diagnostino(body):
                     if et.validate(item):
                         return {'validate': item}
 
-                equipamento_service.atualizar_equipamento(
+                ordem_servico_service.atualizar_ordem_servico(
                     {
                         "status": "diagnostico",
                         "updated_at": __adapt_time(linha["Timestamp"]),
@@ -213,7 +213,7 @@ def importar_diagnostino(body):
 
 
 def __atualizar_campo_update_at(numero_ordem_servico, update_at):
-    equipamento_service.atualizar_equipamento({"updated_at": update_at}, numero_ordem_servico)
+    ordem_servico_service.atualizar_ordem_servico({"updated_at": update_at}, numero_ordem_servico)
 
 
 def __get_acessorios_extras(acessorios_extras_string):

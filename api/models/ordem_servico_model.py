@@ -1,3 +1,4 @@
+from api.models.equipamento_model import Equipamento
 from config.db import db
 from datetime import datetime
 
@@ -46,7 +47,8 @@ class Diagnostico(db.EmbeddedDocument):
     itens = db.EmbeddedDocumentListField(Item, required=False)
 
 
-class Equipamento(db.Document):
+class OrdemServico(db.Document):
+    equipamento_id = db.ReferenceField(Equipamento)
     numero_ordem_servico = db.StringField(required=False, unique=True)
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
@@ -55,6 +57,3 @@ class Equipamento(db.Document):
     triagem = db.EmbeddedDocumentField(Triagem, required=False)
     # FORMULARIO DE DIAGNOSTICO DE EQUIPAMENTO
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)
-
-
-
