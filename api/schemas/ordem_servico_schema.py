@@ -2,12 +2,11 @@ from ..models import ordem_servico_model
 from marshmallow import Schema, fields
 from datetime import datetime
 
-
 class OrdemServicoSchema(Schema):
     class Meta:
         model = ordem_servico_model.OrdemServico
         fields = (
-            "numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico",
+            "equipamento_id", "numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico",
             "foto_equipamento_chegada",
             "status")
 
@@ -84,4 +83,3 @@ class ItemSchema(Schema):
     valor = fields.Float(required=True)
     prioridade = fields.String(required=True)
     unidade_medida = fields.String(required=True)
-
