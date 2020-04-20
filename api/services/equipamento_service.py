@@ -4,14 +4,16 @@ from api.models import equipamento_model
 def listar_equipamentos():
     return equipamento_model.Equipamento.objects
 
+def listar_equipamento(_id):
+    return equipamento_model.Equipamento.objects(id=_id).first()
 
-def listar_equipamento_by_id(_id):
-    try:
-        equipamento = equipamento_model.Equipamento.objects.get(id=_id)
-    except:
-        equipamento = None
-    finally:
-        return equipamento
+
+def consultar_numero_de_serie(numero_de_serie):
+    return equipamento_model.Equipamento.objects(
+        numero_de_serie=numero_de_serie
+    ).only(
+        'id', 'numero_de_serie'
+    ).first()
 
 def listar_equipamento_by_numero_de_serie(numero_de_serie):
     try:

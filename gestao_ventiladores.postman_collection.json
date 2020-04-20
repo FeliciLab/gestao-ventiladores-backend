@@ -1,0 +1,189 @@
+{
+	"variables": [],
+	"info": {
+		"name": "gestao_ventiladores",
+		"_postman_id": "c0b3c853-21ee-03a2-8974-8edded5d4e57",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "importacao",
+			"description": "",
+			"item": [
+				{
+					"name": "importar triagem",
+					"request": {
+						"url": "http://127.0.0.1:5000/api/importar/triagem",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"url\":\"https://docs.google.com/spreadsheets/d/e/2PACX-1vReGuRPHIq68zmQ-9iGBLxVKFGoa0FcC8OU5FbCkhcUmdMFoRkbrMyAV2ZYsbcOiE87kTlK6RKpo4h2/pub?output=csv\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "importar diagnostico",
+					"request": {
+						"url": "http://127.0.0.1:5000/api/importar/diagnostico",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"url\": \"https://docs.google.com/spreadsheets/d/e/2PACX-1vRSRWhlzT-zNHFXjVzJmpSlYLYb0Xi3N3vRNlyPuCMFmJavYnjHQAraXde1m64UGZL8B3x3HPdm2R0n/pub?output=csv\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "equipamento",
+			"description": "",
+			"item": [
+				{
+					"name": "Retorna todos os equipamentos",
+					"request": {
+						"url": "http://127.0.0.1:5000/api/equipamentos",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "",
+								"value": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Retorna o equipamento pela \"os\"",
+					"request": {
+						"url": "http://127.0.0.1:5000/api/equipamento/x",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Atualiza equipamento pelo \"id\" do documento (triagem)",
+					"request": {
+						"url": "http://127.0.0.1:5000/api/equipamento/as2130o123",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"diagnostico\": {\n    \"resultado_tecnico\": \"string\",\n    \"demanda_servicos\": \"string\",\n    \"demanda_insumos\": \"string\",\n    \"acao_orientacao\": \"string\",\n    \"observacoes\": \"string\",\n    \"acessorios_extras\": [\n    \t{\n    \t\t\"quantidade\": 0 ,\n    \t\t\"nome\": \"string\"\n    \t\t\n    \t}\n    ],\n    \"itens\": [\n      {\n        \"nome\": \"string\",\n        \"tipo\": \"\",\n        \"quantidade\": 2,\n        \"descricao\": \"string\",\n        \"valor\": 0.00,\n        \"prioridade\": \"\"\n      }\n    ]\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Atualiza equipamento pelo \"id\" do documento (diagnostico)",
+					"request": {
+						"url": "http://127.0.0.1:5000/api/equipamento/as2130o123",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"diagnostico\": {\n    \"resultado_tecnico\": \"string\",\n    \"demanda_servicos\": \"string\",\n    \"demanda_insumos\": \"string\",\n    \"acao_orientacao\": \"string\",\n    \"observacoes\": \"string\",\n    \"acessorios_extras\": [\n    \t{\n    \t\t\"quantidade\": 0 ,\n    \t\t\"nome\": \"string\"\n    \t\t\n    \t}\n    ],\n    \"itens\": [\n      {\n        \"nome\": \"string\",\n        \"tipo\": \"\",\n        \"quantidade\": 2,\n        \"descricao\": \"string\",\n        \"valor\": 0.00,\n        \"prioridade\": \"\"\n      }\n    ]\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Registra um novo equipamento",
+					"request": {
+						"url": "http://127.0.0.1:5000/api/equipamentos",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "",
+								"value": "",
+								"description": "",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"numero_ordem_servico\": \"\",\r\n  \"created_at\":\"2020-04-09T21:20:23.61\",\r\n  \"updated_at\":\"2020-04-09T21:20:23.61\",\r\n  \"status\": \"triagem\",\r\n  \"triagem\": {\r\n  \t\"numero_de_serie\": \"\",\r\n    \"nome_equipamento\": \"\",\r\n    \"numero_do_patrimonio\": \"\",\r\n    \"tipo\": \"\",\r\n    \"marca\": \"\",\r\n    \"modelo\": \"\",\r\n    \"fabricante\": \"\",\r\n    \"municipio_origem\": \"\",\r\n    \"nome_instituicao_origem\": \"\",\r\n    \"tipo_instituicao_origem\": \"\",\r\n    \"nome_responsavel\": \"\",\r\n    \"contato_responsavel\": \"\",\r\n    \"estado_de_conservacao\": \"\",\r\n    \"foto_antes_limpeza\": \"\",\r\n    \"foto_apos_limpeza\": \"\",\r\n    \"acessorios\": [\r\n      {\r\n        \"descricao\": \"\",\r\n        \"acompanha\": true,\r\n        \"quantidade\": 1,\r\n        \"estado_de_conservacao\": \"\"\r\n      },\r\n      {\r\n        \"descricao\": \"\",\r\n        \"acompanha\": true,\r\n        \"quantidade\": 1,\r\n        \"estado_de_conservacao\": \"\"\r\n      }\r\n\t]\r\n  }\r\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Retorna todos os equipamento pelo status",
+					"request": {
+						"url": "http://127.0.0.1:5000/api/equipamento/as2130o123",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\":\"triagem\"\n\t\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "fabricante",
+			"description": "",
+			"item": []
+		}
+	]
+}

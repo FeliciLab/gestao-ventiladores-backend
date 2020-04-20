@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class Equipamento(db.Document):
-    numero_de_serie = db.StringField(required=False)
+    numero_de_serie = db.StringField(required=True)
     nome_equipamento = db.StringField(required=False)
     numero_do_patrimonio = db.StringField(required=False)
     tipo = db.StringField(required=False)

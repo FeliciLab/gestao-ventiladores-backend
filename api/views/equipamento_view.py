@@ -11,14 +11,25 @@ class EquipamentoList(Resource):
         return Response(equipamentos, mimetype="application/json", status=200)
 
     def post(self):
-        # todo como verificar se o equipamento já foi registrado? numero_serie?
         body = request.json
+
         # Verificar se o equipamento já existe?
         erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
+
+        if equipamento_service.consultar_numero_de_serie(body["numero_de_serie"]):
+            return make_response(
+                jsonify({
+                    "error": True,
+                    "message": "Número de série já cadastrado"
+                }),
+                400
+            )
+
         novo_equipamento_id = equipamento_service.registar_equipamento(body)
         resposta = json.dumps({"_id": novo_equipamento_id})
+
         return Response(resposta, mimetype="application/json", status=201)
 
 

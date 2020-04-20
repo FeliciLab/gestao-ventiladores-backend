@@ -1,14 +1,25 @@
-from ..models import ordem_servico_model
+from ..models import equipamento_model
 from marshmallow import Schema, fields
 
 
 class EquipamentoSchema(Schema):
     class Meta:
-        model = ordem_servico_model.OrdemServico
+        model = equipamento_model.Equipamento
         fields = (
-            "numero_de_serie", "nome_equipamento", "numero_do_patrimonio", "tipo", "marca", "modelo",
-            "fabricante", "municipio_origem", "nome_instituicao_origem", "tipo_instituicao_origem",
-            "nome_responsavel", "contato_responsavel", "created_at", "updated_at"
+            "numero_de_serie",
+            "nome_equipamento",
+            "numero_do_patrimonio",
+            "tipo",
+            "marca",
+            "modelo",
+            "fabricante",
+            "municipio_origem",
+            "nome_instituicao_origem",
+            "tipo_instituicao_origem",
+            "nome_responsavel",
+            "contato_responsavel",
+            "created_at",
+            "updated_at"
         )
 
     numero_de_serie = fields.String(required=True)
@@ -26,4 +37,3 @@ class EquipamentoSchema(Schema):
 
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)
-

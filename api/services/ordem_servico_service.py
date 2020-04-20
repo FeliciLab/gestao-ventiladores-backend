@@ -16,12 +16,7 @@ def listar_ordem_servico():
 
 
 def listar_ordem_servico_by_id(_id):
-    try:
-        ordem_servico = ordem_servico_model.OrdemServico.objects.get(id=_id)
-        if not ordem_servico is None:
-            return ordem_servico
-    except:
-        return None
+    ordem_servico_model.OrdemServico.objects(id=_id).first()
 
 def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
     try:
