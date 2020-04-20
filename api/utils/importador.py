@@ -206,7 +206,10 @@ def importar_diagnostino(body):
 
                 }
 
-                __atualizar_campo_update_at(numero_ordem_servico, linha["Timestamp"])
+                # sera que eu tenho que verificar se existe ?
+                ordem_servico = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico)
+
+                __atualizar_campo_update_at(str(ordem_servico.id), linha["Timestamp"])
 
                 ed = ordem_servico_schema.DiagnosticoSchema()
                 et = ordem_servico_schema.ItemSchema()
@@ -218,12 +221,13 @@ def importar_diagnostino(body):
                         return {'validate': item}
 
                 ordem_servico_service.atualizar_ordem_servico(
+                    str(ordem_servico.id),
                     {
                         "status": "diagnostico",
                         "updated_at": __adapt_time(linha["Timestamp"]),
                         "diagnostico": body
-                    },
-                    numero_ordem_servico)
+                    })
+
 
 
     except Exception:
@@ -233,7 +237,7 @@ def importar_diagnostino(body):
 
 
 def __atualizar_campo_update_at(numero_ordem_servico, update_at):
-    ordem_servico_service.atualizar_ordem_servico({"updated_at": update_at}, numero_ordem_servico)
+    ordem_servico_service.atualizar_ordem_servico(numero_ordem_servico, {"updated_at": update_at} )
 
 
 def __get_acessorios_extras(acessorios_extras_string):
