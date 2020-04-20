@@ -1,5 +1,5 @@
-from api.views import ordem_servico_view, fabricante_view, importador_view, foto_view, equipamento_view, \
-    diagnostico_view
+from api.views import ordem_servico_view, fabricante_view, importador_view,\
+     foto_view, equipamento_view, ordem_compra_view
 
 
 def initialize_routes(api):
@@ -20,3 +20,5 @@ def initialize_routes(api):
     api.add_resource(fabricante_view.FabricanteList, '/api/fabricantes')
     api.add_resource(fabricante_view.FabricanteDetail, '/api/fabricante/<fabricante_nome>')
     api.add_resource(foto_view.TriagemImagem, '/api/importar/imagem')
+
+    api.add_resource(ordem_compra_view.NumeroOrdemServicoList, '/api/ordem_compra')
