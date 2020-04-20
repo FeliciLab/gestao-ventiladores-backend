@@ -2,7 +2,6 @@ from ..models import ordem_servico_model
 from marshmallow import Schema, fields
 from datetime import datetime
 
-
 class OrdemServicoSchema(Schema):
     class Meta:
         model = ordem_servico_model.OrdemServico
