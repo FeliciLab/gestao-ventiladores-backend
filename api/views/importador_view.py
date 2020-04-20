@@ -4,6 +4,7 @@ from api.utils import importador_de_equipamentos
 from flasgger import swag_from
 
 class TriagemImportacao(Resource):
+    # tudo Denis atualizar swag
     @swag_from('../../documentacao/importacao/importacao_triagem.yml')
     def post(self):
         body = request.json
@@ -17,7 +18,7 @@ class TriagemImportacao(Resource):
             return make_response(jsonify("Erro na importacao..."), 400)
 
 
-class DiagnosticoClinicoETecnicoImportacao(Resource):
+class DiagnosticoImportacao(Resource):
     @swag_from('../../documentacao/importacao/importacao_diagnostico.yml')
     def post(self):
         body = request.json

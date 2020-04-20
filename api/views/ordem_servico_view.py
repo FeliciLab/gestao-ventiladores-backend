@@ -77,7 +77,7 @@ class OrdemServicoList(Resource):
             validacao_acessorios(body)
             validacao_itens(body)
 
-            equipamento = equipamento_service.listar_equipamento(body["equipamento_id"])
+            equipamento = equipamento_service.listar_equipamento_by_id(body["equipamento_id"])
             body["equipamento_id"] = equipamento
             novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
             return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
@@ -90,7 +90,7 @@ class OrdemServicoList(Resource):
             validacao_triagem(body)
             validacao_acessorios(body)
 
-            equipamento = equipamento_service.listar_equipamento(body["equipamento_id"])
+            equipamento = equipamento_service.listar_equipamento_by_id(body["equipamento_id"])
             body["equipamento_id"] = equipamento
             novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
             return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
@@ -103,7 +103,7 @@ class OrdemServicoList(Resource):
             validacao_diagnostico(body)
             validacao_itens(body)
 
-            equipamento = equipamento_service.listar_equipamento(body["equipamento_id"])
+            equipamento = equipamento_service.listar_equipamento_by_id(body["equipamento_id"])
             body["equipamento_id"] = equipamento
 
             ordem_servico_service.atualizar_ordem_servico(str(ordem_servico_cadastrado.id), body)

@@ -24,13 +24,13 @@ class EquipamentoList(Resource):
 
 class EquipamentoDetail(Resource):
     def get(self, _id):
-        equipamento = equipamento_service.listar_equipamento(_id)
+        equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrada..."), 404)
         return Response(equipamento, mimetype="application/json", status=200)
 
     def put(self, _id):
-        equipamento = equipamento_service.listar_equipamento(_id)
+        equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrada..."), 404)
 
@@ -40,11 +40,11 @@ class EquipamentoDetail(Resource):
             return make_response(jsonify(erro_equipamento), 400)
 
         equipamento_service.atualizar_equipamento(body, _id)
-        equipamento_atualizado = equipamento_service.listar_equipamento(_id)
+        equipamento_atualizado = equipamento_service.listar_equipamento_by_id(_id)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)
 
     def delete(self, _id):
-        equipamento = equipamento_service.listar_equipamento(_id)
+        equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrado..."), 404)
         equipamento_service.deletar_equipamento(_id)
