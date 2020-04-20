@@ -1,6 +1,8 @@
 from ..models import ordem_servico_model
 from datetime import datetime
 
+from ..utils.query_parser import OrdemServicoQueryParser
+
 
 def listar_ordem_servico():
     return ordem_servico_model.OrdemServico.objects()
@@ -18,6 +20,7 @@ def listar_ordem_servico():
 def listar_ordem_servico_by_id(_id):
     return ordem_servico_model.OrdemServico.objects.get(id=_id)
 
+
 def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
     try:
         ordem_servico = ordem_servico_model.OrdemServico.objects.get(numero_ordem_servico=numero_ordem_servico)
@@ -26,8 +29,17 @@ def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
     except:
         return None
 
-def filtering_ordem_servico_queries(query):
-    ordem_servico_model.OrdemServico.objects()
+
+def ordem_servico_queries(body):
+
+    parsed_query_dt = OrdemServicoQueryParser.parse(body["where"])
+
+    if not "select" in body:
+        body["select"] = []
+
+    filted_ordem_servico_list = ordem_servico_model.OrdemServico.objects(__raw__=parsed_query_dt).only(*body["select"])
+
+    return filted_ordem_servico_list.to_json()
 
 
 def registrar_ordem_servico(body):
@@ -37,13 +49,12 @@ def registrar_ordem_servico(body):
     return ordem_servico_model.OrdemServico(**body).save()
 
 
-
 # def atualizar_ordem_servico(atualizacao, numero_ordem_servico):
 #     ordem_servico_model.OrdemServico.objects.get(id=numero_ordem_servico).update(**atualizacao)
 
 
 def atualizar_ordem_servico(_id, atualizacao):
-     ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
+    ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
 
 
 def atualizar_ordem_servico_importacao(_id, atualizacao):
@@ -62,9 +73,9 @@ def atualizar_ordem_servico_importacao(_id, atualizacao):
 def atualizar_foto_equipamento(_id, atualizacao):
     ordem_servico = ordem_servico_model.OrdemServico.objects.get(id=_id)
     if 'foto_antes_limpeza' in atualizacao:
-        ordem_servico .triagem.foto_antes_limpeza = atualizacao['foto_antes_limpeza']
+        ordem_servico.triagem.foto_antes_limpeza = atualizacao['foto_antes_limpeza']
     else:
-        ordem_servico .triagem.foto_antes_limpeza = atualizacao['foto_apos_limpeza']
+        ordem_servico.triagem.foto_antes_limpeza = atualizacao['foto_apos_limpeza']
     ordem_servico.save()
 
 
@@ -77,6 +88,7 @@ def registrar_equipamento_foto(body):
     ordem_servico.created_at = datetime.now()
     ordem_servico.updated_at = datetime.now()
     return ordem_servico.save()
+
 
 # todo Denis, eu acabei apagando esse metodo pq eu n vi ele sendo utilizado. Verificar
 # def registrar_equipamento_foto(body):
@@ -114,9 +126,9 @@ def atualizar_foto_ordem_servico(_id, atualizacao):
             triagem=ordem_servico.triagem
         )
 
+
 def registrar_equipamento_vazio():
     ordem_servico = ordem_servico_model.OrdemServico()
     triagem = ordem_servico_model.Triagem()
     ordem_servico.triagem = triagem
     return ordem_servico.save()
-
