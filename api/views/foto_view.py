@@ -65,7 +65,7 @@ def save_photo(request):
 
 def replace_photo(request):
     _id = request.form["_id"]
-    ordem_servico = json.loads(ordem_servico_service.listar_ordem_servico_by_id(_id))
+    ordem_servico = json.loads(ordem_servico_service.listar_ordem_servico_by_id(_id).to_json())
 
     file = None
     final_name_file = None
@@ -96,7 +96,7 @@ def replace_photo(request):
     del ordem_servico["created_at"]
     del ordem_servico["updated_at"]
 
-    ordem_servico_service.atualizar_ordem_servico(ordem_servico, _id)
+    ordem_servico_service.atualizar_foto_ordem_servico(_id, ordem_servico)
 
     file.save(
         os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'storage',
@@ -107,38 +107,11 @@ def replace_photo(request):
 
 
 class TriagemImagem(Resource):
-    # def get(self):
-    #     body = request.args
-    #     ordem_servico = json.loads(ordem_servico_service.listar_ordem_servico_by_id(body["_id"]))
-    #
-    #     path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'storage',
-    #                         ordem_servico['triagem']['foto_antes_limpeza'])
-    #     os.remove(path)
-    #     if 'foto_antes_limpeza' in body:
-    #         ordem_servico.triagem.foto_antes_limpeza = body['foto_antes_limpeza']
-    #     elif 'foto_apos_limpeza' in body:
-    #         ordem_servico.triagem.foto_apos_limpeza = body['foto_apos_limpeza']
-    #     else:
-    #         return 'erro'
-    #     ordem_servico_service.atualizar_ordem_servico(ordem_servico, body["_id"])
-    #
-    #     if 'foto_antes_limpeza' in body:
-    #         file = body['foto_antes_limpeza']
-    #     elif 'foto_apos_limpeza' in body:
-    #         file = body['foto_apos_limpeza']
-    #     filename = secure_filename(str(ordem_servico.id) + file.filename)
-    #     file.save(
-    #         os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'storage', filename)
-    #     )
-    #     return 'get'
-
     def post(self):
-        # Criar documento
         result = ""
 
         if "_id" in request.form and not request.form["_id"] is "":
             result = replace_photo(request)
-
         else:
             result = save_photo(request)
 

@@ -46,6 +46,18 @@ def atualizar_ordem_servico(_id, atualizacao):
      ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
 
 
+def atualizar_foto_ordem_servico(_id, atualizacao):
+    ordem_servico = listar_ordem_servico_by_id(_id)
+    if atualizacao['triagem']['foto_apos_limpeza'] is "":
+        ordem_servico.triagem.foto_antes_limpeza = atualizacao['triagem']['foto_antes_limpeza']
+        ordem_servico_model.OrdemServico.objects.get(id=_id).update(
+            triagem=ordem_servico.triagem
+        )
+    else:
+        ordem_servico_model.OrdemServico.objects.get(id=_id).update(
+            foto_apos_limpeza=atualizacao['triagem']['foto_apos_limpeza']
+        )
+
 def atualizar_ordem_servico_importacao(_id, atualizacao):
     return ordem_servico_model.OrdemServico.objects.get(id=_id).update(
         numero_ordem_servico=atualizacao['numero_ordem_servico'],
