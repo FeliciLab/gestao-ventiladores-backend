@@ -44,6 +44,7 @@ def importar_triagem(triagem_body):
                     equipamento_service.atualizar_equipamento(equipamento_body, equipamento.id)
                     equipamento = equipamento_service.listar_equipamento(equipamento.id)
 
+                __insert_or_update_fabricante_db(linha)
 
                 triagem_body = {
                     "equipamento_id": equipamento,# Aqui deveria ser equipamento.id ?
@@ -79,8 +80,8 @@ def importar_triagem(triagem_body):
                 if ordem_servico_ja_cadastrado:
                     ordem_servico_service.atualizar_ordem_servico_importacao(ordem_servico_ja_cadastrado.id, triagem_body)
                 else:
-                    __insert_or_update_fabricante_db(linha)
                     ordem_servico_service.registrar_ordem_servico(triagem_body)
+
     except Exception:
         return {"erro": Exception.__traceback__}
 
@@ -166,8 +167,8 @@ def __add_fabricate_db(linha):
     fabricante_service.registar_fabricante(body)
 
 
-def __insert_or_update_fabricante_db(linha):
-    fabricante_nome = linha["Selecione a marca do equipamento:"]
+def __insert_or_update_fabricante_db(linha): # 10/04
+    fabricante_nome = linha["Selecione a marca do equipamento:"].strip()
 
     fabricante_string = fabricante_service.listar_fabricante_id(fabricante_nome)
 
