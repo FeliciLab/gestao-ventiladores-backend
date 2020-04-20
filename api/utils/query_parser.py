@@ -1,5 +1,7 @@
 from typing import Dict
 
+from bson import ObjectId
+
 
 def deepen(parent_key, parent_dict):
     dotted_dict = parent_dict.copy()
@@ -28,6 +30,9 @@ class OrdemServicoQueryParser:
     def parse(query_body):
         dotted_query_body = deepen("$", query_body)
         adapted_query_body = clean(dotted_query_body)
+
+        if "_id" in adapted_query_body:
+            adapted_query_body["_id"] = ObjectId(adapted_query_body["_id"])
         return adapted_query_body
 
 
