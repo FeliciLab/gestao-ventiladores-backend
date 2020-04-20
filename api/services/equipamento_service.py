@@ -6,12 +6,7 @@ def listar_equipamentos():
 
 
 def listar_equipamento(_id):
-    try:
-        equipamento = equipamento_model.Equipamento.objects.get(id=_id)
-    except:
-        equipamento = None
-    finally:
-        return equipamento
+    return equipamento_model.Equipamento.objects(id=_id).first()
 
 
 def consultar_numero_de_serie(numero_de_serie):

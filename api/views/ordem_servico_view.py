@@ -6,6 +6,8 @@ from ..schemas import ordem_servico_schema
 from ..services import ordem_servico_service, equipamento_service
 from flasgger import swag_from
 
+from ..utils.error_response import error_response
+
 
 def validacao_ordem_servico(body):
     es = ordem_servico_schema.OrdemServicoSchema()
@@ -64,58 +66,70 @@ class OrdemServicoList(Resource):
     @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
     def post(self):
         body = request.json
-        ordem_servico_cadastrado = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(
-            body['numero_ordem_servico'])
+        try:
+            _id = body["_id"]
+        except:
+            _id = False
+
+        try:
+            ordem_servico = body["numero_ordem_servico"]
+        except:
+            return error_response("Ordem de serviço inválido ou inexistente")
+
+        try:
+            equipamento_id = body["equipamento_id"]
+        except:
+            return error_response("ID do equipamento inválido ou não enviado")
+
+        ordem_servico_cadastrado = \
+            ordem_servico_service \
+                .listar_ordem_servico_by_numero_ordem_servico(ordem_servico)
+        if ordem_servico_cadastrado:
+            return error_response("Ordem de Serviço já cadastrada.")
 
         if 'triagem' in body and 'diagnostico' in body:
-            if ordem_servico_cadastrado:
-                return make_response(jsonify("Ordem de Serviço já cadastrada..."), 403)
-
             validacao_ordem_servico(body)
             validacao_triagem(body)
             validacao_diagnostico(body)
             validacao_acessorios(body)
             validacao_itens(body)
-
-            equipamento = equipamento_service.listar_equipamento(body["equipamento_id"])
-            body["equipamento_id"] = equipamento
-            novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
-            return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
-
         elif 'triagem' in body:
-            if ordem_servico_cadastrado:
-                return make_response(jsonify("Ordem de Serviço já cadastrada..."), 403)
-
             validacao_ordem_servico(body)
             validacao_triagem(body)
             validacao_acessorios(body)
-
-            equipamento = equipamento_service.listar_equipamento(body["equipamento_id"])
-            body["equipamento_id"] = equipamento
-            novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
-            return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
-
         elif 'diagnostico' in body:
-            if ordem_servico_cadastrado is None:
-                return make_response(jsonify("Ordem de Serviço não cadastrada..."), 403)
-
             validacao_ordem_servico(body)
             validacao_diagnostico(body)
             validacao_itens(body)
+        else:
+            return error_response('Ordem de servico necessita das chave "triagem" ou "diagnostico"')
 
-            equipamento = equipamento_service.listar_equipamento(body["equipamento_id"])
-            body["equipamento_id"] = equipamento
 
+        try:
+            equipamento = equipamento_service.listar_equipamento(equipamento_id)
+        except:
+            return error_response("ID do equipamento inválido")
+
+        if not equipamento:
+            return error_response("Equipamento não encontrado")
+
+        body["equipamento_id"] = equipamento
+
+        if _id:
             ordem_servico_service.atualizar_ordem_servico(str(ordem_servico_cadastrado.id), body)
 
-            novo_ordem_servico = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(
-            body['numero_ordem_servico'])
+            return Response(
+                json.dumps({"_id": _id}),
+                mimetype="application/json",
+                status=200
+            )
 
-            return Response(novo_ordem_servico.to_json(), mimetype="application/json", status=201)
-
-        else:
-            return make_response(jsonify('Ordem de servico necessita das chave "triagem" ou "diagnostico"'), 400)
-
+        novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
+        return Response(
+            json.dumps({"_id": str(novo_ordem_servico.id)}),
+            mimetype="application/json",
+            status=201
+        )
 
 class OrdemServicoDetail(Resource):
     # todo Denis atualizar essa url do swag
