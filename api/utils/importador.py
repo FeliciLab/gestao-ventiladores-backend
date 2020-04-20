@@ -60,7 +60,7 @@ def importar_triagem(triagem_body):
                 }
 
                 # O erro está aqui
-                # __insert_or_update_fabricante_db(linha)
+                __insert_or_update_fabricante_db(linha)
                 es = ordem_servico_schema.OrdemServicoSchema()
                 et = ordem_servico_schema.TriagemSchema()
                 ea = ordem_servico_schema.AcessorioSchema()
@@ -76,6 +76,7 @@ def importar_triagem(triagem_body):
 
                 equipamento_ja_cadastrado = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(
                     triagem_body['numero_ordem_servico'])
+
                 if equipamento_ja_cadastrado:
                     ordem_servico_service.atualizar_ordem_servico(triagem_body, triagem_body['numero_ordem_servico'])
                 else:
