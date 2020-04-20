@@ -1,7 +1,12 @@
 from datetime import datetime
+
+from ..utils.query_parser import OrdemServicoQueryParser
+from bson import ObjectId
+
 from ..models import ordem_servico_model
 from ..models.equipamento_model import Equipamento
 from bson.json_util import dumps
+
 
 
 def listar_ordem_servico():
@@ -17,7 +22,7 @@ def listar_ordem_servico():
     ]
 
     docs = []
-    for ordem in ordem_servico_model.OrdemServico.objects().aggregate(pipeline):
+    for ordem in ordem_servico_model.OrdemServico.objects(status__ne='tmp').aggregate(pipeline):
         docs.append(ordem)
 
     return dumps(docs)
@@ -47,8 +52,16 @@ def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
         return None
 
 
-def filtering_ordem_servico_queries(query):
-    ordem_servico_model.OrdemServico.objects()
+def ordem_servico_queries(body):
+
+    parsed_query_dt = OrdemServicoQueryParser.parse(body["where"])
+
+    if not "select" in body:
+        body["select"] = []
+
+    filted_ordem_servico_list = ordem_servico_model.OrdemServico.objects(__raw__=parsed_query_dt).only(*body["select"])
+
+    return filted_ordem_servico_list.to_json()
 
 
 def registrar_ordem_servico(body):
@@ -102,9 +115,9 @@ def registrar_equipamento_foto(body):
     ordem_servico.updated_at = datetime.now()
     return ordem_servico.save()
 
-
 # todo Denis, eu acabei apagando esse metodo pq eu n vi ele sendo utilizado.
 #  Verificar
+
 # def registrar_equipamento_foto(body):
 #     equipamento = ordem_servico_model.OrdemServico()
 #     triagem = ordem_servico_model.Triagem()
@@ -144,7 +157,12 @@ def atualizar_foto_ordem_servico(_id, atualizacao):
 
 
 def registrar_equipamento_vazio():
+    id = ObjectId()
+    print(id)
     ordem_servico = ordem_servico_model.OrdemServico()
+    ordem_servico.numero_ordem_servico = 'tmp_' + str(id)
+    ordem_servico.id = id
     triagem = ordem_servico_model.Triagem()
     ordem_servico.triagem = triagem
+    ordem_servico.status = 'tmp'
     return ordem_servico.save()

@@ -188,8 +188,8 @@ class OrdemServicoFind(Resource):
         return Response(ordem_servico_list.to_json(), mimetype="application/json", status=200)
 
 
-class OrdemServicoFiltragem(object):
+class OrdemServicoQuery(Resource):
     def post(self):
         body = request.json
-        body_filter = ordem_servico_service.filtering_ordem_servico_queries(body)
-        return Response(body_filter, mimetype="application/json", status=200)
+        dados_filtrados = ordem_servico_service.ordem_servico_queries(body)
+        return Response(dados_filtrados, mimetype="application/json", status=200)
