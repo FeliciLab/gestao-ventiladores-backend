@@ -54,14 +54,13 @@ class OrdemServicoList(Resource):
             Retorna todos as ordens de servico com o equipamento relacionado
         """
         ordem_servico = ordem_servico_service.listar_ordem_servico()
-        return Response(ordem_servico.to_json(), mimetype="application/json", status=200)
+        return Response(ordem_servico, mimetype="application/json", status=200)
 
     """
         Cadastra uma nova ordem de servico - triagem ou
         Cadastra uma nova ordem de servico - triagem e diagnostico
         Adiciona um novo diagnostico ou
     """
-
     # todo Denis atualizar essa url do swag
     @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
     def post(self):
