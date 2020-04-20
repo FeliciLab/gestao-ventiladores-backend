@@ -47,12 +47,15 @@ def atualizar_ordem_servico(_id, atualizacao):
 
 
 def atualizar_ordem_servico_importacao(_id, atualizacao):
+    ordem_servico = listar_ordem_servico_by_numero_ordem_servico(atualizacao['numero_ordem_servico'])
+    ordem_servico.triagem = atualizacao['triagem']
     return ordem_servico_model.OrdemServico.objects.get(id=_id).update(
+        equipamento_id=atualizacao['equipamento_id'],
         numero_ordem_servico=atualizacao['numero_ordem_servico'],
         created_at=atualizacao['created_at'],
         updated_at=atualizacao['updated_at'],
         status=atualizacao['status'],
-        triagem=atualizacao['triagem']
+        triagem=ordem_servico.triagem
     )
 
 
