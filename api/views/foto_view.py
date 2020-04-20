@@ -23,6 +23,7 @@ def get_extention(file_name):
 
 
 def save_photo(request):
+    # TODO fazer um tratamento para que nao surja o problema de ordem de servico vazios com os vazia
     ordem_servico = ordem_servico_service.registrar_equipamento_vazio()
 
     final_name_file = None
