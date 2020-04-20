@@ -13,7 +13,7 @@ def initialize_routes(api):
     # por enquanto n estamos usando mais
     # api.add_resource(diagnostico_view.DiagnosticoDetail, '/api/ordem_servico/diagnostico/<_id>')
 
-    api.add_resource(ordem_servico_view.OrdemServicoQuery, '/api/ordem_servico/query')
+    api.add_resource(ordem_servico_view.OrdemServicoQuery, '/api/ordem_servico/find')
 
     api.add_resource(importador_view.TriagemImportacao, '/api/importar/triagem')
     api.add_resource(importador_view.DiagnosticoImportacao, '/api/importar/diagnostico')
