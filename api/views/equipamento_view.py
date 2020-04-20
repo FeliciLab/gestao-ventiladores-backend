@@ -3,6 +3,7 @@ from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from api.schemas import equipamento_schema
 from api.services import equipamento_service
+from bson.json_util import dumps
 
 
 class EquipamentoList(Resource):
@@ -18,11 +19,16 @@ class EquipamentoList(Resource):
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
 
-        if equipamento_service.consultar_numero_de_serie(body["numero_de_serie"]):
+        equipamento_existente = equipamento_service.consultar_numero_de_serie(
+            body["numero_de_serie"]
+        )
+
+        if equipamento_existente:
             return make_response(
                 jsonify({
                     "error": True,
-                    "message": "Número de série já cadastrado"
+                    "message": "Número de série já cadastrado",
+                    "equipamento": dumps(equipamento_existente)
                 }),
                 400
             )
