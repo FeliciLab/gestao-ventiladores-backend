@@ -41,9 +41,9 @@ python run.py
 
 ## API
 
-### Retornar todos os equipamentos
+### Retornar todas as ordem de serviços
 ```json
-"url": "localhost:5000/api/equipamentos"
+"url": "localhost:5000/api/ordem_servicos"
 "method": "GET"
 ```
 
