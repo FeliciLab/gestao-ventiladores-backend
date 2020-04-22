@@ -8,7 +8,7 @@ from bson.json_util import dumps
 from api.utils.error_response import error_response
 
 
-class EquipamentoCrud(Resource):
+class EquipamentoList(Resource):
     def get(self):
         body = request.args
         try:
