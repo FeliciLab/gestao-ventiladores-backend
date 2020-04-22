@@ -47,7 +47,6 @@ def validacao_itens(body):
 
 
 class OrdemServicoList(Resource):
-    # todo Denis atualizar essa url do swag
     @swag_from('../../documentacao/ordem_servico/ordem_servicos_get.yml')
     def get(self):
         """
@@ -137,44 +136,22 @@ class OrdemServicoList(Resource):
 
 
 class OrdemServicoDetail(Resource):
-    # todo Denis atualizar essa url do swag
     @swag_from('../../documentacao/ordem_servico/ordem_servico_get.yml')
     def get(self, _id):
+        """
+            Retorna uma ordem de serviço específica conforme o id do documento repassado.
+        """
         ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
         if ordem_servico is None:
             return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
         return Response(ordem_servico.to_json(), mimetype="application/json", status=200)
 
-    # todo Denis atualizar essa url do swag
-    #@swag_from('../../documentacao/ordem_servico/ordem_servico_put.yml')
-    def put(self, _id):
-        ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
 
-        if ordem_servico is None:
-            return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
-        body = request.get_json()
-        es = ordem_servico_schema.OrdemServicoSchema()
-        et = ordem_servico_schema.TriagemSchema()
-        ea = ordem_servico_schema.AcessorioSchema()
-        erro_ordem_servico = es.validate(body)
-        erro_triagem = et.validate(body["triagem"])
-        if erro_ordem_servico:
-            return make_response(jsonify(erro_ordem_servico), 400)
-        elif erro_triagem:
-            return make_response(jsonify(erro_triagem), 400)
-        for acessorio in body["triagem"]["acessorios"]:
-            erro_acessorio = ea.validate(acessorio)
-            if erro_acessorio:
-                return make_response(jsonify(erro_acessorio), 400)
-            # todo denis, essa mesma validacao que tu vai para itens, tu deve fazer para acessorios
-
-        ordem_servico_service.atualizar_ordem_servico(_id, body)
-        ordem_servico_atualizado = ordem_servico_service.listar_ordem_servico_by_id(_id)
-        return Response(ordem_servico_atualizado, mimetype="application/json", status=200)
-
-    # todo Denis atualizar essa url do swag
-    #@swag_from('../../documentacao/ordem_servico/ordem_servico_delete.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_delete.yml')
     def delete(self, _id):
+        """
+             Deleta uma ordem de serviço específica conforme o id do documento repassado.
+        """
         ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
         if ordem_servico is None:
             return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
@@ -184,16 +161,17 @@ class OrdemServicoDetail(Resource):
 
 
 class OrdemServicoFind(Resource):
-    # todo Denis atualizar essa url do swag
-    #@swag_from('../../documentacao/ordem_servico/ordem_servico_find.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_find.yml')
     def post(self):
         body = request.json
         if "status" not in body:
             return make_response(jsonify("Não existe a chave status no body"), 404)
+
         ordem_servico_list = ordem_servico_service.listar_ordem_servico_status(body['status'])
         return Response(ordem_servico_list.to_json(), mimetype="application/json", status=200)
 
 
+# TODO Lucas essa classe não está sendo utilizada, verificar se ela deve existir.
 class OrdemServicoQuery(Resource):
     def post(self):
         body = request.json

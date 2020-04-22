@@ -17,13 +17,13 @@ class Triagem(db.EmbeddedDocument):
     foto_apos_limpeza = db.StringField(required=False)
 
 class Item(db.EmbeddedDocument):
-    fabricante = db.StringField(required=False)
-    codigo = db.StringField(required=False)
-    nome = db.StringField(required=True)
-    unidade_medida = db.StringField(required=True)
-    quantidade = db.IntField(required=True)
-    tipo = db.StringField(required=True)
+    quantidade = db.IntField(required=False)
+    nome = db.StringField(required=False)
+    tipo = db.StringField(required=False)
     descricao = db.StringField(required=False)
+    valor = db.FloatField(required=False)
+    prioridade = db.StringField(required=False)
+    unidade_medida = db.StringField(required=False)
 
 
 class Diagnostico(db.EmbeddedDocument):
@@ -44,6 +44,5 @@ class OrdemServico(db.Document):
 
     # FORMULARIO DE TRIAGEM DE EQUIPAMENTO
     triagem = db.EmbeddedDocumentField(Triagem, required=False)
-
     # FORMULARIO DE DIAGNOSTICO DE EQUIPAMENTO
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)

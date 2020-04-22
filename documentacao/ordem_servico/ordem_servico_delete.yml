@@ -1,7 +1,15 @@
-Deleta um equipamento específico confome o número de ordem de servico passado.
-    ---
-    tags:
-      - Equipamentos
-    responses:
-      204:
-        description: Ao deletar não existe retorno
+Deleta uma ordem de servico específica confome o id do documento passado.
+---
+tags:
+  - Ordem Servicos
+
+parameters:
+        - in: path
+          name: _id
+          type: string
+          required: true
+          description: Id do documento.
+
+responses:
+  200:
+    description: Se deletar for com sucesso, não haverá retorno.

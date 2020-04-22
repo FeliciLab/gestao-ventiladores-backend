@@ -1,12 +1,9 @@
-from datetime import datetime
-
 from ..utils.query_parser import OrdemServicoQueryParser
-from bson import ObjectId
-
 from ..models import ordem_servico_model
 from ..models.equipamento_model import Equipamento
+from bson import ObjectId
 from bson.json_util import dumps
-
+from datetime import datetime
 
 
 def listar_ordem_servico():
@@ -26,16 +23,6 @@ def listar_ordem_servico():
         docs.append(ordem)
 
     return dumps(docs)
-
-
-# def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
-#     try:
-#         ordem_servico = ordem_servico_model.OrdemServico.objects.get(
-#         numero_ordem_servico=numero_ordem_servico)
-#         if not ordem_servico is None:
-#             return ordem_servico.to_json()
-#     except:
-#         return None
 
 
 def listar_ordem_servico_by_id(_id):
@@ -69,11 +56,6 @@ def registrar_ordem_servico(body):
     body['updated_at'] = body.get('updated_at', datetime.now())
     # Falta criar a situação onde as datas vem vazias, Exemplo: updated_at: ''
     return ordem_servico_model.OrdemServico(**body).save()
-
-
-# def atualizar_ordem_servico(atualizacao, numero_ordem_servico):
-#     ordem_servico_model.OrdemServico.objects.get(
-#     id=numero_ordem_servico).update(**atualizacao)
 
 
 def atualizar_ordem_servico(_id, atualizacao):
@@ -115,22 +97,6 @@ def registrar_equipamento_foto(body):
     ordem_servico.updated_at = datetime.now()
     return ordem_servico.save()
 
-# todo Denis, eu acabei apagando esse metodo pq eu n vi ele sendo utilizado.
-#  Verificar
-
-# def registrar_equipamento_foto(body):
-#     equipamento = ordem_servico_model.OrdemServico()
-#     triagem = ordem_servico_model.Triagem()
-#     if 'foto_antes_limpeza' in body:
-#         triagem.foto_antes_limpeza = body['foto_antes_limpeza']
-#     else:
-#         triagem.foto_antes_limpeza = body['foto_apos_limpeza']
-#     equipamento.triagem = triagem
-#     equipamento.numero_ordem_servico = str(random.getrandbits(128))
-#     equipamento.created_at = datetime.now()
-#     equipamento.updated_at = datetime.now()
-#     return equipamento.save().to_json()
-
 
 def deletar_ordem_servico(_id):
     ordem_servico_model.OrdemServico.objects.get(id=_id).delete()
@@ -158,7 +124,6 @@ def atualizar_foto_ordem_servico(_id, atualizacao):
 
 def registrar_equipamento_vazio():
     id = ObjectId()
-    print(id)
     ordem_servico = ordem_servico_model.OrdemServico()
     ordem_servico.numero_ordem_servico = 'tmp_' + str(id)
     ordem_servico.id = id
