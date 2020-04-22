@@ -4,11 +4,12 @@ from flask_restful import Resource
 from api.schemas import equipamento_schema
 from api.services import equipamento_service
 from bson.json_util import dumps
-
 from api.utils.error_response import error_response
+from flasgger import swag_from
 
 
 class EquipamentoList(Resource):
+    @swag_from('../../documentacao/equipamento/equipamentos_get.yml')
     def get(self):
         body = request.args
         try:
@@ -26,6 +27,7 @@ class EquipamentoList(Resource):
         except:
             return error_response("Não foi possível encontrar equipamento com o parâmetro enviado")
 
+    @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
     def post(self):
         body = request.json
 
@@ -66,6 +68,7 @@ class EquipamentoList(Resource):
 
         return Response(resposta, mimetype="application/json", status=200)
 
+    @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
     def delete(self):
         body = request.args
         try:
@@ -84,12 +87,14 @@ class EquipamentoList(Resource):
         Response(jsonify({"ok": True}), mimetype="application/json", status=204)
 
 class EquipamentoDetail(Resource):
+    @swag_from('../../documentacao/equipamento/equipamento_get.yml')
     def get(self, _id):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrada..."), 404)
         return Response(equipamento, mimetype="application/json", status=200)
 
+    @swag_from('../../documentacao/equipamento/equipamento_put.yml')
     def put(self, _id):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
@@ -104,6 +109,7 @@ class EquipamentoDetail(Resource):
         equipamento_atualizado = equipamento_service.listar_equipamento_by_id(_id)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)
 
+    @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
     def delete(self, _id):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:

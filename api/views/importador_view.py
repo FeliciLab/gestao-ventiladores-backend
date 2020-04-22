@@ -4,8 +4,7 @@ from api.utils import importador
 from flasgger import swag_from
 
 class TriagemImportacao(Resource):
-    # tudo Denis atualizar swag
-    #@swag_from('../../documentacao/importacao/importacao_triagem.yml')
+    @swag_from('../../documentacao/importacao/importacao_triagem.yml')
     def post(self):
         body = request.json
         resultado_da_importacao_dt = importador.importar_triagem(body)
@@ -19,7 +18,7 @@ class TriagemImportacao(Resource):
 
 
 class DiagnosticoImportacao(Resource):
-    #@swag_from('../../documentacao/importacao/importacao_diagnostico.yml')
+    @swag_from('../../documentacao/importacao/importacao_diagnostico.yml')
     def post(self):
         body = request.json
         resultado_da_importacao_dt = importador.importar_diagnostino(body)

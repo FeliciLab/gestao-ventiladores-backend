@@ -1,8 +1,7 @@
-Cadastra uma nova ordem de compra.
+Atualiza uma ordem de compra específica conforme o id do documento passado.
 ---
 tags:
   - Ordem Compras
-
 parameters:
   - in: body
     name: OrdemCompra
@@ -15,7 +14,8 @@ parameters:
         items:
           type: string
 
-# Resposta
 responses:
   200:
-    description: Cadastra uma nova ordem de compra
+    description:
+    schema:
+      $ref: '#/definitions/OrdemCompra'

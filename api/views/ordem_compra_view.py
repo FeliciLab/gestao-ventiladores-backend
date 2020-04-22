@@ -5,6 +5,7 @@ from flasgger import swag_from
 
 # TODO verificar outra forma de validacao.
 class OrdemCompraList(Resource):
+    @swag_from('../../documentacao/ordem_compra/ordem_compras_get.yml')
     def get(self):
         """ Retorna todas as ordens de compra """
         ordem_compra_registrada = ordem_compra_service.listar_ordem_compras().to_json()
@@ -28,15 +29,18 @@ class OrdemCompraList(Resource):
             nova_ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(body['_id'])
         else:
             nova_ordem_compra = ordem_compra_service.registar_ordem_compra(body)
+            if "error" in nova_ordem_compra:
+                return jsonify(nova_ordem_compra)
         return jsonify({"_id": str(nova_ordem_compra.id)})
 
 class OrdemCompraDetail(Resource):
+    @swag_from('../../documentacao/ordem_compra/ordem_compra_get.yml')
     def get(self, _id):
         """ Retorna uma ordem de compra específica conforme o id passado """
         ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(_id).to_json()
         return Response(ordem_compra, mimetype="application/json", status=201)
 
-
+    @swag_from('../../documentacao/ordem_compra/ordem_compra_put.yml')
     def put(self, _id):
         """ Atualiza a ordem de compra """
         body = request.json
@@ -47,13 +51,14 @@ class OrdemCompraDetail(Resource):
         nova_ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(_id)
         return jsonify({"_id": str(nova_ordem_compra.id)})
 
-
+    @swag_from('../../documentacao/ordem_compra/ordem_compra_delete.yml')
     def delete(self, _id):
         """ Remover uma ordem de compra """
         ordem_compra_service.deletar_ordem_compra(_id)
         return jsonify({"ok": True})
 
 class OrdemCompraQuery(Resource):
+    #@swag_from('../../documentacao/ordem_compra/ordem_compra_find.yml')
     def post(self, _id):
         """ Retorna os dados da ordem de compra conforme os campos passados no body """
         body = request.json
