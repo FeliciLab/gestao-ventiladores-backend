@@ -5,16 +5,35 @@ from api.schemas import equipamento_schema
 from api.services import equipamento_service
 from bson.json_util import dumps
 
+from api.utils.error_response import error_response
 
-class EquipamentoList(Resource):
+
+class EquipamentoCrud(Resource):
     def get(self):
-        equipamentos = equipamento_service.listar_equipamentos()
-        return Response(equipamentos, mimetype="application/json", status=200)
+        body = request.args
+        try:
+            _id = body['_id']
+        except:
+            _id = False
+
+        if not _id:
+            equipamentos = equipamento_service.listar_equipamentos()
+            return Response(equipamentos.to_json(), mimetype="application/json", status=200)
+
+        try:
+            equipamento = equipamento_service.listar_equipamento_by_id(_id)
+            return Response(equipamento.to_json(), mimetype="application/json", status=200)
+        except:
+            return error_response("Não foi possível encontrar equipamento com o parâmetro enviado")
 
     def post(self):
         body = request.json
-        print(body)
-        # Verificar se o equipamento já existe?
+
+        try:
+            _id = body["_id"]
+        except:
+            _id = False
+
         erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
@@ -23,7 +42,7 @@ class EquipamentoList(Resource):
             body["numero_de_serie"]
         )
 
-        if equipamento_existente:
+        if not _id and equipamento_existente:
             return make_response(
                 jsonify({
                     "error": True,
@@ -33,11 +52,31 @@ class EquipamentoList(Resource):
                 400
             )
 
-        novo_equipamento_id = equipamento_service.registar_equipamento(body)
-        resposta = json.dumps({"_id": novo_equipamento_id})
+        if not _id:
+            novo_equipamento_id = equipamento_service.registar_equipamento(body)
+            resposta = json.dumps({"_id": novo_equipamento_id})
+        else:
+            equipamento_service.atualizar_equipamento(body, _id)
+            resposta = json.dumps({"_id": _id})
 
-        return Response(resposta, mimetype="application/json", status=201)
+        return Response(resposta, mimetype="application/json", status=200)
 
+    def delete(self):
+        body = request.args
+        try:
+            _id = body['_id']
+        except:
+            return error_response('Identificador não encontrado')
+
+        try:
+            equipamento = equipamento_service.listar_equipamento_by_id(_id)
+            if equipamento is None:
+                return error_response("Equipamento não encontrado.")
+        except:
+            return error_response("Não foi possível encontrar equipamento com o ID enviado.")
+
+        equipamento_service.deletar_equipamento(_id)
+        Response(jsonify({"ok": True}), mimetype="application/json", status=204)
 
 class EquipamentoDetail(Resource):
     def get(self, _id):
