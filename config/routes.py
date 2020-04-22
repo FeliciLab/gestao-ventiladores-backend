@@ -19,3 +19,4 @@ def initialize_routes(api):
     api.add_resource(fabricante_view.FabricanteDetail, '/api/fabricante/<fabricante_nome>')
 
     api.add_resource(ordem_compra_view.NumeroOrdemServicoList, '/api/ordem_compra')
+    api.add_resource(ordem_compra_view.NumeroOrdemServicoDetail, '/api/ordem_compra/<_id>')

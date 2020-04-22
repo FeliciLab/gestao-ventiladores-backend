@@ -1,0 +1,27 @@
+Cadastra uma nova ordem de compra.
+---
+tags:
+  - Ordem Compras
+definitions:
+  OrdemCompra:
+    type: object
+    properties:
+      numero_ordem_compra:
+        type: string
+      type: array
+      itens:
+        type: string
+
+parameters:
+  - in: body
+    name: OrdemServico
+    properties:
+      numero_ordem_compra:
+        type: string
+      itens:
+        type: array
+
+# Resposta
+responses:
+  200:
+    description: Cadastra uma nova ordem de compra

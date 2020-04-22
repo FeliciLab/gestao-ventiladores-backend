@@ -1,16 +1,12 @@
 from api.models import ordem_compra_model
 
 def listar_ordem_compras():
-    """
-        Retorna todas as ordens de compra
-    """
+    """ Retorna todas as ordens de compra """
     return ordem_compra_model.OrdemCompra.objects
 
 
 def listar_ordem_compra_by_id(id):
-    """
-        Retorna a ordem de compra pelo 'id'
-    """
+    """ Retorna a ordem de compra pelo 'id' """
     try:
         return ordem_compra_model.OrdemCompra.objects.get(id=id)
     except:
@@ -18,9 +14,7 @@ def listar_ordem_compra_by_id(id):
 
 
 def listar_ordem_compra_by_numero_ordem_compra(numero_ordem_compra):
-    """
-        Retorna a ordem de compra pelo 'numero_ordem_compra'
-    """
+    """ Retorna a ordem de compra pelo 'numero_ordem_compra """
     try:
         return ordem_compra_model.OrdemCompra.objects.get(numero_ordem_compra=numero_ordem_compra)
     except:
@@ -41,5 +35,13 @@ def registar_ordem_compra(body):
         numero_ordem_compra = str(qtd_ordem_compra + 1).zfill(4)
         body['numero_ordem_compra'] = numero_ordem_compra
         return ordem_compra_model.OrdemCompra(**body).save()
+
+def atualizar_ordem_compra(id, atualizacao):
+    """ Atualiza somnte o campo de itens """
+    ordem_compra_model.OrdemCompra.objects.get(id=id).update(itens=atualizacao['itens'])
+
+def deletar_ordem_compra(id):
+    """ Deleta uma ordem de compra """
+    ordem_compra_model.OrdemCompra.objects.get(id=id).delete()
 
 

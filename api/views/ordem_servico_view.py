@@ -1,11 +1,9 @@
 import json
-
+from flasgger import swag_from
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from ..schemas import ordem_servico_schema
 from ..services import ordem_servico_service, equipamento_service
-from flasgger import swag_from
-
 from ..utils.error_response import error_response
 
 
@@ -47,7 +45,7 @@ def validacao_itens(body):
 
 
 class OrdemServicoList(Resource):
-    @swag_from('../../documentacao/ordem_servico/ordem_servicos_get.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_compra_post.yml')
     def get(self):
         """
             Retorna todos as ordens de servico com o equipamento relacionado
@@ -56,7 +54,7 @@ class OrdemServicoList(Resource):
         return Response(ordem_servico, mimetype="application/json", status=200)
 
     # todo Denis atualizar essa url do swag
-    #@swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
     def post(self):
         """
             Cadastra uma nova ordem de servico - triagem ou
@@ -163,6 +161,9 @@ class OrdemServicoDetail(Resource):
 class OrdemServicoFind(Resource):
     @swag_from('../../documentacao/ordem_servico/ordem_servico_find.yml')
     def post(self):
+        """
+             Retorna todas as ordens de servico conforme o status que ela possui.
+        """
         body = request.json
         if "status" not in body:
             return make_response(jsonify("Não existe a chave status no body"), 404)
