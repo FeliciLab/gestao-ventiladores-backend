@@ -1,6 +1,6 @@
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
-#from ..schemas import ordem_compra_schema
+from ..schemas import ordem_compra_schema
 from ..services import ordem_compra_service
 
 class NumeroOrdemServicoList(Resource):

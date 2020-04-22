@@ -48,7 +48,7 @@ def validacao_itens(body):
 
 class OrdemServicoList(Resource):
     # todo Denis atualizar essa url do swag
-    @swag_from('../../documentacao/equipamento/equipamentos_get.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_servicos_get.yml')
     def get(self):
         """
             Retorna todos as ordens de servico com o equipamento relacionado
@@ -56,14 +56,14 @@ class OrdemServicoList(Resource):
         ordem_servico = ordem_servico_service.listar_ordem_servico()
         return Response(ordem_servico, mimetype="application/json", status=200)
 
-    """
-        Cadastra uma nova ordem de servico - triagem ou
-        Cadastra uma nova ordem de servico - triagem e diagnostico
-        Adiciona um novo diagnostico ou
-    """
     # todo Denis atualizar essa url do swag
-    @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
+    #@swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
     def post(self):
+        """
+            Cadastra uma nova ordem de servico - triagem ou
+            Cadastra uma nova ordem de servico - triagem e diagnostico
+            Adiciona um novo diagnostico ou
+        """
         body = request.json
         try:
             _id = body["_id"]
@@ -138,7 +138,7 @@ class OrdemServicoList(Resource):
 
 class OrdemServicoDetail(Resource):
     # todo Denis atualizar essa url do swag
-    @swag_from('../../documentacao/equipamento/equipamento_get.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_get.yml')
     def get(self, _id):
         ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
         if ordem_servico is None:
@@ -146,7 +146,7 @@ class OrdemServicoDetail(Resource):
         return Response(ordem_servico.to_json(), mimetype="application/json", status=200)
 
     # todo Denis atualizar essa url do swag
-    @swag_from('../../documentacao/equipamento/equipamento_put.yml')
+    #@swag_from('../../documentacao/ordem_servico/ordem_servico_put.yml')
     def put(self, _id):
         ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
 
@@ -173,7 +173,7 @@ class OrdemServicoDetail(Resource):
         return Response(ordem_servico_atualizado, mimetype="application/json", status=200)
 
     # todo Denis atualizar essa url do swag
-    @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
+    #@swag_from('../../documentacao/ordem_servico/ordem_servico_delete.yml')
     def delete(self, _id):
         ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
         if ordem_servico is None:
@@ -185,7 +185,7 @@ class OrdemServicoDetail(Resource):
 
 class OrdemServicoFind(Resource):
     # todo Denis atualizar essa url do swag
-    @swag_from('../../documentacao/equipamento/equipamento_find.yml')
+    #@swag_from('../../documentacao/ordem_servico/ordem_servico_find.yml')
     def post(self):
         body = request.json
         if "status" not in body:
