@@ -13,7 +13,7 @@ class EquipamentoList(Resource):
 
     def post(self):
         body = request.json
-
+        print(body)
         # Verificar se o equipamento já existe?
         erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
         if erro_equipamento:
@@ -49,7 +49,7 @@ class EquipamentoDetail(Resource):
     def put(self, _id):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
-            return make_response(jsonify("Equipamento não encontrada..."), 404)
+            return make_response(jsonify("Equipamento não encontrada..."), 400)
 
         body = request.get_json()
         erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
@@ -63,7 +63,7 @@ class EquipamentoDetail(Resource):
     def delete(self, _id):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
-            return make_response(jsonify("Equipamento não encontrado..."), 404)
+            return make_response(jsonify("Equipamento não encontrado..."), 400)
         equipamento_service.deletar_equipamento(_id)
         return make_response('', 204)
 

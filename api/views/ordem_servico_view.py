@@ -38,7 +38,7 @@ def validacao_acessorios(body):
             return make_response(jsonify(erro_acessorio), 400)
 
 
-def validacao_itens(body):
+def estado_de_conservacaoestado_de_conservacaovalidacao_itens(body):
     ei = ordem_servico_schema.ItemSchema()
     for item in body["diagnostico"]["itens"]:
         erro_item = ei.validate(item)
@@ -80,10 +80,11 @@ class OrdemServicoList(Resource):
         except:
             return error_response("ID do equipamento inválido ou não enviado")
 
+
         ordem_servico_cadastrado = \
             ordem_servico_service \
                 .listar_ordem_servico_by_numero_ordem_servico(ordem_servico)
-        if ordem_servico_cadastrado:
+        if not _id and ordem_servico_cadastrado:
             return error_response("Ordem de Serviço já cadastrada.")
 
         if 'triagem' in body and 'diagnostico' in body:
@@ -105,7 +106,7 @@ class OrdemServicoList(Resource):
 
 
         try:
-            equipamento = equipamento_service.listar_equipamento(equipamento_id)
+            equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
         except:
             return error_response("ID do equipamento inválido")
 
@@ -113,6 +114,11 @@ class OrdemServicoList(Resource):
             return error_response("Equipamento não encontrado")
 
         body["equipamento_id"] = equipamento
+
+        try:
+            del body["_id"]
+        except KeyError:
+            print("_id não está presente no body")
 
         if _id:
             ordem_servico_service.atualizar_ordem_servico(str(ordem_servico_cadastrado.id), body)

@@ -2,9 +2,9 @@ from api.models import equipamento_model
 
 
 def listar_equipamentos():
-    return equipamento_model.Equipamento.objects
+    return equipamento_model.Equipamento.objects()
 
-def listar_equipamento(_id):
+def listar_equipamento_by_id(_id):
     return equipamento_model.Equipamento.objects(id=_id).first()
 
 

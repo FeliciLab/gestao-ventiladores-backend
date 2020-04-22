@@ -39,10 +39,10 @@ def importar_triagem(triagem_body):
 
                 if equipamento is None: # Equipamento nunca foi importador
                     equipamento_id = equipamento_service.registar_equipamento(equipamento_body)
-                    equipamento = equipamento_service.listar_equipamento(equipamento_id)
+                    equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
                 else: # Equipamento já foi importado
                     equipamento_service.atualizar_equipamento(equipamento_body, equipamento.id)
-                    equipamento = equipamento_service.listar_equipamento(equipamento.id)
+                    equipamento = equipamento_service.listar_equipamento_by_id(equipamento.id)
 
                 __insert_or_update_fabricante_db(linha)
 

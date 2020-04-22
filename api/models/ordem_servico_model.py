@@ -17,13 +17,13 @@ class Triagem(db.EmbeddedDocument):
     foto_apos_limpeza = db.StringField(required=False)
 
 class Item(db.EmbeddedDocument):
-    quantidade = db.IntField(required=True)
+    fabricante = db.StringField(required=False)
+    codigo = db.StringField(required=False)
     nome = db.StringField(required=True)
-    tipo = db.StringField(required=True)
-    descricao = db.StringField(required=True)
-    valor = db.FloatField(required=True)
-    prioridade = db.StringField(required=True)
     unidade_medida = db.StringField(required=True)
+    quantidade = db.IntField(required=True)
+    tipo = db.StringField(required=True)
+    descricao = db.StringField(required=False)
 
 
 class Diagnostico(db.EmbeddedDocument):
