@@ -1,4 +1,5 @@
 from api.models import ordem_compra_model
+from ..utils.query_parser import OrdemServicoQueryParser
 
 def listar_ordem_compras():
     """ Retorna todas as ordens de compra """
@@ -44,4 +45,13 @@ def deletar_ordem_compra(id):
     """ Deleta uma ordem de compra """
     ordem_compra_model.OrdemCompra.objects.get(id=id).delete()
 
+def ordem_compra_queries(body):
 
+    parsed_query_dt = OrdemServicoQueryParser.parse(body["where"])
+
+    if not "select" in body:
+        body["select"] = []
+
+    filted_ordem_compra_list = ordem_compra_model.OrdemCompra.objects(__raw__=parsed_query_dt).only(*body["select"])
+
+    return filted_ordem_compra_list.to_json()

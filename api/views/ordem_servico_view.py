@@ -45,7 +45,7 @@ def validacao_itens(body):
 
 
 class OrdemServicoList(Resource):
-    @swag_from('../../documentacao/ordem_servico/ordem_compra_post.yml')
+    #@swag_from('../../documentacao/ordem_servico/ordem_compra_post.yml')
     def get(self):
         """
             Retorna todos as ordens de servico com o equipamento relacionado
@@ -54,7 +54,7 @@ class OrdemServicoList(Resource):
         return Response(ordem_servico, mimetype="application/json", status=200)
 
     # todo Denis atualizar essa url do swag
-    @swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
+    ##@swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
     def post(self):
         """
             Cadastra uma nova ordem de servico - triagem ou
@@ -134,7 +134,7 @@ class OrdemServicoList(Resource):
 
 
 class OrdemServicoDetail(Resource):
-    @swag_from('../../documentacao/ordem_servico/ordem_servico_get.yml')
+    ##@swag_from('../../documentacao/ordem_servico/ordem_servico_get.yml')
     def get(self, _id):
         """
             Retorna uma ordem de serviço específica conforme o id do documento repassado.
@@ -145,7 +145,7 @@ class OrdemServicoDetail(Resource):
         return Response(ordem_servico.to_json(), mimetype="application/json", status=200)
 
 
-    @swag_from('../../documentacao/ordem_servico/ordem_servico_delete.yml')
+    ##@swag_from('../../documentacao/ordem_servico/ordem_servico_delete.yml')
     def delete(self, _id):
         """
              Deleta uma ordem de serviço específica conforme o id do documento repassado.
@@ -159,7 +159,7 @@ class OrdemServicoDetail(Resource):
 
 
 class OrdemServicoFind(Resource):
-    @swag_from('../../documentacao/ordem_servico/ordem_servico_find.yml')
+    #@swag_from('../../documentacao/ordem_servico/ordem_servico_find.yml')
     def post(self):
         """
              Retorna todas as ordens de servico conforme o status que ela possui.
