@@ -120,21 +120,21 @@ class OrdemServicoList(Resource):
         except KeyError:
             print("_id não está presente no body")
 
-        if _id:
-            ordem_servico_service.atualizar_ordem_servico(str(ordem_servico_cadastrado.id), body)
-
+        if not _id:
+            novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
             return Response(
-                json.dumps({"_id": _id}),
+                json.dumps({"_id": str(novo_ordem_servico.id)}),
                 mimetype="application/json",
-                status=200
+                status=201
             )
 
-        novo_ordem_servico = ordem_servico_service.registrar_ordem_servico(body)
+        ordem_servico_service.atualizar_ordem_servico(_id, body)
         return Response(
-            json.dumps({"_id": str(novo_ordem_servico.id)}),
+            json.dumps({"_id": _id}),
             mimetype="application/json",
-            status=201
+            status=200
         )
+
 
 class OrdemServicoDetail(Resource):
     # todo Denis atualizar essa url do swag
