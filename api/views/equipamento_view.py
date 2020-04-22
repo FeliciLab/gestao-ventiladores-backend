@@ -52,6 +52,11 @@ class EquipamentoCrud(Resource):
                 400
             )
 
+        try:
+            del body["_id"]
+        except KeyError:
+            print("_id não está presente no body")
+
         if not _id:
             novo_equipamento_id = equipamento_service.registar_equipamento(body)
             resposta = json.dumps({"_id": novo_equipamento_id})

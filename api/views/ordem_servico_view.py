@@ -38,7 +38,7 @@ def validacao_acessorios(body):
             return make_response(jsonify(erro_acessorio), 400)
 
 
-def estado_de_conservacaoestado_de_conservacaovalidacao_itens(body):
+def validacao_itens(body):
     ei = ordem_servico_schema.ItemSchema()
     for item in body["diagnostico"]["itens"]:
         erro_item = ei.validate(item)
