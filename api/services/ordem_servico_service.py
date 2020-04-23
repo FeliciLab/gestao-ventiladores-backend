@@ -19,7 +19,8 @@ def listar_ordem_servico():
     ]
 
     docs = []
-    for ordem in ordem_servico_model.OrdemServico.objects(status__ne='tmp').aggregate(pipeline):
+    for ordem in ordem_servico_model.OrdemServico.objects(
+            status__ne='tmp').aggregate(pipeline):
         docs.append(ordem)
 
     return dumps(docs)
@@ -30,23 +31,18 @@ def listar_ordem_servico_by_id(_id):
 
 
 def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
-    try:
-        ordem_servico = ordem_servico_model.OrdemServico.objects.get(
-            numero_ordem_servico=numero_ordem_servico)
-        if not ordem_servico is None:
-            return ordem_servico
-    except:
-        return None
+    return ordem_servico_model.OrdemServico.objects(
+        numero_ordem_servico=numero_ordem_servico).first()
 
 
 def ordem_servico_queries(body):
-
     parsed_query_dt = OrdemServicoQueryParser.parse(body["where"])
 
     if not "select" in body:
         body["select"] = []
 
-    filted_ordem_servico_list = ordem_servico_model.OrdemServico.objects(__raw__=parsed_query_dt).only(*body["select"])
+    filted_ordem_servico_list = ordem_servico_model.OrdemServico.objects(
+        __raw__=parsed_query_dt).only(*body["select"])
 
     return filted_ordem_servico_list.to_json()
 
