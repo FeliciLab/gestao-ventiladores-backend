@@ -18,6 +18,6 @@ class OrdemCompraSchema(Schema):
         fields = ("numero_ordem_compra", "itens")
 
     numero_ordem_compra = fields.String(required=False)
-    itens = fields.List(fields.Nested(Item), required=False)
+    itens = fields.List(required=False)
 
 
