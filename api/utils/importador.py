@@ -1,6 +1,8 @@
 import json
 
 import pandas as pd
+
+from .error_response import error_response
 from ..schemas import ordem_servico_schema
 from ..services import fabricante_service, ordem_servico_service, equipamento_service
 import numpy as np
@@ -8,82 +10,86 @@ from datetime import datetime
 
 
 def importar_triagem(triagem_body):
-    try:
-        if "url" in triagem_body:
-            i = 0
-            url = triagem_body["url"]
-            triagens_df = pd.read_csv(url)
-            triagens_df = triagens_df.replace(np.nan, '', regex=True)
+    # try:
+    if not "url" in triagem_body:
+        return error_response("URL não informada")
 
-            for index_linha, linha in triagens_df.iterrows():
+    i = 0
+    url = triagem_body["url"]
+    triagens_df = pd.read_csv(url)
+    triagens_df = triagens_df.replace(np.nan, '', regex=True)
 
-                numero_de_serie = linha["Informe o número de série:"]
-                equipamento_body = {
-                    "numero_de_serie": linha["Informe o número de série:"],
-                    "nome_equipamento": "",  # it field does not exist in csv
-                    "numero_do_patrimonio": str(linha["Se público, informe o número do patrimônio:"]),
-                    "tipo": linha["Selecione o tipo do equipamento:"],
-                    "marca": linha["Selecione a marca do equipamento:"],
-                    "modelo": linha["Selecione o modelo do equipamento"],
-                    "fabricante": linha["Selecione a marca do equipamento:"],
-                    "municipio_origem": linha["Informe Cidade de origem: "],
-                    "nome_instituicao_origem": linha["Informe o nome da instituição de origem:"],
-                    "tipo_instituicao_origem": linha["Selecione a unidade de origem do equipamento:"],
-                    "nome_responsavel": linha["Informe o responsável e o contato da institução de origem:"],
-                    "contato_responsavel": "",  # it field does not exist in csv
-                    "created_at": __transformando_data(linha["Carimbo de data/hora"]),
-                    "updated_at": __transformando_data(linha["Carimbo de data/hora"]),
-                }
+    for index_linha, linha in triagens_df.iterrows():
 
-                equipamento = equipamento_service.listar_equipamento_by_numero_de_serie(numero_de_serie)
+        numero_de_serie = linha["Informe o número de série:"]
+        equipamento_body = {
+            "numero_de_serie": linha["Informe o número de série:"],
+            "nome_equipamento": "",  # it field does not exist in csv
+            "numero_do_patrimonio": str(linha["Se público, informe o número do patrimônio:"]),
+            "tipo": linha["Selecione o tipo do equipamento:"],
+            "marca": linha["Selecione a marca do equipamento:"],
+            "modelo": linha["Selecione o modelo do equipamento"],
+            "fabricante": linha["Selecione a marca do equipamento:"],
+            "municipio_origem": linha["Informe Cidade de origem: "],
+            "nome_instituicao_origem": linha["Informe o nome da instituição de origem:"],
+            "tipo_instituicao_origem": linha["Selecione a unidade de origem do equipamento:"],
+            "nome_responsavel": linha["Informe o responsável e o contato da institução de origem:"],
+            "contato_responsavel": "",  # it field does not exist in csv
+            "created_at": __transformando_data(linha["Carimbo de data/hora"]),
+            "updated_at": __transformando_data(linha["Carimbo de data/hora"]),
+        }
 
-                if equipamento is None: # Equipamento nunca foi importador
-                    equipamento_id = equipamento_service.registar_equipamento(equipamento_body)
-                    equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
-                else: # Equipamento já foi importado
-                    equipamento_service.atualizar_equipamento(equipamento_body, equipamento.id)
-                    equipamento = equipamento_service.listar_equipamento_by_id(equipamento.id)
+        equipamento = equipamento_service.listar_equipamento_by_numero_de_serie(numero_de_serie)
 
-                __insert_or_update_fabricante_db(linha)
+        if equipamento is None: # Equipamento nunca foi importador
+            equipamento_id = equipamento_service.registar_equipamento(equipamento_body)
+            equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
+        else: # Equipamento já foi importado
+            equipamento_service.atualizar_equipamento(equipamento_body, equipamento.id)
+            equipamento = equipamento_service.listar_equipamento_by_id(equipamento.id)
 
-                triagem_body = {
-                    "equipamento_id": equipamento,# Aqui deveria ser equipamento.id ?
-                    "numero_ordem_servico": str(linha["Número da Ordem de Serviço"]).zfill(4),
-                    "created_at": __transformando_data(linha["Carimbo de data/hora"]),
-                    "updated_at": __transformando_data(linha["Carimbo de data/hora"]),
-                    "status": "triagem",
-                    "triagem": {
-                        "estado_de_conservacao": linha["Selecione o estado de conservação do equipamento"],
-                        "foto_antes_limpeza": __get_url_da_primeira_foto(
-                            linha["Fotografe o equipamento no momento da chegada: "]),
-                        "foto_apos_limpeza": __get_url_da_primeira_foto("Fotografe o equipamento após a limpeza: "),
-                        "acessorios": __get_acessorios(
-                            linha["Selecione os acessórios do equipamento que o acompanha:"]),
-                    }
-                }
+        __insert_or_update_fabricante_db(linha)
 
-                es = ordem_servico_schema.OrdemServicoSchema()
-                et = ordem_servico_schema.TriagemSchema()
-                ea = ordem_servico_schema.AcessorioSchema()
-                erro_equipamento = es.validate(triagem_body)
-                erro_triagem = et.validate(triagem_body["triagem"])
-                if erro_equipamento:
-                    return {'validate': erro_equipamento}
-                elif erro_triagem:
-                    return {'validate': erro_triagem}
-                for acessorio in triagem_body["triagem"]["acessorios"]:
-                    if ea.validate(acessorio):
-                        return {'validate': acessorio}
+        triagem_body = {
+            "equipamento_id": equipamento,# Aqui deveria ser equipamento.id ?
+            "numero_ordem_servico": str(linha["Número da Ordem de Serviço"]).zfill(4),
+            "created_at": __transformando_data(linha["Carimbo de data/hora"]),
+            "updated_at": __transformando_data(linha["Carimbo de data/hora"]),
+            "status": "triagem",
+            "triagem": {
+                "estado_de_conservacao": linha["Selecione o estado de conservação do equipamento"],
+                "foto_antes_limpeza": __get_url_da_primeira_foto(
+                    linha["Fotografe o equipamento no momento da chegada: "]),
+                "foto_apos_limpeza": __get_url_da_primeira_foto("Fotografe o equipamento após a limpeza: "),
+                "acessorios": __get_acessorios(
+                    linha["Selecione os acessórios do equipamento que o acompanha:"]),
+            }
+        }
 
-                ordem_servico_ja_cadastrado = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(triagem_body['numero_ordem_servico'])
+        es = ordem_servico_schema.OrdemServicoSchema()
+        et = ordem_servico_schema.TriagemSchema()
+        ea = ordem_servico_schema.AcessorioSchema()
+        erro_equipamento = es.validate(triagem_body)
+        erro_triagem = et.validate(triagem_body["triagem"])
 
-                if ordem_servico_ja_cadastrado:
-                    ordem_servico_service.atualizar_ordem_servico_importacao(ordem_servico_ja_cadastrado.id, triagem_body)
-                else:
-                    ordem_servico_service.registrar_ordem_servico(triagem_body)
+        if erro_equipamento:
+            return {'validate': erro_equipamento}
+        elif erro_triagem:
+            return {'validate': erro_triagem}
+        for acessorio in triagem_body["triagem"]["acessorios"]:
+            if ea.validate(acessorio):
+                return {'validate': acessorio}
 
-    except Exception:
-        return {"erro": Exception.__traceback__}
+        ordem_servico_ja_cadastrado = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(triagem_body['numero_ordem_servico'])
+        print(triagem_body)
+        print(ordem_servico_ja_cadastrado)
+        if ordem_servico_ja_cadastrado:
+            ordem_servico_service.atualizar_ordem_servico_importacao(ordem_servico_ja_cadastrado.id, triagem_body)
+        else:
+            ordem_servico_service.registrar_ordem_servico(triagem_body)
+
+    # except Exception:
+    #     return {"erro": Exception.__traceback__}
 
     return {"ok": "Importacao realizada com sucesso!"}
 
@@ -260,8 +266,6 @@ def __get_acessorios_extras(acessorios_extras_string):
                 "nome": acessorio_extra_nome.strip(),
                 "tipo": "acessorio",
                 "descricao": "",
-                "valor": 0.0,
-                "prioridade": "baixa",
                 "unidade_medida": ""
             }
         )
@@ -284,8 +288,6 @@ def __get_itens(item_string):
                 "nome": nome.strip(),
                 "tipo": "pecas",
                 "descricao": "",
-                "valor": 0.0,
-                "prioridade": "baixa",
                 "quantidade": 1,
                 "unidade_medida": ""
             }
