@@ -1,0 +1,19 @@
+Retorna todas as ordens de compras já cadastradas.
+---
+tags:
+  - Ordem Compras
+
+definitions:
+  OrdemCompra:
+    type: object
+    properties:
+      numero_ordem_compra:
+        type: string
+      type: array
+      itens:
+        type: string
+
+# Resposta
+responses:
+  200:
+    description: Retorna todas as ordens de compras

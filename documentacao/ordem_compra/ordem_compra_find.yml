@@ -1,0 +1,12 @@
+Retorna todas as ordens de compras confome a query passada.
+---
+tags:
+  - Ordem Compras
+
+parameters:
+  - in: body
+      name: OrdemCompra
+
+responses:
+  200:
+    description: Retorna os dados da ordem de servico registrada

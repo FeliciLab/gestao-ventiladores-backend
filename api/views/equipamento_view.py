@@ -1,80 +1,119 @@
+import json
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
-from ..schemas import equipamento_schema
-from ..services import equipamento_service
+from api.schemas import equipamento_schema
+from api.services import equipamento_service
+from bson.json_util import dumps
+from api.utils.error_response import error_response
 from flasgger import swag_from
 
 
 class EquipamentoList(Resource):
     @swag_from('../../documentacao/equipamento/equipamentos_get.yml')
     def get(self):
-        equipamentos = equipamento_service.listar_equipamentos()
-        return Response(equipamentos, mimetype="application/json", status=200)
+        body = request.args
+        try:
+            _id = body['_id']
+        except:
+            _id = False
+
+        if not _id:
+            equipamentos = equipamento_service.listar_equipamentos()
+            return Response(equipamentos.to_json(), mimetype="application/json", status=200)
+
+        try:
+            equipamento = equipamento_service.listar_equipamento_by_id(_id)
+            return Response(equipamento.to_json(), mimetype="application/json", status=200)
+        except:
+            return error_response("Não foi possível encontrar equipamento com o parâmetro enviado")
 
     @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
     def post(self):
         body = request.json
-        equipamento_cadatrado = equipamento_service.listar_equipamento_id(body['numero_ordem_servico'])
-        if equipamento_cadatrado:
-            return make_response(jsonify("Equipamento já cadastrado..."), 403)
-        es = equipamento_schema.EquipamentoSchema()
-        et = equipamento_schema.TriagemSchema()
-        ea = equipamento_schema.AcessorioSchema()
-        erro_equipamento = es.validate(body)
-        erro_triagem = et.validate(body["triagem"])
+
+        try:
+            _id = body["_id"]
+        except:
+            _id = False
+
+        erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
-        elif erro_triagem:
-            return make_response(jsonify(erro_triagem), 400)
-        for acessorio in body["triagem"]["acessorios"]:
-            if ea.validate(acessorio):
-                return make_response(jsonify(ea.validate(acessorio)), 400)
-        novo_equipamento = equipamento_service.registrar_equipamento(body)
-        return Response(novo_equipamento, mimetype="application/json", status=201)
 
+        equipamento_existente = equipamento_service.consultar_numero_de_serie(
+            body["numero_de_serie"]
+        )
+
+        if not _id and equipamento_existente:
+            return make_response(
+                jsonify({
+                    "error": True,
+                    "message": "Número de série já cadastrado",
+                    "equipamento": dumps(equipamento_existente)
+                }),
+                400
+            )
+
+        try:
+            del body["_id"]
+        except KeyError:
+            print("_id não está presente no body")
+
+        if not _id:
+            novo_equipamento_id = equipamento_service.registar_equipamento(body)
+            resposta = json.dumps({"_id": novo_equipamento_id})
+        else:
+            equipamento_service.atualizar_equipamento(body, _id)
+            resposta = json.dumps({"_id": _id})
+
+        return Response(resposta, mimetype="application/json", status=200)
+
+    @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
+    def delete(self):
+        body = request.args
+        try:
+            _id = body['_id']
+        except:
+            return error_response('Identificador não encontrado')
+
+        try:
+            equipamento = equipamento_service.listar_equipamento_by_id(_id)
+            if equipamento is None:
+                return error_response("Equipamento não encontrado.")
+        except:
+            return error_response("Não foi possível encontrar equipamento com o ID enviado.")
+
+        equipamento_service.deletar_equipamento(_id)
+        Response(jsonify({"ok": True}), mimetype="application/json", status=204)
 
 class EquipamentoDetail(Resource):
     @swag_from('../../documentacao/equipamento/equipamento_get.yml')
-    def get(self, numero_ordem_servico):
-        equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
+    def get(self, _id):
+        equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
-            return make_response(jsonify("Equipamento não encontrado..."), 404)
+            return make_response(jsonify("Equipamento não encontrada..."), 404)
         return Response(equipamento, mimetype="application/json", status=200)
 
     @swag_from('../../documentacao/equipamento/equipamento_put.yml')
-    def put(self, numero_ordem_servico):
-        id = numero_ordem_servico
-        equipamento = equipamento_service.listar_equipamento(id)
+    def put(self, _id):
+        equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
-            return make_response(jsonify("Equipamento não encontrado..."), 404)
+            return make_response(jsonify("Equipamento não encontrada..."), 400)
+
         body = request.get_json()
-        if 'diagnostico' in body:
-            erro_diagnostico = equipamento_schema.DiagnosticoSchema().validate(body['diagnostico'])
-            if erro_diagnostico:
-                return make_response(jsonify(erro_diagnostico), 400)
-            if 'itens' in body['diagnostico']:
-                for itens in body['diagnostico']['itens']:
-                    item = equipamento_schema.ItemSchema().validate(itens)
-                    if item:
-                        return make_response(jsonify(item), 400)
-        equipamento_service.atualizar_equipamento_by_id(body, id)
-        equipamento_atualizado = equipamento_service.listar_equipamento(id)
+        erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
+        if erro_equipamento:
+            return make_response(jsonify(erro_equipamento), 400)
+
+        equipamento_service.atualizar_equipamento(body, _id)
+        equipamento_atualizado = equipamento_service.listar_equipamento_by_id(_id)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)
 
     @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
-    def delete(self, numero_ordem_servico):
-        equipamento = equipamento_service.listar_equipamento_id(numero_ordem_servico)
+    def delete(self, _id):
+        equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
-            return make_response(jsonify("Equipamento não encontrado..."), 404)
-        equipamento_service.deletar_equipamento(numero_ordem_servico)
+            return make_response(jsonify("Equipamento não encontrado..."), 400)
+        equipamento_service.deletar_equipamento(_id)
         return make_response('', 204)
 
-
-class EquipamentoFind(Resource):
-    @swag_from('../../documentacao/equipamento/equipamento_find.yml')
-    def post(self):
-        body = request.json
-        if "status" not in body:
-            return make_response(jsonify("Não existe a chave status no body"), 404)
-        equipamentos = equipamento_service.lista_equipamentos_status(body['status'])
-        return Response(equipamentos, mimetype="application/json", status=200)

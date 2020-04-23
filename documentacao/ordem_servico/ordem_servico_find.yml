@@ -1,0 +1,16 @@
+Retorna todas as ordens de servicos confome o status passado (triagem ou diagnostico).
+---
+tags:
+  - Ordem Servicos
+
+parameters:
+  - in: body
+    name: OrdemServico
+    description: Aonde está escrito string, você pode editar, passando o status triagem ou diagnostico.
+    properties:
+      status:
+        type: string
+
+responses:
+  200:
+    description: Retorna os dados da ordem de servico registrada

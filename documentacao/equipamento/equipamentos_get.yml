@@ -6,73 +6,37 @@ definitions:
   Equipamento:
     type: object
     properties:
-      triagem:
-        type: object
-        $ref: '#/definitions/Triagem'
-
       created_at:
         type: string
-
       updated_at:
-        type: string
-
-      numero_ordem_servico:
-        type: string
-
-      status:
-        type: string
-
-  Acessorio:
-    type: object
-    properties:
-      descricao:
-        type: string
-      acompanha:
-        type: string
-      quantidade:
-        type: string
-      estado_de_conservacao:
-        type: string
-
-  Triagem:
-    type: object
-    properties:
-      nome_equipamento:
-        type: string
-      foto_equipamento_chegada:
-        type: string
-      tipo:
-        type: string
-      unidade_de_origem:
-        type: string
-      numero_do_patrimonio:
         type: string
       numero_de_serie:
         type: string
-      instituicao_de_origem:
+      nome_equipamento:
         type: string
-      nome_responsavel:
+      status:
         type: string
-      contato_responsavel:
+      numero_do_patrimonio:
         type: string
-      estado_de_conservacao:
-        type: string
-      fabricante:
+      tipo:
         type: string
       marca:
         type: string
       modelo:
         type: string
-      acessorios:
-        type: array
-        items:
-          $ref: '#/definitions/Acessorio'
-      foto_apos_limpeza:
+      fabricante:
         type: string
-      observacao:
+      municipio_origem:
         type: string
-      responsavel_pelo_preenchimento:
+      nome_instituicao_origem:
         type: string
+      tipo_instituicao_origem:
+        type: string
+      nome_responsavel:
+        type: string
+      contato_responsavel:
+        type: string
+
 
 # Resposta
 responses:
