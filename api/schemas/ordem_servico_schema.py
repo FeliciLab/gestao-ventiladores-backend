@@ -12,10 +12,10 @@ class OrdemServicoSchema(Schema):
             "foto_equipamento_chegada",
             "status")
 
-    numero_ordem_servico = fields.String(required=True)
+    numero_ordem_servico = fields.String(required=False)
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)
-    triagem = fields.Dict(required=True)
+    triagem = fields.Dict(required=False)
     diagnostico = fields.Dict(required=False)
     status = fields.String(required=False)
 
@@ -58,12 +58,12 @@ class DiagnosticoSchema(Schema):
                   "acao_orientacao", "observacoes",
                   "itens", "acessorios")
 
-    resultado_tecnico = fields.String(required=True)
-    demanda_servicos = fields.String(required=True)
-    demanda_insumos = fields.String(required=True)
-    acao_orientacao = fields.String(required=True)
-    observacoes = fields.String(required=True)
-    itens = fields.List(fields.Dict, required=True)
+    resultado_tecnico = fields.String(required=False)
+    demanda_servicos = fields.String(required=False)
+    demanda_insumos = fields.String(required=False)
+    acao_orientacao = fields.String(required=False)
+    observacoes = fields.String(required=False)
+    itens = fields.List(fields.Dict, required=False)
 
 
 class ItemSchema(Schema):
@@ -71,13 +71,13 @@ class ItemSchema(Schema):
         model = ordem_servico_model.Item
         fields = ("nome", "tipo", "quantidade", "descricao", "unidade_medida", "fabricante", "codigo")
 
-    tipo = fields.String(required=True)
-    fabricante = fields.String(required=True)
-    codigo = fields.String(required=True)
-    nome = fields.String(required=True)
-    unidade_medida = fields.String(required=True)
-    quantidade = fields.Integer(required=True)
-    descricao = fields.String(required=True)
+    tipo = fields.String(required=False)
+    fabricante = fields.String(required=False)
+    codigo = fields.String(required=False)
+    nome = fields.String(required=False)
+    unidade_medida = fields.String(required=False)
+    quantidade = fields.Integer(required=False)
+    descricao = fields.String(required=False)
 
 
 class AcessorioSchema(Schema):
@@ -87,7 +87,7 @@ class AcessorioSchema(Schema):
             "descricao", "acompanha", "quantidade", "estado_de_conservacao"
         )
 
-    descricao = fields.String(required=True)
-    acompanha = fields.Boolean(required=True)
-    quantidade = fields.Integer(required=True)
-    estado_de_conservacao = fields.String(required=True)
+    descricao = fields.String(required=False)
+    acompanha = fields.Boolean(required=False)
+    quantidade = fields.Integer(required=False)
+    estado_de_conservacao = fields.String(required=False)

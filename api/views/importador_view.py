@@ -9,7 +9,7 @@ class TriagemImportacao(Resource):
         body = request.json
         resultado_da_importacao_dt = importador.importar_triagem(body)
         print(resultado_da_importacao_dt)
-        if "ok" in resultado_da_importacao_dt.keys():
+        if resultado_da_importacao_dt and "ok" in resultado_da_importacao_dt.keys():
             return make_response(jsonify("Importacao com sucesso..."), 200)
         elif "validate" in resultado_da_importacao_dt:
             return make_response(jsonify(resultado_da_importacao_dt["validate"]), 400)

@@ -41,14 +41,14 @@ def importar_triagem(triagem_body):
 
         equipamento = equipamento_service.listar_equipamento_by_numero_de_serie(numero_de_serie)
 
-        if equipamento is None: # Equipamento nunca foi importador
+        if equipamento == None: # Equipamento nunca foi importador
             equipamento_id = equipamento_service.registar_equipamento(equipamento_body)
             equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
         else: # Equipamento já foi importado
             equipamento_service.atualizar_equipamento(equipamento_body, equipamento.id)
             equipamento = equipamento_service.listar_equipamento_by_id(equipamento.id)
 
-        __insert_or_update_fabricante_db(linha)
+        # __insert_or_update_fabricante_db(linha)
 
         triagem_body = {
             "equipamento_id": equipamento,# Aqui deveria ser equipamento.id ?
@@ -69,6 +69,7 @@ def importar_triagem(triagem_body):
         es = ordem_servico_schema.OrdemServicoSchema()
         et = ordem_servico_schema.TriagemSchema()
         ea = ordem_servico_schema.AcessorioSchema()
+
         erro_equipamento = es.validate(triagem_body)
         erro_triagem = et.validate(triagem_body["triagem"])
 
@@ -81,15 +82,15 @@ def importar_triagem(triagem_body):
                 return {'validate': acessorio}
 
         ordem_servico_ja_cadastrado = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(triagem_body['numero_ordem_servico'])
-        print(triagem_body)
+        # print(triagem_body)
+
         print(ordem_servico_ja_cadastrado)
         if ordem_servico_ja_cadastrado:
+            print('well')
             ordem_servico_service.atualizar_ordem_servico_importacao(ordem_servico_ja_cadastrado.id, triagem_body)
         else:
+            print('what')
             ordem_servico_service.registrar_ordem_servico(triagem_body)
-
-    # except Exception:
-    #     return {"erro": Exception.__traceback__}
 
     return {"ok": "Importacao realizada com sucesso!"}
 
@@ -101,7 +102,7 @@ def __transformando_data(data):
 
 
 def __get_acessorios(acessorios_string):
-    if acessorios_string is "":
+    if acessorios_string == "":
         return []
 
     acessorio_list = list()
@@ -119,7 +120,7 @@ def __get_acessorios(acessorios_string):
 
 
 def __get_url_da_primeira_foto(url_fotos_string):
-    if url_fotos_string is "":
+    if url_fotos_string == "":
         return ""
     return url_fotos_string.split(",")[0]
 
@@ -190,55 +191,51 @@ def __adapt_time(data_and_time_string):
 
 
 def importar_diagnostino(body):
-    try:
-        if "url" in body:
-            url = body["url"]
+    if not "url" in body:
+        return error_response("Falta URL")
+    url = body["url"]
 
-            diagnosticos_df = pd.read_csv(url)
-            diagnosticos_df = diagnosticos_df.replace(np.nan, '', regex=True)
+    diagnosticos_df = pd.read_csv(url)
+    diagnosticos_df = diagnosticos_df.replace(np.nan, '', regex=True)
 
-            for index_linha, linha in diagnosticos_df.iterrows():
-                if linha["OS N°:"] is "":
-                    continue
+    for index_linha, linha in diagnosticos_df.iterrows():
+        if linha["OS N°:"] == "":
+            continue
 
-                numero_ordem_servico = str(int(linha["OS N°:"])).zfill(4)
-                body = {
-                    "resultado_tecnico": linha["Defeito observado:"],
-                    "demanda_servicos": "",
-                    "demanda_insumos": linha["Insumos utilizados no diagnostico:"],
-                    "acao_orientacao": linha["Açao:"],
-                    "observacoes": linha["Observação: "],
-                    "itens": __get_itens(linha["Demanda por peças: "]) + __get_acessorios_extras(
-                        linha["Acessórios que necessita: "]),
+        numero_ordem_servico = str(int(linha["OS N°:"])).zfill(4)
+        body = {
+            "resultado_tecnico": linha["Defeito observado:"],
+            "demanda_servicos": "",
+            "demanda_insumos": linha["Insumos utilizados no diagnostico:"],
+            "acao_orientacao": linha["Açao:"],
+            "observacoes": linha["Observação: "],
+            "itens": __get_itens(linha["Demanda por peças: "]) + __get_acessorios_extras(
+                linha["Acessórios que necessita: "]),
 
-                }
+        }
 
-                # sera que eu tenho que verificar se existe ?
-                ordem_servico = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico)
+        # sera que eu tenho que verificar se existe ?
+        ordem_servico = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico)
 
-                __atualizar_campo_update_at(str(ordem_servico.id), linha["Timestamp"])
+        __atualizar_campo_update_at(str(ordem_servico.id), linha["Timestamp"])
 
-                ed = ordem_servico_schema.DiagnosticoSchema()
-                et = ordem_servico_schema.ItemSchema()
-                erro_diagnostico = ed.validate(body)
-                if erro_diagnostico:
-                    return {'validate': erro_diagnostico}
-                for item in body["itens"]:
-                    if et.validate(item):
-                        return {'validate': item}
+        ed = ordem_servico_schema.DiagnosticoSchema()
+        et = ordem_servico_schema.ItemSchema()
 
-                ordem_servico_service.atualizar_ordem_servico(
-                    str(ordem_servico.id),
-                    {
-                        "status": "diagnostico",
-                        "updated_at": __adapt_time(linha["Timestamp"]),
-                        "diagnostico": body
-                    })
+        erro_diagnostico = ed.validate(body)
+        if erro_diagnostico:
+            return {'validate': erro_diagnostico}
+        for item in body["itens"]:
+            if et.validate(item):
+                return {'validate': item}
 
-
-
-    except Exception:
-        return {"erro": Exception.__traceback__}
+        ordem_servico_service.atualizar_ordem_servico(
+            str(ordem_servico.id),
+            {
+                "status": "diagnostico",
+                "updated_at": __adapt_time(linha["Timestamp"]),
+                "diagnostico": body
+            })
 
     return {"ok": "Importacao realizada com sucesso!"}
 
@@ -248,13 +245,13 @@ def __atualizar_campo_update_at(numero_ordem_servico, update_at):
 
 
 def __get_acessorios_extras(acessorios_extras_string):
-    if acessorios_extras_string is "":
+    if acessorios_extras_string == "":
         return []
 
     acessorios_extras_list = list()
 
     for quantidade_e_acessorio_extra_string in acessorios_extras_string.split("\n"):
-        if quantidade_e_acessorio_extra_string is "":
+        if quantidade_e_acessorio_extra_string == "":
             continue
 
         quantidade = int(quantidade_e_acessorio_extra_string[0:2])
@@ -273,7 +270,7 @@ def __get_acessorios_extras(acessorios_extras_string):
 
 
 def __get_itens(item_string):
-    if item_string is "":
+    if item_string == "":
         return []
 
     item_list = list()
