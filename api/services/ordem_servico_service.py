@@ -23,7 +23,8 @@ def listar_ordem_servico():
             status__ne='tmp').aggregate(pipeline):
         docs.append(ordem)
 
-    return dumps(docs)
+    # return dumps(docs)
+    return docs
 
 
 def listar_ordem_servico_by_id(_id):
