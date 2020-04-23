@@ -36,6 +36,5 @@ class EquipamentoSchema(Schema):
     tipo_instituicao_origem = fields.String(required=True)
     nome_responsavel = fields.String(required=True)
     contato_responsavel = fields.String(required=True)
-
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)
