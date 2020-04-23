@@ -1,4 +1,10 @@
 # gestao-ventiladores-backend
+Este repositório implementa parte do projeto "SMART Health: suporte à tomada de decisão inteligente de profissionais da saúde e gestores no combate à transmissão da COVID-19 no Ceará", desenvolvido pela Escola de Saúde Pública do Ceará (ESP-CE) em parceria com o Grupo de Engenharia de Software Adaptativo e Distribuído (GESAD) da UECE. 
+
+O projeto tem como objetivo principal o desenvolvimento de soluções tecnológicas que auxiliem profissionais de saúde no combate à transmissão do COVID-19 e promovam a tomada de decisão por gestores, facilitando assim o trabalho desses profissionais.
+
+Relacionados a este repositório, destaca-se o seguinte objetivo específico:
+- Implementar um sistema de gerenciamento e alocação dos ventiladores mecânicos.
 
 
 ## Tutorial
@@ -41,9 +47,9 @@ python run.py
 
 ## API
 
-### Retornar todos os equipamentos
+### Retornar todas as ordem de serviços
 ```json
-"url": "localhost:5000/api/equipamentos"
+"url": "localhost:5000/api/ordem_servicos"
 "method": "GET"
 ```
 
