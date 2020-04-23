@@ -53,7 +53,6 @@ class ItemSchema(Schema):
     unidade_medida = fields.String(required=True)
 
 class DiagnosticoSchema(Schema):
-    # todo Denis, verificar a questao do campo acessorios
     class Meta:
         model = ordem_servico_model.Triagem
         fields = ("resultado_tecnico", "demanda_servicos", "demanda_insumos", "acao_orientacao", "observacoes",

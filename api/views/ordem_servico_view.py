@@ -1,5 +1,5 @@
 import json
-
+from io import StringIO
 import pandas as pd
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
@@ -17,7 +17,11 @@ class OrdemServicoList(Resource):
         """
         ordem_servico_list = ordem_servico_service.listar_ordem_servico()
         ordem_servico_df = pd.DataFrame(ordem_servico_list)
-        return Response(ordem_servico_df.to_csv(), mimetype="application/json", status=200)
+        output = make_response(ordem_servico_df.to_csv(index=False))
+        output.headers["Content-Disposition"] = "attachment; filename=ordem_servico.csv"
+        output.headers["Content-type"] = "text/csv"
+        return output
+        #return Response(ordem_servico_df.to_csv(), mimetype="application/json", status=200)
 
     # todo Denis atualizar essa url do swag
     #@swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
