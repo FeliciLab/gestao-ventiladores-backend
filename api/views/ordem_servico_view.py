@@ -171,7 +171,6 @@ class OrdemServicoFind(Resource):
         return Response(ordem_servico_list.to_json(), mimetype="application/json", status=200)
 
 
-# TODO Lucas essa classe não está sendo utilizada, verificar se ela deve existir.
 class OrdemServicoQuery(Resource):
     def post(self):
         body = request.json
