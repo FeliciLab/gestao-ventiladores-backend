@@ -7,7 +7,6 @@ from api.schemas import movimentacao_schema
 from api.services import movimentacao_service, equipamento_service
 from api.utils import query_parser
 
-
 class MovimentacaoList(Resource):
     def get(self):
         movimentacao_list = movimentacao_service.listar_movimentacoes()
