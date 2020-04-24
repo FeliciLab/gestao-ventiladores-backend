@@ -1,9 +1,11 @@
-from ..utils.query_parser import OrdemServicoQueryParser
+
 from ..models import ordem_servico_model
 from ..models.equipamento_model import Equipamento
 from bson import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
+
+from ..utils import query_parser
 
 
 def listar_ordem_servico():
@@ -36,7 +38,7 @@ def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
 
 
 def ordem_servico_queries(body):
-    parsed_query_dt = OrdemServicoQueryParser.parse(body["where"])
+    parsed_query_dt = query_parser.parse(body["where"])
 
     if not "select" in body:
         body["select"] = []
@@ -95,7 +97,7 @@ def registrar_equipamento_foto(body):
 
 
 def deletar_ordem_servico(_id):
-    ordem_servico_model.OrdemServico.objects.get(id=_id).delete()
+    ordem_servico_model.OrdemServico.objectsget(id=_id).delete()
 
 
 def listar_ordem_servico_status(status):

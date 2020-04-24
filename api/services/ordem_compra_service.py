@@ -1,5 +1,6 @@
 from api.models import ordem_compra_model
-from ..utils.query_parser import OrdemServicoQueryParser
+from api.utils import query_parser
+
 
 def listar_ordem_compras():
     """ Retorna todas as ordens de compra """
@@ -45,13 +46,13 @@ def atualizar_ordem_compra(id, atualizacao):
     """ Atualiza somnte o campo de itens """
     ordem_compra_model.OrdemCompra.objects.get(id=id).update(itens=atualizacao['itens'])
 
-def deletar_ordem_compra(id):
+def deletar_ordem_compra(_id):
     """ Deleta uma ordem de compra """
-    ordem_compra_model.OrdemCompra.objects.get(id=id).delete()
+    ordem_compra_model.OrdemCompra.objectsget(id=_id).delete()
 
 def ordem_compra_queries(body):
 
-    parsed_query_dt = OrdemServicoQueryParser.parse(body["where"])
+    parsed_query_dt = query_parser.parse(body["where"])
 
     if not "select" in body:
         body["select"] = []

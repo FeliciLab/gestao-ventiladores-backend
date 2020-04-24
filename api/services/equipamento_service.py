@@ -33,5 +33,5 @@ def atualizar_equipamento(atualizacao, _id):
     equipamento_model.Equipamento.objects.get(id=_id).update(**atualizacao)
 
 
-def deletar_equipamento(id):
-    equipamento_model.Equipamento.objects.get(id=id).delete()
+def deletar_equipamento(_id):
+    equipamento_model.Equipamento.objects.get(id=_id).delete()

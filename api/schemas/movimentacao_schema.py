@@ -1,5 +1,4 @@
-from flask_restful import fields
-from marshmallow import Schema
+from marshmallow import Schema, fields
 
 from api.models import movimentacao_model
 
@@ -8,6 +7,7 @@ class MovimentacaoSchema(Schema):
     class Meta:
         model = movimentacao_model.Movimentacao
         fields = (
+            "_id",
             "tipo",
             "equipamento_id",
             "instituicao_destino",
@@ -21,13 +21,14 @@ class MovimentacaoSchema(Schema):
 
         )
 
-    tipo = fields.String(required=True)
+    tipo = fields.String(required=False)
+    tipo = fields.String(required=False)
     #equipamento_id = fields.String(required=True) todo a gente nao sabe como ficaria
-    instituicao_destino = fields.String(required=True)
-    cidade_destino = fields.String(required=True)
-    cnpj_destino = fields.String(required=True)
-    endereco_destino = fields.String(required=True)
-    nome_responsavel_destino = fields.String(required=True)
-    contato_responsavel_destino = fields.String(required=True)
-    nome_responsavel_transport = fields.String(required=True)
-    contato_responsavel_transport = fields.String(required=True)
+    instituicao_destino = fields.String(required=False)
+    cidade_destino = fields.String(required=False)
+    cnpj_destino = fields.String(required=False)
+    endereco_destino = fields.String(required=False)
+    nome_responsavel_destino = fields.String(required=False)
+    contato_responsavel_destino = fields.String(required=False)
+    nome_responsavel_transport = fields.String(required=False)
+    contato_responsavel_transport = fields.String(required=False)

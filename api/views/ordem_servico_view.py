@@ -2,7 +2,8 @@ import json
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from ..schemas import ordem_servico_schema
-from ..services import ordem_servico_service, equipamento_service
+from ..services import ordem_servico_service, equipamento_service, movimentacao_service
+from ..utils import query_parser
 from ..utils.error_response import error_response
 from flasgger import swag_from
 
@@ -155,20 +156,6 @@ class OrdemServicoDetail(Resource):
 
         ordem_servico_service.deletar_ordem_servico(_id)
         return make_response('', 204)
-
-
-class OrdemServicoFind(Resource):
-    @swag_from('../../documentacao/ordem_servico/ordem_servico_find.yml')
-    def post(self):
-        """
-             Retorna todas as ordens de servico conforme o status que ela possui.
-        """
-        body = request.json
-        if "status" not in body:
-            return make_response(jsonify("Não existe a chave status no body"), 404)
-
-        ordem_servico_list = ordem_servico_service.listar_ordem_servico_status(body['status'])
-        return Response(ordem_servico_list.to_json(), mimetype="application/json", status=200)
 
 
 class OrdemServicoQuery(Resource):

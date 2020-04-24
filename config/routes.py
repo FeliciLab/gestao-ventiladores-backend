@@ -8,7 +8,6 @@ def initialize_routes(api):
 
     api.add_resource(ordem_servico_view.OrdemServicoList, '/api/ordem_servicos')
     api.add_resource(ordem_servico_view.OrdemServicoDetail, '/api/ordem_servico/<_id>')
-    api.add_resource(ordem_servico_view.OrdemServicoFind, '/api/ordem_servico/find')
     api.add_resource(ordem_servico_view.OrdemServicoQuery, '/api/ordem_servico/find')
 
     api.add_resource(importador_view.TriagemImportacao, '/api/importar/triagem')
