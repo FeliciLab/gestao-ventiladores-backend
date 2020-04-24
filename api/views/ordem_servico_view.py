@@ -1,4 +1,6 @@
 import json
+from io import StringIO
+import pandas as pd
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from ..schemas import ordem_servico_schema
@@ -7,42 +9,6 @@ from ..utils import query_parser
 from ..utils.error_response import error_response
 from flasgger import swag_from
 
-def validacao_ordem_servico(body):
-    es = ordem_servico_schema.OrdemServicoSchema()
-    erro_ordem_servico = es.validate(body)
-    if erro_ordem_servico:
-        return make_response(jsonify(erro_ordem_servico), 400)
-
-
-def validacao_triagem(body):
-    et = ordem_servico_schema.TriagemSchema()
-    erro_triagem = et.validate(body["triagem"])
-    if erro_triagem:
-        return make_response(jsonify(erro_triagem), 400)
-
-
-def validacao_diagnostico(body):
-    ed = ordem_servico_schema.DiagnosticoSchema()
-    erro_diagnostico = ed.validate(body["diagnostico"])
-    if erro_diagnostico:
-        return make_response(jsonify(erro_diagnostico), 400)
-
-
-def validacao_acessorios(body):
-    ea = ordem_servico_schema.AcessorioSchema()
-    for acessorio in body["triagem"]["acessorios"]:
-        erro_acessorio = ea.validate(acessorio)
-        if erro_acessorio:
-            return make_response(jsonify(erro_acessorio), 400)
-
-
-def validacao_itens(body):
-    ei = ordem_servico_schema.ItemSchema()
-    for item in body["diagnostico"]["itens"]:
-        erro_item = ei.validate(item)
-        if erro_item:
-            return make_response(jsonify(erro_item), 400)
-
 
 class OrdemServicoList(Resource):
     @swag_from('../../documentacao/ordem_servico/ordem_servicos_get.yml')
@@ -50,16 +16,21 @@ class OrdemServicoList(Resource):
         """
             Retorna todos as ordens de servico com o equipamento relacionado
         """
-        ordem_servico = ordem_servico_service.listar_ordem_servico()
-        return Response(ordem_servico, mimetype="application/json", status=200)
+        ordem_servico_list = ordem_servico_service.listar_ordem_servico()
+        ordem_servico_df = pd.DataFrame(ordem_servico_list)
+        output = make_response(ordem_servico_df.to_csv(index=False))
+        output.headers["Content-Disposition"] = "attachment; filename=ordem_servico.csv"
+        output.headers["Content-type"] = "text/csv"
+        return output
+        #return Response(ordem_servico_df.to_csv(), mimetype="application/json", status=200)
 
     # todo Denis atualizar essa url do swag
     #@swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
     def post(self):
         """
             Cadastra uma nova ordem de servico - triagem ou
-            Cadastra uma nova ordem de servico - triagem e diagnostico
-            Adiciona um novo diagnostico ou
+            Cadastra uma nova ordem de servico - triagem e diagnostico ou
+            Adiciona um novo diagnostico
         """
         body = request.json
         try:
@@ -84,23 +55,13 @@ class OrdemServicoList(Resource):
         if not _id and ordem_servico_cadastrado:
             return error_response("Ordem de Serviço já cadastrada.")
 
-        if 'triagem' in body and 'diagnostico' in body:
-            validacao_ordem_servico(body)
-            validacao_triagem(body)
-            validacao_diagnostico(body)
-            validacao_acessorios(body)
-            validacao_itens(body)
-        elif 'triagem' in body:
-            validacao_ordem_servico(body)
-            validacao_triagem(body)
-            validacao_acessorios(body)
-        elif 'diagnostico' in body:
-            validacao_ordem_servico(body)
-            validacao_diagnostico(body)
-            validacao_itens(body)
+        if 'triagem' in body or 'diagnostico' in body:
+            erro_validacao = ordem_servico_schema.OrdemServicoSchema().validate(body)
         else:
             return error_response('Ordem de servico necessita das chave "triagem" ou "diagnostico"')
 
+        if erro_validacao:
+            return jsonify(erro_validacao)
 
         try:
             equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)

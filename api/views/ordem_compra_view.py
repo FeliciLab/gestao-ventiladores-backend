@@ -3,7 +3,7 @@ from flask_restful import Resource
 from ..services import ordem_compra_service
 from flasgger import swag_from
 
-# TODO verificar outra forma de validacao.
+
 class OrdemCompraList(Resource):
     @swag_from('../../documentacao/ordem_compra/ordem_compras_get.yml')
     def get(self):
@@ -16,11 +16,13 @@ class OrdemCompraList(Resource):
         """
          Cadastra uma nova ordem de compra caso a requisição venha sem "_id"
          Atualiza a ordem de compra caso a requisição venha com "_id"
+         Retorna um erro caso a lista esteja com menos de 7 elementos.
         """
         body = request.json
         existe_id = body.get('_id')
 
         if existe_id:
+            # Atualiza a ordem de compra
             ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(body['_id'])
             if not ordem_compra:
                 return make_response(jsonify("Ordem de compra não encontrada..."), 404)
@@ -28,6 +30,7 @@ class OrdemCompraList(Resource):
             ordem_compra_service.atualizar_ordem_compra(body['_id'], body)
             nova_ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(body['_id'])
         else:
+            # Registra uma ordem de compra
             nova_ordem_compra = ordem_compra_service.registar_ordem_compra(body)
             if "error" in nova_ordem_compra:
                 return jsonify(nova_ordem_compra)
