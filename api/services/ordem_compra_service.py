@@ -30,17 +30,16 @@ def registar_ordem_compra(body):
          e cadastra uma nova ordem de compra.
     """
     quantidade_itens = len(body['itens'])
-    if quantidade_itens < 7:
+    if quantidade_itens == 0:
         return {
             "error": True,
             "message": "Não foram enviados itens suficientes para ordem de compra"
         }
 
-    else:
-        qtd_ordem_compra = ordem_compra_model.OrdemCompra.objects.count()
-        numero_ordem_compra = str(qtd_ordem_compra + 1).zfill(4)
-        body['numero_ordem_compra'] = numero_ordem_compra
-        return ordem_compra_model.OrdemCompra(**body).save()
+    qtd_ordem_compra = ordem_compra_model.OrdemCompra.objects.count()
+    numero_ordem_compra = str(qtd_ordem_compra + 1).zfill(4)
+    body['numero_ordem_compra'] = numero_ordem_compra
+    return ordem_compra_model.OrdemCompra(**body).save()
 
 def atualizar_ordem_compra(id, atualizacao):
     """ Atualiza somnte o campo de itens """
