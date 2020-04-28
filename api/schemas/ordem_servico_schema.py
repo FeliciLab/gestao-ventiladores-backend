@@ -69,7 +69,7 @@ class OrdemServicoSchema(Schema):
     class Meta:
         model = ordem_servico_model.OrdemServico
         fields = (
-            "equipamento_id", "numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico",
+            "_id", "equipamento_id", "numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico",
             "foto_equipamento_chegada", "status", "diagnostico")
 
     numero_ordem_servico = fields.String(required=True)

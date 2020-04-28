@@ -46,12 +46,14 @@ def log_atualizacao_ordem_servico(collection, id, body):
     log = {}
     for k, v in body.items():
         if k == 'triagem':
-            for k_triagem, v_triagem in body['triagem']:
+            log['triagem'] = {}
+            for k_triagem, v_triagem in body['triagem'].items():
                 if k_triagem in ordem_servico['triagem']:
                     log['triagem'][k_triagem] = v_triagem
         if k == 'diagnostico':
-            for k_diagnostico, v_diagnostico in body['diagnostico']:
+            for k_diagnostico, v_diagnostico in body['diagnostico'].items():
                 if k_diagnostico in ordem_servico['diagnostico']:
+                    log['diagnostico'] = {}
                     log['diagnostico'][k_diagnostico] = v_diagnostico
 
         if k in ordem_servico:
