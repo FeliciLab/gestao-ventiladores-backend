@@ -20,7 +20,7 @@ class OrdemCompraList(Resource):
         body = request.json
         existe_id = body.get('_id')
 
-        if existe_id:
+        if existe_id and existe_id != '':
             # Atualiza a ordem de compra
             ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(body['_id'])
             if not ordem_compra:
@@ -29,12 +29,18 @@ class OrdemCompraList(Resource):
             ordem_compra_service.atualizar_ordem_compra(body['_id'], body)
             nova_ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(body['_id'])
         else:
+            try:
+                del body["_id"]
+            except KeyError:
+                print("_id não está presente no body")
+
             # Registra uma ordem de compra
             nova_ordem_compra = ordem_compra_service.registar_ordem_compra(body)
             if "error" in nova_ordem_compra:
                 return jsonify(nova_ordem_compra)
 
-            log_service.log_criacao('ordem_compra', nova_ordem_compra)
+            # log_service.log_criacao('ordem_compra', nova_ordem_compra)
+
         return jsonify({"_id": str(nova_ordem_compra.id)})
 
 class OrdemCompraDetail(Resource):
