@@ -1,8 +1,7 @@
 from flask import Response, request, jsonify, make_response
 from flask_restful import Resource
-from ..services import ordem_compra_service
+from ..services import ordem_compra_service, log_service
 from flasgger import swag_from
-
 
 class OrdemCompraList(Resource):
     @swag_from('../../documentacao/ordem_compra/ordem_compras_get.yml')
@@ -16,7 +15,7 @@ class OrdemCompraList(Resource):
         """
          Cadastra uma nova ordem de compra caso a requisição venha sem "_id"
          Atualiza a ordem de compra caso a requisição venha com "_id"
-         Retorna um erro caso a lista esteja com menos de 7 elementos.
+         Retorna um erro caso a lista esteja vazia.
         """
         body = request.json
         existe_id = body.get('_id')
@@ -34,6 +33,8 @@ class OrdemCompraList(Resource):
             nova_ordem_compra = ordem_compra_service.registar_ordem_compra(body)
             if "error" in nova_ordem_compra:
                 return jsonify(nova_ordem_compra)
+
+            log_service.log_criacao('ordem_compra', nova_ordem_compra)
         return jsonify({"_id": str(nova_ordem_compra.id)})
 
 class OrdemCompraDetail(Resource):
@@ -50,6 +51,9 @@ class OrdemCompraDetail(Resource):
         ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(_id)
         if ordem_compra is None:
             return make_response(jsonify("Ordem de compra não encontrada..."), 404)
+
+        log_service.log_atualizacao_ordem_compra('ordem_compra', _id, body)
+
         ordem_compra_service.atualizar_ordem_compra(_id, body)
         nova_ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(_id)
         return jsonify({"_id": str(nova_ordem_compra.id)})

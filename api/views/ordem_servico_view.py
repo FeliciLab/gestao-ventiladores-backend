@@ -1,11 +1,8 @@
 import json
-from io import StringIO
-import pandas as pd
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from ..schemas import ordem_servico_schema
-from ..services import ordem_servico_service, equipamento_service, movimentacao_service
-from ..utils import query_parser
+from ..services import ordem_servico_service, equipamento_service, movimentacao_service, log_service
 from ..utils.error_response import error_response
 from flasgger import swag_from
 
@@ -81,6 +78,7 @@ class OrdemServicoList(Resource):
                 status=201
             )
 
+        log_service.log_atualizacao_ordem_servico('ordem_servico', _id, body)
         ordem_servico_service.atualizar_ordem_servico(_id, body)
         return Response(
             json.dumps({"_id": _id}),

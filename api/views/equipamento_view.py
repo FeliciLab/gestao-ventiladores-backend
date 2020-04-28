@@ -2,7 +2,7 @@ import json
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from api.schemas import equipamento_schema
-from api.services import equipamento_service
+from api.services import equipamento_service, log_service
 from bson.json_util import dumps
 from api.utils.error_response import error_response
 from flasgger import swag_from
@@ -101,10 +101,11 @@ class EquipamentoDetail(Resource):
             return make_response(jsonify("Equipamento não encontrada..."), 400)
 
         body = request.get_json()
-        erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
-        if erro_equipamento:
-            return make_response(jsonify(erro_equipamento), 400)
+        #erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
+        #if erro_equipamento:
+        #    return make_response(jsonify(erro_equipamento), 400)
 
+        log_service.log_atualizacao_equipamento('equipamento', _id, body)
         equipamento_service.atualizar_equipamento(body, _id)
         equipamento_atualizado = equipamento_service.listar_equipamento_by_id(_id)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)

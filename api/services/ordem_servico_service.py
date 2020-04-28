@@ -1,10 +1,8 @@
-
 from ..models import ordem_servico_model
 from ..models.equipamento_model import Equipamento
 from bson import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
-
 from ..utils import query_parser
 
 
