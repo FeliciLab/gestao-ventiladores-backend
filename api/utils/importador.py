@@ -43,7 +43,7 @@ def importar_triagem(triagem_body):
                     equipamento_service.atualizar_equipamento(equipamento_body, equipamento.id)
                     equipamento = equipamento_service.listar_equipamento_by_id(equipamento.id)
 
-                __insert_or_update_fabricante_db(linha)
+                #__insert_or_update_fabricante_db(linha)
 
                 triagem_body = {
                     "equipamento_id": equipamento,# Aqui deveria ser equipamento.id ?
