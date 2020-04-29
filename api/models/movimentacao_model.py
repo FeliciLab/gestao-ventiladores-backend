@@ -4,7 +4,7 @@ from config.db import db
 
 class Movimentacao(db.Document):
     tipo = db.StringField(required=False, unique=False)
-    equipamento_id = db.ReferenceField(Equipamento)
+    equipamentos_id = db.ReferenceField(Equipamento) # TODO tornar isso um array
     instituicao_destino = db.StringField(required=False, unique=False)
     cidade_destino = db.StringField(required=False, unique=False)
     cnpj_destino = db.StringField(required=False, unique=False)
