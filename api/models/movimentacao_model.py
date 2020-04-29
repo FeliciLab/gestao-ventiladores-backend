@@ -11,5 +11,5 @@ class Movimentacao(db.Document):
     endereco_destino = db.StringField(required=False, unique=False)
     nome_responsavel_destino = db.StringField(required=False, unique=False)
     contato_responsavel_destino = db.StringField(required=False, unique=False)
-    nome_responsavel_transport = db.StringField(required=False, unique=False)
-    contato_responsavel_transport = db.StringField(required=False, unique=False)
+    nome_responsavel_transporte = db.StringField(required=False, unique=False)
+    contato_responsavel_transporte = db.StringField(required=False, unique=False)

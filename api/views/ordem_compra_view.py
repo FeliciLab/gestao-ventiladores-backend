@@ -8,7 +8,7 @@ class OrdemCompraList(Resource):
     def get(self):
         """ Retorna todas as ordens de compra """
         ordem_compra_registrada = ordem_compra_service.listar_ordem_compras().to_json()
-        return Response(ordem_compra_registrada, mimetype="application/json", status=201)
+        return Response(ordem_compra_registrada, mimetype="application/json", status=200)
 
     @swag_from('../../documentacao/ordem_compra/ordem_compra_post.yml')
     def post(self):
@@ -48,7 +48,7 @@ class OrdemCompraDetail(Resource):
     def get(self, _id):
         """ Retorna uma ordem de compra específica conforme o id passado """
         ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(_id).to_json()
-        return Response(ordem_compra, mimetype="application/json", status=201)
+        return Response(ordem_compra, mimetype="application/json", status=200)
 
     @swag_from('../../documentacao/ordem_compra/ordem_compra_put.yml')
     def put(self, _id):
