@@ -21,6 +21,7 @@ def listar_ordem_servico():
     docs = []
     for ordem in ordem_servico_model.OrdemServico.objects(
             status__ne='tmp').aggregate(pipeline):
+
         docs.append(ordem)
 
     return dumps(docs)

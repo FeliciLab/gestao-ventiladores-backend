@@ -10,12 +10,7 @@ from api.utils import query_parser
 class MovimentacaoList(Resource):
     def get(self):
         movimentacao_list = movimentacao_service.listar_movimentacoes()
-        movimentacao_id_list = list()
-
-        for movimentacao in movimentacao_list:
-            movimentacao_id_list.append({"_id": str(movimentacao.id)})
-
-        return Response(str(movimentacao_id_list), mimetype="application/json", status=200)
+        return Response(movimentacao_list, mimetype="application/json", status=200)
 
     # todo Refatorar esse metodo, muito codigo repetido by Lucas
     def post(self):

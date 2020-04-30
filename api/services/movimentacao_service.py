@@ -1,9 +1,27 @@
+from bson.json_util import dumps
+
 from api.models import movimentacao_model
+from api.models.equipamento_model import Equipamento
 from api.utils import query_parser
 
 
 def listar_movimentacoes():
-    return movimentacao_model.Movimentacao.objects()
+    pipeline = [
+        {
+            "$lookup": {
+                "from": Equipamento._get_collection_name(),
+                "localField": "equipamentos_id",
+                "foreignField": "_id",
+                "as": "equipamentos"
+            }
+        }
+    ]
+
+    docs = []
+    for data in movimentacao_model.Movimentacao.objects().aggregate(pipeline):
+        docs.append(data)
+
+    return dumps(docs)
 
 
 def listar_movimentacao_id(_id):

@@ -1,6 +1,6 @@
 from api.models.equipamento_model import Equipamento
 from config.db import db
-
+from datetime import datetime
 
 class Movimentacao(db.Document):
     tipo = db.StringField(required=False, unique=False)
@@ -13,3 +13,5 @@ class Movimentacao(db.Document):
     contato_responsavel_destino = db.StringField(required=False, unique=False)
     nome_responsavel_transporte = db.StringField(required=False, unique=False)
     contato_responsavel_transporte = db.StringField(required=False, unique=False)
+    created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
+    updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
