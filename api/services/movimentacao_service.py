@@ -34,6 +34,13 @@ def listar_movimentacao_id(_id):
 
 
 def registar_movimentacao(body):
+    """
+        Registra uma nova movimentação, gerando o próprio código baseado na quantidade
+        de movimentações cadastradas
+    """
+    qtd_movimentacao = len(movimentacao_model.Movimentacao.objects(tipo=body['tipo']))
+    codigo = str(qtd_movimentacao + 1).zfill(4)
+    body['codigo'] = codigo
     return movimentacao_model.Movimentacao(**body).save()
 
 

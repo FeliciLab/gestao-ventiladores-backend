@@ -3,6 +3,7 @@ from config.db import db
 from datetime import datetime
 
 class Movimentacao(db.Document):
+    codigo = db.StringField(required=False, unique=False)
     tipo = db.StringField(required=False, unique=False)
     equipamentos_id = db.ListField(db.ReferenceField(Equipamento))
     instituicao_destino = db.StringField(required=False, unique=False)
