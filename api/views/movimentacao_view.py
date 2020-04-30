@@ -33,22 +33,39 @@ class MovimentacaoList(Resource):
             movimentacao_cadastrada = movimentacao_service.listar_movimentacao_id(_id)
 
         if movimentacao_cadastrada:
-            equipamento = equipamento_service.listar_equipamento_by_id(body["equipamento_id"])
-            if equipamento is None:
-                return Response("Equipamento inexistente", mimetype="application/json", status=200)
 
-            body["equipamento_id"] = equipamento
+            equipamento_id_list = body["equipamentos_id"]
+            equipamento_list = list()
+
+            for equipamento_id in equipamento_id_list:
+                equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
+
+                if equipamento is None:
+                    return Response("Equipamento " + equipamento_id + " inexistente", mimetype="application/json",
+                                    status=200)
+
+                equipamento_list.append(equipamento)
+
+            body["equipamentos_id"] = equipamento_list
 
             del body["_id"]
 
             movimentacao_service.atualizar_movimentacao(_id, body)
             response_status = 200
-        else:
-            equipamento = equipamento_service.listar_equipamento_by_id(body["equipamento_id"])
-            if equipamento is None:
-                return Response("Equipamento inexistente", mimetype="application/json", status=200)
 
-            body["equipamento_id"] = equipamento
+        else:
+            equipamento_id_list = body["equipamentos_id"]
+            equipamento_list = list()
+
+            for equipamento_id in equipamento_id_list:
+                equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
+
+                if equipamento is None:
+                    return Response("Equipamento "+equipamento_id+" inexistente", mimetype="application/json", status=200)
+
+                equipamento_list.append(equipamento)
+
+            body["equipamentos_id"] = equipamento_list
 
             movimentacao_cadastrada = movimentacao_service.registar_movimentacao(body)
             _id = str(movimentacao_cadastrada.id)
