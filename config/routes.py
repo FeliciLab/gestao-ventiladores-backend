@@ -1,5 +1,5 @@
 from api.views import ordem_servico_view, fabricante_view, importador_view, \
-    foto_view, equipamento_view, ordem_compra_view, movimentacao_view
+    foto_view, equipamento_view, ordem_compra_view, movimentacao_view, log_view
 
 
 def initialize_routes(api):
@@ -24,3 +24,5 @@ def initialize_routes(api):
     api.add_resource(movimentacao_view.MovimentacaoList, '/api/movimentacao')
     api.add_resource(movimentacao_view.MovimentacaoDetail, '/api/movimentacao/<_id>')
     api.add_resource(movimentacao_view.MovimentacaoQuery, '/api/movimentacao/find')
+
+    api.add_resource(log_view.LogQuery, '/api/logs/find')

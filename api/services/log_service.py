@@ -2,6 +2,7 @@ from ..models import log_model
 from ..services import ordem_servico_service, ordem_compra_service, equipamento_service, movimentacao_service
 from datetime import datetime
 import json
+from ..utils import query_parser
 
 
 def log_atualizacao_ordem_compra(collection, id, body):
@@ -82,3 +83,14 @@ def log_atualizacao_movimentacao(collection, id, body):
                       old_values=log,
                       last_updated_at=datetime.now(),
                       created_at=datetime.now()).save()
+
+def log_queries(body):
+    parsed_query_dt = query_parser.parse(body["where"])
+
+    if not "select" in body:
+        body["select"] = []
+
+    filted_log_list = log_model.Log.objects(
+        __raw__=parsed_query_dt).only(*body["select"])
+
+    return filted_log_list.to_json()
