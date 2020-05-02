@@ -4,7 +4,7 @@ from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 
 from api.schemas import movimentacao_schema
-from api.services import movimentacao_service, equipamento_service
+from api.services import movimentacao_service, equipamento_service, log_service
 from api.utils import query_parser
 
 class MovimentacaoList(Resource):
@@ -79,6 +79,9 @@ class MovimentacaoDetail(Resource):
 
         if "_id" in body:
             del body["_id"]
+
+        log_service.log_atualizacao_movimentacao('movimentacao', _id, body)
+
         movimentacao_service.atualizar_movimentacao(_id, body)
 
         return Response(json.dumps({"_id": _id}), mimetype="application/json", status=200)

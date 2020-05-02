@@ -101,11 +101,12 @@ class EquipamentoDetail(Resource):
             return make_response(jsonify("Equipamento não encontrada..."), 400)
 
         body = request.get_json()
-        #erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
-        #if erro_equipamento:
-        #    return make_response(jsonify(erro_equipamento), 400)
+        erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
+        if erro_equipamento:
+            return make_response(jsonify(erro_equipamento), 400)
 
         log_service.log_atualizacao_equipamento('equipamento', _id, body)
+
         equipamento_service.atualizar_equipamento(body, _id)
         equipamento_atualizado = equipamento_service.listar_equipamento_by_id(_id)
         return Response(equipamento_atualizado, mimetype="application/json", status=200)

@@ -7,10 +7,10 @@ class AcessorioSchema(Schema):
         model = ordem_servico_model.Acessorio
         fields = ("descricao", "acompanha", "quantidade", "estado_de_conservacao")
 
-    descricao = fields.String(required=True)
-    acompanha = fields.Boolean(required=True)
-    quantidade = fields.Integer(required=True)
-    estado_de_conservacao = fields.String(required=True)
+    descricao = fields.String(required=False)
+    acompanha = fields.Boolean(required=False)
+    quantidade = fields.Integer(required=False)
+    estado_de_conservacao = fields.String(required=False)
 
 
 class TriagemSchema(Schema):
@@ -44,13 +44,13 @@ class ItemSchema(Schema):
         model = ordem_servico_model.Item
         fields = ("nome", "tipo", "quantidade", "descricao", "valor", "prioridade", "unidade_medida")
 
-    nome = fields.String(required=True)
-    tipo = fields.String(required=True)
-    quantidade = fields.Integer(required=True)
-    descricao = fields.String(required=True)
-    valor = fields.Float(required=True)
-    prioridade = fields.String(required=True)
-    unidade_medida = fields.String(required=True)
+    nome = fields.String(required=False)
+    tipo = fields.String(required=False)
+    quantidade = fields.Integer(required=False)
+    descricao = fields.String(required=False)
+    valor = fields.Float(required=False)
+    prioridade = fields.String(required=False)
+    unidade_medida = fields.String(required=False)
 
 class DiagnosticoSchema(Schema):
     class Meta:
@@ -58,12 +58,12 @@ class DiagnosticoSchema(Schema):
         fields = ("resultado_tecnico", "demanda_servicos", "demanda_insumos", "acao_orientacao", "observacoes",
                   "itens", "acessorios")
 
-    resultado_tecnico = fields.String(required=True)
-    demanda_servicos = fields.String(required=True)
-    demanda_insumos = fields.String(required=True)
-    acao_orientacao = fields.String(required=True)
-    observacoes = fields.String(required=True)
-    itens = fields.List(fields.Nested(ItemSchema), required=True)
+    resultado_tecnico = fields.String(required=False)
+    demanda_servicos = fields.String(required=False)
+    demanda_insumos = fields.String(required=False)
+    acao_orientacao = fields.String(required=False)
+    observacoes = fields.String(required=False)
+    itens = fields.List(fields.Nested(ItemSchema), required=False)
 
 class OrdemServicoSchema(Schema):
     class Meta:
@@ -72,9 +72,9 @@ class OrdemServicoSchema(Schema):
             "_id", "equipamento_id", "numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico",
             "foto_equipamento_chegada", "status", "diagnostico")
 
-    numero_ordem_servico = fields.String(required=True)
+    numero_ordem_servico = fields.String(required=False)
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)
-    triagem = fields.Nested(TriagemSchema, required=True)
+    triagem = fields.Nested(TriagemSchema, required=False)
     diagnostico = fields.Nested(DiagnosticoSchema, required=False)
     status = fields.String(required=False)
