@@ -29,6 +29,7 @@ class Item(db.EmbeddedDocument):
 class Diagnostico(db.EmbeddedDocument):
     resultado_tecnico = db.StringField(required=False)
     demanda_servicos = db.StringField(required=False)
+    demanda_insumos = db.StringField(required=False)
     acao_orientacao = db.StringField(required=False)
     observacoes = db.StringField(required=False)
     itens = db.EmbeddedDocumentListField(Item, required=False)

@@ -98,6 +98,29 @@ class OrdemServicoDetail(Resource):
             return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
         return Response(ordem_servico.to_json(), mimetype="application/json", status=200)
 
+    #@swag_from('../../documentacao/ordem_servico/ordem_servico_put.yml')
+    def put(self, _id):
+        ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
+
+        if ordem_servico is None:
+            return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
+        body = request.get_json()
+
+        if 'triagem' in body or 'diagnostico' in body:
+            erro_validacao = ordem_servico_schema.OrdemServicoSchema().validate(body)
+        else:
+            return error_response('Ordem de servico necessita das chave "triagem" ou "diagnostico"')
+
+        if erro_validacao:
+            return jsonify(erro_validacao)
+
+        ordem_servico_service.atualizar_ordem_servico(_id, body)
+        return Response(
+            json.dumps({"_id": _id}),
+            mimetype="application/json",
+            status=200
+        )
+
 
     @swag_from('../../documentacao/ordem_servico/ordem_servico_delete.yml')
     def delete(self, _id):

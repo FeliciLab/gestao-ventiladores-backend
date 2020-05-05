@@ -4,7 +4,7 @@ from bson import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
 from ..utils import query_parser
-
+from ..services import equipamento_service
 
 def listar_ordem_servico():
     pipeline = [
@@ -56,6 +56,9 @@ def registrar_ordem_servico(body):
 
 
 def atualizar_ordem_servico(_id, atualizacao):
+    if 'equipamento_id' in atualizacao:
+        equipamento = equipamento_service.listar_equipamento_by_id(atualizacao['equipamento_id'])
+        atualizacao['equipamento_id'] = equipamento
     ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
 
 
