@@ -1,5 +1,5 @@
 from ..models import ordem_servico_model
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validate
 
 
 class AcessorioSchema(Schema):
@@ -77,4 +77,4 @@ class OrdemServicoSchema(Schema):
     updated_at = fields.DateTime(required=False)
     triagem = fields.Nested(TriagemSchema, required=False)
     diagnostico = fields.Nested(DiagnosticoSchema, required=False)
-    status = fields.String(required=False)
+    status = fields.String(validate=validate.OneOf(["triagem", "diagnostico"]), required=False)
