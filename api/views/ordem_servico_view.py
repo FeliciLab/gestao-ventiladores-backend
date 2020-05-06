@@ -17,7 +17,7 @@ class OrdemServicoList(Resource):
         return Response(ordem_servico, mimetype="application/json", status=200)
 
     # todo Denis atualizar essa url do swag
-    #@swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
+    # @swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
     def post(self):
         """
             Cadastra uma nova ordem de servico - triagem ou
@@ -39,7 +39,6 @@ class OrdemServicoList(Resource):
             equipamento_id = body["equipamento_id"]
         except:
             return error_response("ID do equipamento inválido ou não enviado")
-
 
         ordem_servico_cadastrado = \
             ordem_servico_service \
@@ -98,7 +97,7 @@ class OrdemServicoDetail(Resource):
             return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
         return Response(ordem_servico.to_json(), mimetype="application/json", status=200)
 
-    #@swag_from('../../documentacao/ordem_servico/ordem_servico_put.yml')
+    # @swag_from('../../documentacao/ordem_servico/ordem_servico_put.yml')
     def put(self, _id):
         ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
 
@@ -114,13 +113,29 @@ class OrdemServicoDetail(Resource):
         if erro_validacao:
             return jsonify(erro_validacao)
 
+        try:
+            equipamento_id = body["equipamento_id"]
+        except:
+            return error_response("ID do equipamento inválido ou não enviado")
+
+        try:
+            equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
+        except:
+            return error_response("ID do equipamento inválido")
+
+        if not equipamento:
+            return error_response("Equipamento não encontrado")
+
+        body["equipamento_id"] = equipamento
+
+        log_service.log_atualizacao_ordem_servico('ordem_servico', _id, body)
         ordem_servico_service.atualizar_ordem_servico(_id, body)
+
         return Response(
             json.dumps({"_id": _id}),
             mimetype="application/json",
             status=200
         )
-
 
     @swag_from('../../documentacao/ordem_servico/ordem_servico_delete.yml')
     def delete(self, _id):

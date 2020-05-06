@@ -49,6 +49,7 @@ def ordem_servico_queries(body):
 
 
 def registrar_ordem_servico(body):
+    # eu acho que isso nao deveria ficar aqui entro by Lucas
     body['created_at'] = body.get('created_at', datetime.now())
     body['updated_at'] = body.get('updated_at', datetime.now())
     # Falta criar a situação onde as datas vem vazias, Exemplo: updated_at: ''
@@ -56,9 +57,12 @@ def registrar_ordem_servico(body):
 
 
 def atualizar_ordem_servico(_id, atualizacao):
-    if 'equipamento_id' in atualizacao:
-        equipamento = equipamento_service.listar_equipamento_by_id(atualizacao['equipamento_id'])
-        atualizacao['equipamento_id'] = equipamento
+    # isso nao deve ficar aqui dentro by Lucas
+
+    # if 'equipamento_id' in atualizacao:
+    #     equipamento = equipamento_service.listar_equipamento_by_id(atualizacao['equipamento_id'])
+    #     atualizacao['equipamento_id'] = equipamento
+
     ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
 
 

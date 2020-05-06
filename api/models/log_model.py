@@ -1,6 +1,7 @@
 from config.db import db
 from datetime import datetime
 
+
 class Log(db.Document):
     collection = db.StringField(required=True)
     document_id = db.ObjectIdField(required=False)
