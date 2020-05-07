@@ -1,5 +1,4 @@
 import json
-
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from ..utils.error_response import error_response
@@ -29,7 +28,7 @@ class MovimentacaoList(Resource):
             movimentacao_cadastrada = movimentacao_service.listar_movimentacao_id(_id)
 
         if movimentacao_cadastrada:
-
+            #todo sou obrigado a passar equipamento_id na hora de atualizar com POST? by Denis
             equipamento_id_list = body["equipamentos_id"]
             equipamento_list = list()
 
@@ -81,7 +80,10 @@ class MovimentacaoDetail(Resource):
         if movimentacao_validacao:
             return make_response(jsonify(movimentacao_validacao), 400)
 
-        _id = body["_id"]
+        #todo Não entendo pq passo o _id dentro do body da requisição, se já passo na URL by Denis
+        if '_id' in body:
+            _id = body["_id"]
+
         movimentacao_cadastrada = movimentacao_service.listar_movimentacao_id(_id)
 
         if movimentacao_cadastrada:

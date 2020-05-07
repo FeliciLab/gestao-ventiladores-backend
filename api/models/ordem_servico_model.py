@@ -17,20 +17,17 @@ class Triagem(db.EmbeddedDocument):
     foto_apos_limpeza = db.StringField(required=False)
 
 class Item(db.EmbeddedDocument):
-    quantidade = db.IntField(required=False)
-    nome = db.StringField(required=False)
     tipo = db.StringField(required=False)
-    descricao = db.StringField(required=False)
-    valor = db.FloatField(required=False)
-    prioridade = db.StringField(required=False)
+    fabricante = db.StringField(required=False)
+    codigo = db.StringField(required=False)
+    nome = db.StringField(required=False)
     unidade_medida = db.StringField(required=False)
-
+    quantidade = db.IntField(required=False)
+    descricao = db.StringField(required=False)
 
 class Diagnostico(db.EmbeddedDocument):
     resultado_tecnico = db.StringField(required=False)
     demanda_servicos = db.StringField(required=False)
-    demanda_insumos = db.StringField(required=False)
-    acao_orientacao = db.StringField(required=False)
     observacoes = db.StringField(required=False)
     itens = db.EmbeddedDocumentListField(Item, required=False)
 

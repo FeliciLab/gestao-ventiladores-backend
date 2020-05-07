@@ -4,7 +4,6 @@ from bson import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
 from ..utils import query_parser
-from ..services import equipamento_service
 
 
 def listar_ordem_servico():

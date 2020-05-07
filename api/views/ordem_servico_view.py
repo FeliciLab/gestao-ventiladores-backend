@@ -20,9 +20,8 @@ class OrdemServicoList(Resource):
     # @swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
     def post(self):
         """
-            Cadastra uma nova ordem de servico - triagem ou
-            Cadastra uma nova ordem de servico - triagem e diagnostico ou
-            Adiciona um novo diagnostico
+            Se vinher '_id' no body será uma atualização da ordem de servico (triagem, diagnostico, triagem+diagnostico)
+            Se não será um cadastro da ordem de servico (triagem, diagnostico, triagem+diagnostico)
         """
         body = request.json
         try:

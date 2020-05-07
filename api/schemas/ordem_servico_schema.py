@@ -42,26 +42,23 @@ class TriagemSchema(Schema):
 class ItemSchema(Schema):
     class Meta:
         model = ordem_servico_model.Item
-        fields = ("nome", "tipo", "quantidade", "descricao", "valor", "prioridade", "unidade_medida")
+        fields = ( "tipo", "fabricante", "codigo", "nome", "unidade_medida", "quantidade", "descricao")
 
-    nome = fields.String(required=False)
     tipo = fields.String(required=False)
+    fabricante = fields.String(required=False)
+    codigo = fields.String(required=False)
+    nome = fields.String(required=False)
+    unidade_medida = fields.String(required=False)
     quantidade = fields.Integer(required=False)
     descricao = fields.String(required=False)
-    valor = fields.Float(required=False)
-    prioridade = fields.String(required=False)
-    unidade_medida = fields.String(required=False)
 
 class DiagnosticoSchema(Schema):
     class Meta:
         model = ordem_servico_model.Triagem
-        fields = ("resultado_tecnico", "demanda_servicos", "demanda_insumos", "acao_orientacao", "observacoes",
-                  "itens", "acessorios")
+        fields = ("resultado_tecnico", "demanda_servicos", "observacoes", "itens")
 
     resultado_tecnico = fields.String(required=False)
     demanda_servicos = fields.String(required=False)
-    demanda_insumos = fields.String(required=False)
-    acao_orientacao = fields.String(required=False)
     observacoes = fields.String(required=False)
     itens = fields.List(fields.Nested(ItemSchema), required=False)
 
