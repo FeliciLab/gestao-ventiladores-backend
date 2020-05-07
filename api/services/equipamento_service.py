@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from api.models import equipamento_model
 
 
@@ -35,3 +37,24 @@ def atualizar_equipamento(atualizacao, _id):
 
 def deletar_equipamento(_id):
     equipamento_model.Equipamento.objects.get(id=_id).delete()
+
+
+
+def deserealize_equipamento(body):
+    equipamento = equipamento_model.Equipamento()
+
+    for att_name, att_value in body.items():
+
+        if "created_at" is att_name:
+            equipamento.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+
+        if "created_at" is att_name:
+            equipamento.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+
+        else:
+            try:
+                setattr(equipamento, att_name, att_value)
+            except:
+                continue
+
+    return equipamento

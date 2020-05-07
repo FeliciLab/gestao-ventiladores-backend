@@ -1,3 +1,5 @@
+import json
+
 from flask import Response, request, jsonify, make_response
 from flask_restful import Resource
 from ..services import ordem_compra_service, log_service
@@ -58,7 +60,11 @@ class OrdemCompraDetail(Resource):
         if ordem_compra is None:
             return make_response(jsonify("Ordem de compra não encontrada..."), 404)
 
-        log_service.log_atualizacao_ordem_compra('ordem_compra', _id, body)
+        updated_body = json.loads(ordem_compra_service.deserealize_ordem_compra(body).to_json())
+        old_ordem_servico_body = json.loads(ordem_compra.listar_ordem_servico_by_id(_id).to_json())
+
+        log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
+                                ignored_fields=[])
 
         ordem_compra_service.atualizar_ordem_compra(_id, body)
         nova_ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(_id)

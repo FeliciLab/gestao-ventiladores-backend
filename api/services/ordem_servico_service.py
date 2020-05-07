@@ -6,6 +6,7 @@ from datetime import datetime
 from ..utils import query_parser
 from ..services import equipamento_service
 
+
 def listar_ordem_servico():
     pipeline = [
         {
@@ -21,7 +22,6 @@ def listar_ordem_servico():
     docs = []
     for ordem in ordem_servico_model.OrdemServico.objects(
             status__ne='tmp').aggregate(pipeline):
-
         docs.append(ordem)
 
     return dumps(docs)
@@ -135,3 +135,36 @@ def registrar_equipamento_vazio():
     ordem_servico.triagem = triagem
     ordem_servico.status = 'tmp'
     return ordem_servico.save()
+
+
+def deserealize_ordem_servico(body):
+    ordem_servico = ordem_servico_model.OrdemServico()
+
+    for att_name, att_value in body.items():
+        if "equipamento_id" is att_name:
+            for equipamento in body["equipamento_id"]:
+                equipamento.equipamento_id = (equipamento.id)
+
+        elif "created_at" is att_name:
+            ordem_servico.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+
+        elif "created_at" is att_name:
+            ordem_servico.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+
+        else:
+            try:
+                setattr(ordem_servico, att_name, att_value)
+            except:
+                continue
+
+    return ordem_servico
+
+    # ordem_servico = ordem_servico_model.OrdemServico()
+    # if "numero_ordem_servico" in body: ordem_servico.numero_ordem_servico = body["numero_ordem_servico"]
+    # if "equipamento_id" in body: ordem_servico.equipamento_id = body["equipamento_id"].id
+    # if "created_at" in body: ordem_servico.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+    # if "updated_at" in body: ordem_servico.updated_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+    # if "status" in body: ordem_servico.status = body["status"]
+    # if "triagem" in body: ordem_servico.triagem = body["triagem"]
+    # if "diagnostico" in body: ordem_servico.diagnostico = body["diagnostico"]
+    # return ordem_servico

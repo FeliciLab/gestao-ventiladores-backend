@@ -54,15 +54,21 @@ class EquipamentoList(Resource):
                 400
             )
 
-        try:
-            del body["_id"]
-        except KeyError:
-            print("_id não está presente no body")
-
         if not _id:
             novo_equipamento_id = equipamento_service.registar_equipamento(body)
             resposta = json.dumps({"_id": novo_equipamento_id})
         else:
+
+            updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
+            old_ordem_servico_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
+
+            log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
+                                    ignored_fields=["created_at", "updated_at"])
+            try:
+                del body["_id"]
+            except KeyError:
+                print("_id não está presente no body")
+
             equipamento_service.atualizar_equipamento(body, _id)
             resposta = json.dumps({"_id": _id})
 
