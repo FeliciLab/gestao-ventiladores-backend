@@ -28,7 +28,7 @@ def listar_ordem_servico():
 
 
 def listar_ordem_servico_by_id(_id):
-    return ordem_servico_model.OrdemServico.objects.get(id=_id)
+    return ordem_servico_model.OrdemServico.objects(id=_id).first()
 
 
 def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
@@ -58,10 +58,6 @@ def registrar_ordem_servico(body):
 
 def atualizar_ordem_servico(_id, atualizacao):
     # isso nao deve ficar aqui dentro by Lucas
-
-    # if 'equipamento_id' in atualizacao:
-    #     equipamento = equipamento_service.listar_equipamento_by_id(atualizacao['equipamento_id'])
-    #     atualizacao['equipamento_id'] = equipamento
 
     ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
 

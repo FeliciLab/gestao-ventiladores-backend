@@ -105,28 +105,20 @@ class OrdemServicoDetail(Resource):
             return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
         body = request.get_json()
 
-        if 'triagem' in body or 'diagnostico' in body:
+        if 'triagem' in body and len(body['triagem']) != 0:
             erro_validacao = ordem_servico_schema.OrdemServicoSchema().validate(body)
         else:
-            return error_response('Ordem de servico necessita das chave "triagem" ou "diagnostico"')
+            return error_response('Ordem de servico necessita da chave triagem com as atualizações')
 
         if erro_validacao:
             return jsonify(erro_validacao)
 
-        try:
-            equipamento_id = body["equipamento_id"]
-        except:
-            return error_response("ID do equipamento inválido ou não enviado")
+        if 'equipamento_id' in body:
+            equipamento = equipamento_service.listar_equipamento_by_id(body['equipamento_id'])
+            if not equipamento:
+                return error_response("ID do equipamento inválido")
 
-        try:
-            equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
-        except:
-            return error_response("ID do equipamento inválido")
-
-        if not equipamento:
-            return error_response("Equipamento não encontrado")
-
-        body["equipamento_id"] = equipamento
+            body["equipamento_id"] = equipamento
 
         log_service.log_atualizacao_ordem_servico('ordem_servico', _id, body)
         ordem_servico_service.atualizar_ordem_servico(_id, body)
