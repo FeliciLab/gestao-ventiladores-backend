@@ -33,7 +33,7 @@ class TriagemSchema(Schema):
     fabricante = fields.String(required=False)
     marca = fields.String(required=False)
     modelo = fields.String(required=False)
-    acessorios = fields.List(fields.Nested(AcessorioSchema), required=True)
+    acessorios = fields.List(fields.Nested(AcessorioSchema), required=False)
     foto_apos_limpeza = fields.String(required=False)
     nome_instituicao_origem = fields.String(required=False)
     tipo_instituicao_origem = fields.String(required=False)
@@ -72,6 +72,7 @@ class OrdemServicoSchema(Schema):
             "_id", "equipamento_id", "numero_ordem_servico", "created_at", "updated_at", "triagem", "clinico", "tecnico",
             "foto_equipamento_chegada", "status", "diagnostico")
 
+    equipamento_id = fields.String(required=False)
     numero_ordem_servico = fields.String(required=False)
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)
