@@ -1,7 +1,6 @@
 from datetime import datetime
-
 from bson.json_util import dumps
-
+import json
 from api.models import movimentacao_model
 from api.models.equipamento_model import Equipamento
 from api.models.movimentacao_model import Movimentacao
@@ -38,12 +37,14 @@ def listar_movimentacao_id(_id):
 
 def registar_movimentacao(body):
     """
-        Registra uma nova movimentação, gerando o próprio código baseado na quantidade
-        de movimentações cadastradas
+        Registra uma nova movimentação, gerando o próprio código baseado
+        no último código registrado no banco.
     """
-    qtd_movimentacao = len(movimentacao_model.Movimentacao.objects(tipo=body['tipo']))
-    codigo = str(qtd_movimentacao + 1).zfill(4)
+    ultimo_documento = json.loads(movimentacao_model.Movimentacao.objects.order_by('-codigo').to_json())
+    codigo_ultimo_documento = int(ultimo_documento[0]['codigo'])
+    codigo = str(codigo_ultimo_documento + 1).zfill(4)
     body['codigo'] = codigo
+
     return movimentacao_model.Movimentacao(**body).save()
 
 

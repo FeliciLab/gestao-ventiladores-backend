@@ -2,7 +2,7 @@ import json
 
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
-
+from ..utils.error_response import error_response
 from api.schemas import movimentacao_schema
 from api.services import movimentacao_service, equipamento_service, log_service
 from api.utils import query_parser
@@ -37,8 +37,7 @@ class MovimentacaoList(Resource):
                 equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
 
                 if equipamento is None:
-                    return Response("Equipamento " + equipamento_id + " inexistente", mimetype="application/json",
-                                    status=200)
+                    return error_response("Equipamento " + equipamento_id + " inexistente")
 
                 equipamento_list.append(equipamento)
 
@@ -61,8 +60,7 @@ class MovimentacaoList(Resource):
                 equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
 
                 if equipamento is None:
-                    return Response("Equipamento " + equipamento_id + " inexistente", mimetype="application/json",
-                                    status=200)
+                    return error_response("Equipamento " + equipamento_id + " inexistente")
 
                 equipamento_list.append(equipamento)
 
