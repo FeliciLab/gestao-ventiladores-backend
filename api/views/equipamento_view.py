@@ -68,7 +68,7 @@ class EquipamentoList(Resource):
 
         return Response(resposta, mimetype="application/json", status=200)
 
-    @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
+    #@swag_from('../../documentacao/equipamento/equipamento_delete_body.yml')
     def delete(self):
         body = request.args
         try:
@@ -92,7 +92,7 @@ class EquipamentoDetail(Resource):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrada..."), 404)
-        return Response(equipamento, mimetype="application/json", status=200)
+        return Response(equipamento.to_json(), mimetype="application/json", status=200)
 
     @swag_from('../../documentacao/equipamento/equipamento_put.yml')
     def put(self, _id):
@@ -109,7 +109,7 @@ class EquipamentoDetail(Resource):
 
         equipamento_service.atualizar_equipamento(body, _id)
         equipamento_atualizado = equipamento_service.listar_equipamento_by_id(_id)
-        return Response(equipamento_atualizado, mimetype="application/json", status=200)
+        return Response(equipamento_atualizado.to_json(), mimetype="application/json", status=200)
 
     @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
     def delete(self, _id):

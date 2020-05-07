@@ -35,3 +35,5 @@ class MovimentacaoSchema(Schema):
     nome_responsavel_transport = fields.String(required=False)
     contato_responsavel_transport = fields.String(required=False)
     codigo = fields.String(required=False)
+    created_at = fields.DateTime(required=False)
+    updated_at = fields.DateTime(required=False)

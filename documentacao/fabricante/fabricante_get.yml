@@ -3,6 +3,13 @@ Retorna um fabricante específico confome o nome do fabricante passado.
 tags:
   - Fabricantes
 
+parameters:
+  - in: path
+    name: _id
+    type: string
+    required: true
+    description: Id do documento.
+
 responses:
   200:
     description:
