@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from bson.json_util import dumps
 
 from api.models import movimentacao_model
 from api.models.equipamento_model import Equipamento
+from api.models.movimentacao_model import Movimentacao
 from api.utils import query_parser
 
 
@@ -62,3 +65,47 @@ def movimentacao_queries(body):
         __raw__=parsed_query_dt).only(*body["select"])
 
     return filted_movimentacao_list.to_json()
+
+
+def deserialize_movimentacao_service(body):
+    movimetacao = Movimentacao()
+
+    for att_name, att_value in body.items():
+        if "equipamentos_id" is att_name:
+            for equipamento in body["equipamentos_id"]:
+                movimetacao.equipamentos_id.append(equipamento.id)
+
+        elif "created_at" is att_name:
+            movimetacao.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+
+        elif "created_at" is att_name:
+            movimetacao.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+
+        else:
+            try:
+                setattr(movimetacao, att_name, att_value)
+            except:
+                continue
+
+    return movimetacao
+    # if "codigo" in body: movimetacao.codigo = body["codigo"]
+    # if "tipo" in body: movimetacao.tipo = body["tipo"]
+    # if "equipamentos_id" in body:
+    #     for equipamento in body["equipamentos_id"]:
+    #         movimetacao.equipamentos_id.append(equipamento.id)
+    #
+    # if "instituicao_destino" in body: movimetacao.instituicao_destino = body["instituicao_destino"]
+    # if "cidade_destino" in body: movimetacao.cidade_destino = body["cidade_destino"]
+    # if "cnpj_destino" in body: movimetacao.cnpj_destino = body["cnpj_destino"]
+    # if "endereco_destino" in body: movimetacao.endereco_destino = body["endereco_destino"]
+    # if "nome_responsavel_destino" in body: movimetacao.nome_responsavel_destino = body["nome_responsavel_destino"]
+    # if "contato_responsavel_destino" in body: movimetacao.contato_responsavel_destino = body[
+    #     "contato_responsavel_destino"]
+    # if "nome_responsavel_transporte" in body: movimetacao.nome_responsavel_transporte = body[
+    #     "nome_responsavel_transporte"]
+    # if "contato_responsavel_transporte" in body: movimetacao.contato_responsavel_transporte = body[
+    #     "contato_responsavel_transporte"]
+    # if "created_at" in body: movimetacao.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+    # if "created_at" in body: movimetacao.updated_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+
+    #return movimetacao
