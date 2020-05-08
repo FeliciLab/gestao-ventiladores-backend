@@ -40,7 +40,7 @@ def listar_ordem_servico():
 
 
 def listar_ordem_servico_by_id(_id):
-    return ordem_servico_model.OrdemServico.objects.get(id=_id)
+    return ordem_servico_model.OrdemServico.objects(id=_id).first()
 
 
 def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
@@ -154,17 +154,11 @@ def deserealize_ordem_servico(body):
     ordem_servico = ordem_servico_model.OrdemServico()
 
     for att_name, att_value in body.items():
-        if "equipamento_id" is att_name:
-            for equipamento in body["equipamento_id"]:
-                equipamento.equipamento_id = (equipamento.id)
+        if "created_at" is att_name:
+            ordem_servico.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
 
-        elif "created_at" is att_name:
-            ordem_servico.created_at = datetime.strptime(body["created_at"],
-                                                         "%Y-%m-%dT%H:%M:%S.%f")
-
-        elif "created_at" is att_name:
-            ordem_servico.created_at = datetime.strptime(body["updated_at"],
-                                                         "%Y-%m-%dT%H:%M:%S.%f")
+        if "updated_at" is att_name:
+            ordem_servico.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
 
         else:
             try:
