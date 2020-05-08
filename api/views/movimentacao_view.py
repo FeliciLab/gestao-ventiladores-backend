@@ -45,7 +45,7 @@ class MovimentacaoList(Resource):
             updated_body = json.loads(movimentacao_service.deserialize_movimentacao_service(body).to_json())
             old_movimentacao_body = json.loads(movimentacao_cadastrada.to_json())
 
-            log_service.registerLog("movimentacao", old_movimentacao_body, updated_body, [])
+            log_service.registerLog("movimentacao", old_movimentacao_body, updated_body, ["created_at","updated_at"])
 
             del body["_id"]
             movimentacao_service.atualizar_movimentacao(_id, body)
@@ -80,11 +80,11 @@ class MovimentacaoDetail(Resource):
         if movimentacao_validacao:
             return make_response(jsonify(movimentacao_validacao), 400)
 
-        #todo Não entendo pq passo o _id dentro do body da requisição, se já passo na URL by Denis
-        if '_id' in body:
-            _id = body["_id"]
-
         movimentacao_cadastrada = movimentacao_service.listar_movimentacao_id(_id)
+
+        if movimentacao_cadastrada is None:
+            return Response("Movimentacao " + str(_id) + " inexistente", mimetype="application/json",
+                            status=200)
 
         if movimentacao_cadastrada:
             if "equipamentos_id" in body:
@@ -100,12 +100,14 @@ class MovimentacaoDetail(Resource):
 
                     equipamento_list.append(equipamento)
 
-                    body["equipamentos_id"] = equipamento_list
+                body["equipamentos_id"] = equipamento_list
 
             updated_body = json.loads(movimentacao_service.deserialize_movimentacao_service(body).to_json())
             old_movimentacao_body = json.loads(movimentacao_cadastrada.to_json())
 
-            log_service.registerLog("movimentacao", old_movimentacao_body, updated_body, [])
+            log_service.registerLog("movimentacao", old_movimentacao_body, updated_body, ["codigo",
+                                                                                          "created_at",
+                                                                                          "updated_at"])
 
             if "_id" in body:
                 del body["_id"]

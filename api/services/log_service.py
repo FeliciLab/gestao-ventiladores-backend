@@ -136,7 +136,10 @@ def registerLog(documento_name, antigo, novo, ignored_fields):
                       created_at=datetime.now()).save()
 
 
-def check_fields(antigo, novo, ignorated_fields):
+def check_fields(antigo, novo, ignorated_fields=None):
+    if ignorated_fields is None:
+        ignorated_fields = []
+
     log = {}
     if type(novo) != dict:
         if type(antigo) == dict or type(antigo) == list:
@@ -144,31 +147,47 @@ def check_fields(antigo, novo, ignorated_fields):
 
         return antigo == novo
 
-    for campo in novo.keys():
+    for campo in antigo.keys():
         if campo in ignorated_fields:
             continue
 
-        if campo not in antigo:
+        if campo not in novo:
+            log[campo] = antigo[campo]
             continue
 
-        if type(antigo[campo]) == dict:
+        if type(novo[campo]) != type(antigo[campo]):
+            log[campo] = antigo[campo]
+            continue
+
+        if type(novo[campo]) == dict and type(antigo[campo]) == dict:
             _log = check_fields(antigo[campo], novo[campo], ignorated_fields)
             if _log:
                 log[campo] = _log
 
             continue
 
-        if type(antigo[campo]) == list:
-            for indice in range(len(novo[campo])):
-                _log = check_fields(antigo[campo][indice],
-                                    novo[campo][indice], ignorated_fields)
+        # if type(novo[campo]) == dict and type(novo[campo]) != type(antigo[campo]):
+        #     log[campo] = antigo[campo]
+        #     continue
 
-                if _log:
-                    if campo not in log:
-                        log[campo] = {}
-                    log[campo][indice] = _log
+        if type(novo[campo]) == list and type(antigo[campo]) == list:
+            if len(novo[campo]) != len(antigo[campo]):
+                log[campo] = antigo[campo]
+            else:
+                for indice in range(len(antigo[campo])):
+                    _log = check_fields(antigo[campo][indice],
+                                        novo[campo][indice], ignorated_fields)
+
+                    if _log:
+                        if campo not in log:
+                            log[campo] = {}
+                        log[campo][indice] = _log
 
             continue
+
+        # if type(novo[campo]) == list and type(novo[campo]) != type(antigo[campo]):
+        #     log[campo] = antigo[campo]
+        #     continue
 
         if novo[campo] == antigo[campo]:
             continue
