@@ -3,7 +3,7 @@ from api.views import ordem_servico_view, fabricante_view, importador_view, \
 
 
 def initialize_routes(api):
-    api.add_resource(equipamento_view.EquipamentoList, '/api/equipamentos')
+    api.add_resource(aaaaequipamento_view.EquipamentoList, '/api/equipamentos')
     api.add_resource(equipamento_view.EquipamentoDetail, '/api/equipamento/<_id>')
 
     api.add_resource(ordem_servico_view.OrdemServicoList, '/api/ordem_servicos')
