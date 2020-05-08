@@ -2,7 +2,14 @@ Atualiza o equipamento passando os dados de diagnostico clinico/tecnico.
 ---
 tags:
   - Equipamentos
+
 parameters:
+  - in: path
+    name: _id
+    type: string
+    required: true
+    description: Id do documento.
+
   - in: body
     name: Equipamento
     schema:
