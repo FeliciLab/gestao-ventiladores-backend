@@ -6,6 +6,7 @@ class EquipamentoSchema(Schema):
     class Meta:
         model = equipamento_model.Equipamento
         fields = (
+            "_id",
             "status",
             "numero_de_serie",
             "nome_equipamento",
@@ -22,7 +23,7 @@ class EquipamentoSchema(Schema):
             "created_at",
             "updated_at"
         )
-
+    _id = fields.String(required=False)
     numero_de_serie = fields.String(required=False)
     nome_equipamento = fields.String(required=False)
     numero_do_patrimonio = fields.String(required=False)
