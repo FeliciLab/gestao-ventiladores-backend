@@ -119,7 +119,11 @@ from ..utils import query_parser
 #     pass
 
 
-def registerLog(documento_name, antigo, novo, ignored_fields):
+def registerLog(documento_name, antigo, novo, ignored_fields=None):
+
+    if ignored_fields is None:
+        ignored_fields = []
+
     document_id = antigo["_id"]["$oid"]
     del antigo["_id"]
     log = check_fields(antigo, novo, ignored_fields)
