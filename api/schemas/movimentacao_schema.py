@@ -19,7 +19,7 @@ class MovimentacaoSchema(Schema):
             "nome_responsavel_transporte",
             "contato_responsavel_transporte",
             "created_at",
-            "updated_at"
+            "updated_at",
             "codigo",
 
         )

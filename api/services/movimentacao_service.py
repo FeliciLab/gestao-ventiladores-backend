@@ -41,7 +41,7 @@ def registar_movimentacao(body):
         no último código registrado no banco.
     """
     ultimo_documento = json.loads(movimentacao_model.Movimentacao.objects.order_by('-codigo').to_json())
-    codigo_ultimo_documento = int(ultimo_documento[0]['codigo'])
+    codigo_ultimo_documento = 0 if len(ultimo_documento) == 0 else int(ultimo_documento[0]['codigo'])
     codigo = str(codigo_ultimo_documento + 1).zfill(4)
     body['codigo'] = codigo
 
