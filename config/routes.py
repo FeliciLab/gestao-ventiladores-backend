@@ -7,7 +7,7 @@ from api.views import (
     ordem_compra_view,
     movimentacao_view,
     log_view,
-    calibragem_view
+    calibragem_view, diagnostico_view
 )
 
 
@@ -41,8 +41,9 @@ def initialize_routes(api):
     api.add_resource(movimentacao_view.MovimentacaoDetail,
                      '/api/movimentacao/<_id>')
     api.add_resource(movimentacao_view.MovimentacaoQuery,
-                     '/api/movimentacao/find')
+                     '/api/movimentacao/')
 
     api.add_resource(log_view.LogQuery, '/api/logs/find')
 
     api.add_resource(calibragem_view.CalibragemCrud, '/api/calibragem')
+    api.add_resource(diagnostico_view.DiagnosticoCrud, '/api/diagnosticos')
