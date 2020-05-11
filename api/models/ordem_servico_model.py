@@ -16,6 +16,7 @@ class Triagem(db.EmbeddedDocument):
     foto_antes_limpeza = db.StringField(required=False)
     foto_apos_limpeza = db.StringField(required=False)
 
+
 class Item(db.EmbeddedDocument):
     tipo = db.StringField(required=False)
     fabricante = db.StringField(required=False)
@@ -25,11 +26,16 @@ class Item(db.EmbeddedDocument):
     quantidade = db.IntField(required=False)
     descricao = db.StringField(required=False)
 
+
 class Diagnostico(db.EmbeddedDocument):
     resultado_tecnico = db.StringField(required=False)
     demanda_servicos = db.StringField(required=False)
     observacoes = db.StringField(required=False)
     itens = db.EmbeddedDocumentListField(Item, required=False)
+
+
+class Calibragem(db.EmbeddedDocument):
+    status = db.StringField(required=False)
 
 
 class OrdemServico(db.Document):
@@ -40,3 +46,4 @@ class OrdemServico(db.Document):
     status = db.StringField(required=False)
     triagem = db.EmbeddedDocumentField(Triagem, required=False)
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)
+    calibragem = db.EmbeddedDocumentField(Calibragem, required=False)

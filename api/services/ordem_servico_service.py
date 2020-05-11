@@ -6,6 +6,19 @@ from datetime import datetime
 from ..utils import query_parser
 
 
+def get_ordem_servico_equipamento_pipeline():
+    return [
+        {
+            "$lookup": {
+                "from": Equipamento._get_collection_name(),
+                "localField": "equipamento_id",
+                "foreignField": "_id",
+                "as": "equipamento"
+            }
+        }
+    ]
+
+
 def listar_ordem_servico():
     pipeline = [
         {
@@ -59,7 +72,8 @@ def atualizar_ordem_servico(_id, atualizacao):
     # isso nao deve ficar aqui dentro by Lucas
 
     # if 'equipamento_id' in atualizacao:
-    #     equipamento = equipamento_service.listar_equipamento_by_id(atualizacao['equipamento_id'])
+    #     equipamento = equipamento_service.listar_equipamento_by_id(
+    #     atualizacao['equipamento_id'])
     #     atualizacao['equipamento_id'] = equipamento
 
     ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
@@ -149,17 +163,20 @@ def deserealize_ordem_servico(body):
         else:
             try:
                 setattr(ordem_servico, att_name, att_value)
-
             except:
                 continue
 
     return ordem_servico
 
     # ordem_servico = ordem_servico_model.OrdemServico()
-    # if "numero_ordem_servico" in body: ordem_servico.numero_ordem_servico = body["numero_ordem_servico"]
-    # if "equipamento_id" in body: ordem_servico.equipamento_id = body["equipamento_id"].id
-    # if "created_at" in body: ordem_servico.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-    # if "updated_at" in body: ordem_servico.updated_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+    # if "numero_ordem_servico" in body: ordem_servico.numero_ordem_servico =
+    # body["numero_ordem_servico"]
+    # if "equipamento_id" in body: ordem_servico.equipamento_id = body[
+    # "equipamento_id"].id
+    # if "created_at" in body: ordem_servico.created_at = datetime.strptime(
+    # body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+    # if "updated_at" in body: ordem_servico.updated_at = datetime.strptime(
+    # body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
     # if "status" in body: ordem_servico.status = body["status"]
     # if "triagem" in body: ordem_servico.triagem = body["triagem"]
     # if "diagnostico" in body: ordem_servico.diagnostico = body["diagnostico"]
