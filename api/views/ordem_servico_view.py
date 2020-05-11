@@ -109,13 +109,13 @@ class OrdemServicoDetail(Resource):
             return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
         body = request.get_json()
 
-        '''if 'triagem' in body and len(body['triagem']) != 0:
+        if ('triagem' in body and len(body['triagem']) != 0) or ('diagnostico' in body and len(body['diagnostico']) != 0):
             erro_validacao = ordem_servico_schema.OrdemServicoSchema().validate(body)
         else:
-            return error_response('Ordem de servico necessita da chave triagem com as atualizacoes')
+            return error_response('Ordem de servico necessita da chave triagem ou diagnostico com as atualizacoes')
 
         if erro_validacao:
-            return jsonify(erro_validacao)'''
+            return jsonify(erro_validacao)
 
         if 'equipamento_id' in body:
             equipamento = equipamento_service.listar_equipamento_by_id(body['equipamento_id'])
@@ -129,7 +129,8 @@ class OrdemServicoDetail(Resource):
 
         log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
                                 ignored_fields=["created_at", "updated_at"])
-        ordem_servico_service.atualizar_ordem_servico(_id, body)
+
+        ordem_servico_service.atualiza_somente_campos_repassados(_id, body)
 
         return Response(
             json.dumps({"_id": _id}),

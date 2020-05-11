@@ -38,6 +38,26 @@ def listar_ordem_servico():
 
     return dumps(docs)
 
+def gera_query_adaptada(current_key, currnet_value):
+    query = {}
+    if type(currnet_value) == dict:
+        for k, v in currnet_value.items():
+            query.update(gera_query_adaptada(current_key + "__{}".format(k), v))
+
+    else:
+        query[current_key] = currnet_value
+
+    return query
+
+def atualiza_somente_campos_repassados(_id, atualizacao):
+
+    query = {}
+    root_key = "set"
+    root_value = atualizacao
+    query.update(gera_query_adaptada(root_key, root_value))
+
+    ordem_servico_model.OrdemServico.objects(id=_id).update(**query)
+
 
 def listar_ordem_servico_by_id(_id):
     return ordem_servico_model.OrdemServico.objects(id=_id).first()
