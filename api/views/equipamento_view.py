@@ -125,3 +125,9 @@ class EquipamentoDetail(Resource):
         equipamento_service.deletar_equipamento(_id)
         return make_response('', 204)
 
+
+class EquipamentoBulk(Resource):
+    def post(self):
+        body = request.json
+        if 'equipamentos' not in body:
+            return error_response('Equipamentos não enviado')

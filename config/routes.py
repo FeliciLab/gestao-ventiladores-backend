@@ -7,12 +7,14 @@ from api.views import (
     ordem_compra_view,
     movimentacao_view,
     log_view,
-    calibragem_view, diagnostico_view
+    calibragem_view,
+    diagnostico_view
 )
 
 
 def initialize_routes(api):
     api.add_resource(equipamento_view.EquipamentoList, '/api/equipamentos')
+    api.add_resource(equipamento_view.EquipamentoBulk, '/api/equipamentos/bulk')
     api.add_resource(equipamento_view.EquipamentoDetail,
                      '/api/equipamento/<_id>')
 

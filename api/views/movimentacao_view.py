@@ -17,7 +17,6 @@ class MovimentacaoList(Resource):
         body = request.json
         movimentacao_validacao = movimentacao_schema.MovimentacaoSchema().validate(request.json)
         if movimentacao_validacao:
-            print('ok')
             return make_response(jsonify(movimentacao_validacao), 400)
 
         response_status = None
