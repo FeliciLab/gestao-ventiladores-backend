@@ -74,7 +74,7 @@ class EquipamentoList(Resource):
 
         return Response(resposta, mimetype="application/json", status=200)
 
-    #@swag_from('../../documentacao/equipamento/equipamento_delete_body.yml')
+    # @swag_from('../../documentacao/equipamento/equipamento_delete_body.yml')
     def delete(self):
         body = request.args
         try:
@@ -91,6 +91,7 @@ class EquipamentoList(Resource):
 
         equipamento_service.deletar_equipamento(_id)
         Response(jsonify({"ok": True}), mimetype="application/json", status=204)
+
 
 class EquipamentoDetail(Resource):
     @swag_from('../../documentacao/equipamento/equipamento_get.yml')
@@ -131,3 +132,48 @@ class EquipamentoBulk(Resource):
         body = request.json
         if 'equipamentos' not in body:
             return error_response('Equipamentos não enviado')
+
+        a = []
+        for equipamento in body['equipamentos']: #agora vai
+            b = upsert_equipment(equipamento)
+            if b != False:
+                a.append(b)
+
+        return jsonify({"equipamentos": a})
+
+
+def upsert_equipment(body):
+    try:
+        _id = body["_id"]
+    except:
+        _id = False
+
+    erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
+    if erro_equipamento:
+        return False
+
+    equipamento_existente = equipamento_service.consultar_numero_de_serie(
+        body["numero_de_serie"]
+    )
+
+    if not _id and equipamento_existente:
+        return False
+
+    if not _id:
+        novo_equipamento_id = equipamento_service.registar_equipamento_complete(body)
+        return json.loads(novo_equipamento_id.to_json())
+
+    updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
+    old_ordem_servico_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
+
+    log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
+                            ignored_fields=["created_at", "updated_at"])
+    try:
+        del body["_id"]
+    except KeyError:
+        print("_id não está presente no body")
+
+    equipamento_service.atualizar_equipamento(body, _id)
+    return json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
+
+

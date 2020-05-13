@@ -31,6 +31,10 @@ def registar_equipamento(body):
     return str(equipamento.id)
 
 
+def registar_equipamento_complete(body):
+    return equipamento_model.Equipamento(**body).save()
+
+
 def atualizar_equipamento(atualizacao, _id):
     equipamento_model.Equipamento.objects.get(id=_id).update(**atualizacao)
 
