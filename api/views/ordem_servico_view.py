@@ -103,11 +103,15 @@ class OrdemServicoDetail(Resource):
 
     # @swag_from('../../documentacao/ordem_servico/ordem_servico_put.yml')
     def put(self, _id):
+        print('aqui')
         ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
 
         if ordem_servico is None:
             return make_response(jsonify("Ordem de serviço não encontrada..."), 404)
         body = request.get_json()
+
+        print(body)
+        print(ordem_servico)
 
         if ('triagem' in body and len(body['triagem']) != 0) or ('diagnostico' in body and len(body['diagnostico']) != 0):
             erro_validacao = ordem_servico_schema.OrdemServicoSchema().validate(body)

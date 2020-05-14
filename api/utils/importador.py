@@ -279,10 +279,7 @@ def __get_acessorios_extras(acessorios_extras_string):
             {
                 "quantidade": quantidade,
                 "nome": acessorio_extra_nome.strip(),
-                "tipo": "acessorio",
                 "descricao": "",
-                "valor": 0.0,
-                "prioridade": "baixa",
                 "unidade_medida": ""
             }
         )
@@ -302,10 +299,11 @@ def __get_itens(item_string):
         nome = item_nome
         item_list.append(
             {
+                "fabricante": "",
+                "codigo": "",
                 "nome": nome.strip(),
                 "tipo": "pecas",
                 "descricao": "",
-                "valor": 0.0,
                 "prioridade": "baixa",
                 "quantidade": 1,
                 "unidade_medida": ""

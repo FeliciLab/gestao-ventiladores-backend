@@ -50,7 +50,6 @@ def gera_query_adaptada(current_key, currnet_value):
     return query
 
 def atualiza_somente_campos_repassados(_id, atualizacao):
-
     query = {}
     root_key = "set"
     root_value = atualizacao
