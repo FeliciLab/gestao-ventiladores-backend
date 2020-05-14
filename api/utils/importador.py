@@ -293,7 +293,7 @@ def __get_itens(item_string):
 
     item_list = list()
     separator_char = ","
-    if "\n" in item_string in item_string:
+    if "\n" in item_string:
         separator_char = "\n"
 
     for item_nome in item_string.split(separator_char):

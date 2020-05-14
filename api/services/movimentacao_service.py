@@ -79,14 +79,14 @@ def deserialize_movimentacao_service(body):
         elif "created_at" is att_name:
             movimetacao.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
 
-        elif "created_at" is att_name:
-            movimetacao.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+        elif "updated_at" is att_name:
+            movimetacao.updated_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
 
-        else:
-            try:
-                setattr(movimetacao, att_name, att_value)
-            except:
-                continue
+        try:
+            setattr(movimetacao, att_name, att_value)
+        except:
+            print('Problem setattr movimentacao')
+            continue
 
     return movimetacao
     # if "codigo" in body: movimetacao.codigo = body["codigo"]
