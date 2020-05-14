@@ -59,11 +59,11 @@ class EquipamentoList(Resource):
             resposta = json.dumps({"_id": novo_equipamento_id})
         else:
 
-            updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
-            old_ordem_servico_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
+            # updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
+            # old_ordem_servico_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
+            # log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
+            #                         ignored_fields=["created_at", "updated_at"])
 
-            log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
-                                    ignored_fields=["created_at", "updated_at"])
             try:
                 del body["_id"]
             except KeyError:
@@ -112,7 +112,8 @@ class EquipamentoDetail(Resource):
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
 
-        log_service.log_atualizacao_equipamento('equipamento', _id, body)
+        # Não está funcionando o LOG
+        # log_service.log_atualizacao_equipamento('equipamento', _id, body)
 
         equipamento_service.atualizar_equipamento(body, _id)
         equipamento_atualizado = equipamento_service.listar_equipamento_by_id(_id)
@@ -163,11 +164,11 @@ def upsert_equipment(body):
         novo_equipamento_id = equipamento_service.registar_equipamento_complete(body)
         return json.loads(novo_equipamento_id.to_json())
 
-    updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
-    old_ordem_servico_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
+    # updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
+    # old_ordem_servico_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
 
-    log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
-                            ignored_fields=["created_at", "updated_at"])
+    # log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
+    #                         ignored_fields=["created_at", "updated_at"])
     try:
         del body["_id"]
     except KeyError:

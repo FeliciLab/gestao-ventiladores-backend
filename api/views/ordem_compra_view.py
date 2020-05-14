@@ -60,11 +60,11 @@ class OrdemCompraDetail(Resource):
         if ordem_compra is None:
             return make_response(jsonify("Ordem de compra não encontrada..."), 404)
 
-        updated_body = json.loads(ordem_compra_service.deserealize_ordem_compra(body).to_json())
-        old_ordem_servico_body = json.loads(ordem_compra.to_json())
+        # updated_body = json.loads(ordem_compra_service.deserealize_ordem_compra(body).to_json())
+        # old_ordem_servico_body = json.loads(ordem_compra.to_json())
 
-        log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
-                                ignored_fields=["numero_ordem_compra","created_at","updated_at"])
+        # log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
+        #                         ignored_fields=["numero_ordem_compra","created_at","updated_at"])
 
         ordem_compra_service.atualizar_ordem_compra(_id, body)
         nova_ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(_id)
