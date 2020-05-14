@@ -108,7 +108,7 @@ class MovimentacaoDetail(Resource):
             if len(updated_body['equipamentos_id']) == 0:
                 del updated_body['equipamentos_id']
 
-            log_service.registerLog("ordem_compra", old_movimentacao_body, updated_body, ["codigo",
+            log_service.registerLog("movimentacao", old_movimentacao_body, updated_body, ["codigo",
                                                                                            "created_at",
                                                                                            "updated_at"],
                                                                                             all_fields=False)
