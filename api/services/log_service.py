@@ -119,28 +119,43 @@ from ..utils import query_parser
 #     pass
 
 
-def registerLog(documento_name, antigo, novo, ignored_fields=None):
+def registerLog(documento_name, antigo, novo, ignored_fields=None, all_fields=True):
 
     if ignored_fields is None:
         ignored_fields = []
 
     document_id = antigo["_id"]["$oid"]
     del antigo["_id"]
-    log = check_fields(antigo, novo, ignored_fields)
+    log = check_fields(antigo, novo, all_fields, ignored_fields)
     if not log:
         print("There are not changes")
-        pass
-    else:
-        print("Changes" + str(log))
-
-        log_model.Log(collection=documento_name,
-                      document_id=ObjectId(document_id),
-                      old_values=json.dumps(log),
-                      last_updated_at=datetime.now(),
-                      created_at=datetime.now()).save()
+        return None
 
 
-def check_fields(antigo, novo, ignorated_fields=None):
+    print("Changes" + str(log))
+    log = formatLog(log)
+    log_model.Log(collection=documento_name,
+                  document_id=ObjectId(document_id),
+                  old_values=log,
+                  last_updated_at=datetime.now(),
+                  created_at=datetime.now()).save()
+
+
+def formatLog(log):
+    for key in log.keys():
+        if "$oid" == key:
+            return log[key]
+        if "$date" == key:
+            return log[key]
+        if type(log[key]) == dict:
+            log[key] = formatLog(log[key])
+        if type(log[key]) == list:
+            for element in log[key]:
+                if type(element) == dict:
+                    log[key] = formatLog(element)
+    return log
+
+def check_fields(antigo, novo, all_fields, ignorated_fields=None):
     if ignorated_fields is None:
         ignorated_fields = []
 
@@ -156,7 +171,9 @@ def check_fields(antigo, novo, ignorated_fields=None):
             continue
 
         if campo not in novo:
-            log[campo] = antigo[campo]
+            if all_fields:
+                log[campo] = antigo[campo]
+
             continue
 
         if type(novo[campo]) != type(antigo[campo]):
@@ -164,7 +181,7 @@ def check_fields(antigo, novo, ignorated_fields=None):
             continue
 
         if type(novo[campo]) == dict and type(antigo[campo]) == dict:
-            _log = check_fields(antigo[campo], novo[campo], ignorated_fields)
+            _log = check_fields(antigo[campo], novo[campo], all_fields, ignorated_fields)
             if _log:
                 log[campo] = _log
 
@@ -180,12 +197,12 @@ def check_fields(antigo, novo, ignorated_fields=None):
             else:
                 for indice in range(len(antigo[campo])):
                     _log = check_fields(antigo[campo][indice],
-                                        novo[campo][indice], ignorated_fields)
+                                        novo[campo][indice], all_fields, ignorated_fields)
 
                     if _log:
                         if campo not in log:
                             log[campo] = {}
-                        log[campo][indice] = _log
+                        log[campo][str(indice)] = _log
 
             continue
 

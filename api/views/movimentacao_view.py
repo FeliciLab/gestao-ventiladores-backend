@@ -42,10 +42,10 @@ class MovimentacaoList(Resource):
 
             body["equipamentos_id"] = equipamento_list
 
-            # updated_body = json.loads(movimentacao_service.deserialize_movimentacao_service(body).to_json())
-            # old_movimentacao_body = json.loads(movimentacao_cadastrada.to_json())
+            updated_body = json.loads(movimentacao_service.deserialize_movimentacao_service(body).to_json())
+            old_movimentacao_body = json.loads(movimentacao_cadastrada.to_json())
 
-            # log_service.registerLog("movimentacao", old_movimentacao_body, updated_body, ["created_at","updated_at"])
+            log_service.registerLog("ordem_compra", old_movimentacao_body, updated_body, ["created_at","updated_at"])
 
             del body["_id"]
             movimentacao_service.atualizar_movimentacao(_id, body)
@@ -100,14 +100,18 @@ class MovimentacaoDetail(Resource):
 
                     equipamento_list.append(equipamento)
 
-                body["equipamentos_id"] = equipamento_list
+                if len(equipamento_list) != 0:
+                    body["equipamentos_id"] = equipamento_list
 
-            # updated_body = json.loads(movimentacao_service.deserialize_movimentacao_service(body).to_json())
-            # old_movimentacao_body = json.loads(movimentacao_cadastrada.to_json())
-            #
-            # log_service.registerLog("movimentacao", old_movimentacao_body, updated_body, ["codigo",
-            #                                                                               "created_at",
-            #                                                                               "updated_at"])
+            updated_body = json.loads(movimentacao_service.deserialize_movimentacao_service(body).to_json())
+            old_movimentacao_body = json.loads(movimentacao_cadastrada.to_json())
+            if len(updated_body['equipamentos_id']) == 0:
+                del updated_body['equipamentos_id']
+
+            log_service.registerLog("movimentacao", old_movimentacao_body, updated_body, ["codigo",
+                                                                                           "created_at",
+                                                                                           "updated_at"],
+                                                                                            all_fields=False)
 
             if "_id" in body:
                 del body["_id"]
