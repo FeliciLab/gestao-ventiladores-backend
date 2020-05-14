@@ -76,11 +76,10 @@ class OrdemServicoList(Resource):
                 status=201
             )
 
-        # updated_body = json.loads(ordem_servico_service.deserealize_ordem_servico(body).to_json())
-        # old_ordem_servico_body = json.loads(ordem_servico_service.listar_ordem_servico_by_id(_id).to_json())
-
-        # log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
-        #                         ignored_fields=["created_at", "updated_at"])
+        updated_body = json.loads(ordem_servico_service.deserealize_ordem_servico(body).to_json())
+        old_ordem_servico_body = json.loads(ordem_servico_service.listar_ordem_servico_by_id(_id).to_json())
+        log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
+                                 ignored_fields=["created_at", "updated_at"], all_fields=False)
 
         ordem_servico_service.atualizar_ordem_servico(_id, body)
         return Response(
@@ -128,11 +127,10 @@ class OrdemServicoDetail(Resource):
 
             body["equipamento_id"] = equipamento
 
-        # updated_body = json.loads(ordem_servico_service.deserealize_ordem_servico(body).to_json())
-        # old_ordem_servico_body = json.loads(ordem_servico_service.listar_ordem_servico_by_id(_id).to_json())
-
-        # log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
-        #                         ignored_fields=["created_at", "updated_at"])
+        updated_body = json.loads(ordem_servico_service.deserealize_ordem_servico(body).to_json())
+        old_ordem_servico_body = json.loads(ordem_servico_service.listar_ordem_servico_by_id(_id).to_json())
+        log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
+                                 ignored_fields=["created_at", "updated_at"], all_fields=False)
 
         ordem_servico_service.atualiza_somente_campos_repassados(_id, body)
 

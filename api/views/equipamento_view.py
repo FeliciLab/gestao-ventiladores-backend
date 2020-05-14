@@ -59,10 +59,10 @@ class EquipamentoList(Resource):
             resposta = json.dumps({"_id": novo_equipamento_id})
         else:
 
-            # updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
-            # old_ordem_servico_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
-            # log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
-            #                         ignored_fields=["created_at", "updated_at"])
+            updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
+            old_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
+            log_service.registerLog("equipamento", old_body, updated_body,
+                                     ignored_fields=["created_at", "updated_at"], all_fields=False)
 
             try:
                 del body["_id"]
@@ -112,11 +112,14 @@ class EquipamentoDetail(Resource):
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
 
-        # Não está funcionando o LOG
-        # log_service.log_atualizacao_equipamento('equipamento', _id, body)
+        updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
+        old_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
+        log_service.registerLog("equipamento", old_body, updated_body,
+                                ignored_fields=["created_at", "updated_at"], all_fields=False)
 
         equipamento_service.atualizar_equipamento(body, _id)
         equipamento_atualizado = equipamento_service.listar_equipamento_by_id(_id)
+
         return Response(equipamento_atualizado.to_json(), mimetype="application/json", status=200)
 
     @swag_from('../../documentacao/equipamento/equipamento_delete.yml')

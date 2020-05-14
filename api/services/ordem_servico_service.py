@@ -175,15 +175,16 @@ def deserealize_ordem_servico(body):
     for att_name, att_value in body.items():
         if "created_at" is att_name:
             ordem_servico.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+            continue
 
         if "updated_at" is att_name:
             ordem_servico.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+            continue
 
-        else:
-            try:
-                setattr(ordem_servico, att_name, att_value)
-            except:
-                continue
+        try:
+            setattr(ordem_servico, att_name, att_value)
+        except:
+            continue
 
     return ordem_servico
 
