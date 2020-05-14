@@ -40,6 +40,7 @@ def importar_triagem(triagem_body):
                         equipamento = equipamento_service.listar_equipamento_by_id(equipamento_id)
 
                 triagem_body = prepara_triagem_body(linha, equipamento)
+                triagem_body['equipamento_id'] = str(triagem_body['equipamento_id'].id)
                 erro_validacao = validacao(triagem_body)
                 if erro_validacao:
                     return {'validate': erro_validacao}
@@ -65,6 +66,7 @@ def prepara_equipamento_body(linha):
     return {
         "numero_de_serie": linha["Informe o número de série:"],
         "nome_equipamento": "",  # it field does not exist in csv
+        "status": "", # it field does not exist in csv
         "numero_do_patrimonio": str(linha["Se público, informe o número do patrimônio:"]),
         "tipo": linha["Selecione o tipo do equipamento:"],
         "marca": linha["Selecione a marca do equipamento:"],
@@ -106,7 +108,6 @@ def __transformando_data(data):
     data = data[6:10] + data[2:6] + data[:2] + data[10:]
     data = data.replace('/', '-').replace(' ', 'T')
     return data
-
 
 def __get_acessorios(acessorios_string):
     if acessorios_string is "":
@@ -250,8 +251,8 @@ def prepara_diagnostico_body(linha):
     return {
         "resultado_tecnico": linha["Defeito observado:"],
         "demanda_servicos": "",
-        "demanda_insumos": linha["Insumos utilizados no diagnostico:"],
-        "acao_orientacao": linha["Açao:"],
+        # "demanda_insumos": linha["Insumos utilizados no diagnostico:"],
+        # "acao_orientacao": linha["Açao:"],
         "observacoes": linha["Observação: "],
         "itens": __get_itens(linha["Demanda por peças: "]) + __get_acessorios_extras(
             linha["Acessórios que necessita: "]),
@@ -299,14 +300,13 @@ def __get_itens(item_string):
         nome = item_nome
         item_list.append(
             {
+                "tipo": "pecas",
                 "fabricante": "",
                 "codigo": "",
                 "nome": nome.strip(),
-                "tipo": "pecas",
-                "descricao": "",
-                "prioridade": "baixa",
+                "unidade_medida": "",
                 "quantidade": 1,
-                "unidade_medida": ""
+                "descricao": "",
             }
         )
     return item_list
