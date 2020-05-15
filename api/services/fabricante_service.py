@@ -7,7 +7,7 @@ def listar_fabricantes():
 
 def listar_fabricante_id(fabricante_nome):
     try:
-        fabricante = fabricante_model.Fabricante.objects.get(fabricante_nome=fabricante_nome).to_json()
+        fabricante = fabricante_model.Fabricante.objects.get(id=fabricante_nome).to_json()
     except:
         fabricante = None
     finally:
@@ -19,8 +19,8 @@ def registar_fabricante(body):
 
 
 def atualizar_fabricante(fabricante_nome, atualizacao):
-    fabricante_model.Fabricante.objects.get(fabricante_nome=fabricante_nome).update(**atualizacao)
+    fabricante_model.Fabricante.objects.get(id=fabricante_nome).update(**atualizacao)
 
 
 def deletar_fabricante(fabricante_nome):
-    fabricante_model.Fabricante.objects.get(fabricante_nome=fabricante_nome).delete()
+    fabricante_model.Fabricante.objects.get(id=fabricante_nome).delete()

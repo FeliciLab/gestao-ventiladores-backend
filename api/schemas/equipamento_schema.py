@@ -6,6 +6,7 @@ class EquipamentoSchema(Schema):
     class Meta:
         model = equipamento_model.Equipamento
         fields = (
+            "_id",
             "status",
             "numero_de_serie",
             "nome_equipamento",
@@ -22,20 +23,19 @@ class EquipamentoSchema(Schema):
             "created_at",
             "updated_at"
         )
-
-    numero_de_serie = fields.String(required=True)
-    nome_equipamento = fields.String(required=True)
-    numero_do_patrimonio = fields.String(required=True)
-    status = fields.String(required=True)
-    tipo = fields.String(required=True)
-    marca = fields.String(required=True)
-    modelo = fields.String(required=True)
-    fabricante = fields.String(required=True)
-    municipio_origem = fields.String(required=True)
-    nome_instituicao_origem = fields.String(required=True)
-    tipo_instituicao_origem = fields.String(required=True)
-    nome_responsavel = fields.String(required=True)
-    contato_responsavel = fields.String(required=True)
-
+    _id = fields.String(required=False)
+    numero_de_serie = fields.String(required=False)
+    nome_equipamento = fields.String(required=False)
+    numero_do_patrimonio = fields.String(required=False)
+    status = fields.String(required=False)
+    tipo = fields.String(required=False)
+    marca = fields.String(required=False)
+    modelo = fields.String(required=False)
+    fabricante = fields.String(required=False)
+    municipio_origem = fields.String(required=False)
+    nome_instituicao_origem = fields.String(required=False)
+    tipo_instituicao_origem = fields.String(required=False)
+    nome_responsavel = fields.String(required=False)
+    contato_responsavel = fields.String(required=False)
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)

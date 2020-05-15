@@ -16,4 +16,4 @@ class FabricanteSchema(Schema):
         fields = ("fabricante_nome", "marcas")
 
     fabricante_nome = fields.String(required=True)
-    marcas = fields.List(fields.Dict, required=True)
+    marcas = fields.List(fields.Nested(MarcaSchema), required=True)

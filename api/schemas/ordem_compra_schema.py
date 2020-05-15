@@ -2,7 +2,7 @@ from ..models import ordem_compra_model
 from marshmallow import Schema, fields
 
 
-class Item(Schema):
+class ItemSchema(Schema):
     tipo = fields.String(required=False)
     nome = fields.String(required=False)
     descricao = fields.String(required=False)
@@ -18,6 +18,6 @@ class OrdemCompraSchema(Schema):
         fields = ("numero_ordem_compra", "itens")
 
     numero_ordem_compra = fields.String(required=False)
-    itens = fields.List(fields.Nested(Item), required=False)
+    itens = fields.List(fields.Nested(ItemSchema), required=False)
 
 

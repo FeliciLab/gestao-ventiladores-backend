@@ -1,0 +1,22 @@
+Deleta um equipamento específico confome o número de ordem de servico passado no body.
+---
+tags:
+  - Equipamentos
+
+parameters:
+  - in: body
+    name: Equipamento
+    description: Coloque um id válido que esteja salvo no banco no lugar de "string"
+    schema:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          type: string
+
+
+
+responses:
+  204:
+    description: Ao deletar não existe retorno

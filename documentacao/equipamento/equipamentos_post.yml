@@ -6,7 +6,12 @@ parameters:
   - in: body
     name: Equipamento
     schema:
-        $ref: '#/definitions/Equipamento'
+      $ref: '#/definitions/Equipamento'
+    example:
+      marca: hahaha
+      modelo: Jessica Smith
+
+
 responses:
   200:
     description:
