@@ -1,17 +1,9 @@
-import os
 from flask import request
 from flask_restful import Resource
 from werkzeug.utils import secure_filename
 from ..services import ordem_servico_service
 import os
-
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 import json
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def build_name(id_ordem_servico_string, photo_category, extensions):

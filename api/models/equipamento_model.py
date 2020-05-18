@@ -3,6 +3,9 @@ from datetime import datetime
 
 
 class Equipamento(db.Document):
+    meta = {'collecti'
+            'on': 'equipamento'}
+
     numero_de_serie = db.StringField(required=True)
     nome_equipamento = db.StringField(required=False)
     status = db.StringField(required=False)
@@ -16,6 +19,5 @@ class Equipamento(db.Document):
     tipo_instituicao_origem = db.StringField(required=False)
     nome_responsavel = db.StringField(required=False)
     contato_responsavel = db.StringField(required=False)
-
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)

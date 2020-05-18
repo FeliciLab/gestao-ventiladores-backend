@@ -1,9 +1,22 @@
-from ..utils.query_parser import OrdemServicoQueryParser
 from ..models import ordem_servico_model
 from ..models.equipamento_model import Equipamento
 from bson import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
+from ..utils import query_parser
+
+
+def get_ordem_servico_equipamento_pipeline():
+    return [
+        {
+            "$lookup": {
+                "from": Equipamento._get_collection_name(),
+                "localField": "equipamento_id",
+                "foreignField": "_id",
+                "as": "equipamento"
+            }
+        }
+    ]
 
 
 def listar_ordem_servico():
@@ -25,9 +38,28 @@ def listar_ordem_servico():
 
     return dumps(docs)
 
+def gera_query_adaptada(current_key, currnet_value):
+    query = {}
+    if type(currnet_value) == dict:
+        for k, v in currnet_value.items():
+            query.update(gera_query_adaptada(current_key + "__{}".format(k), v))
+
+    else:
+        query[current_key] = currnet_value
+
+    return query
+
+def atualiza_somente_campos_repassados(_id, atualizacao):
+    query = {}
+    root_key = "set"
+    root_value = atualizacao
+    query.update(gera_query_adaptada(root_key, root_value))
+
+    ordem_servico_model.OrdemServico.objects(id=_id).update(**query)
+
 
 def listar_ordem_servico_by_id(_id):
-    return ordem_servico_model.OrdemServico.objects.get(id=_id)
+    return ordem_servico_model.OrdemServico.objects(id=_id).first()
 
 
 def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
@@ -36,7 +68,7 @@ def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
 
 
 def ordem_servico_queries(body):
-    parsed_query_dt = OrdemServicoQueryParser.parse(body["where"])
+    parsed_query_dt = query_parser.parse(body["where"])
 
     if not "select" in body:
         body["select"] = []
@@ -48,6 +80,7 @@ def ordem_servico_queries(body):
 
 
 def registrar_ordem_servico(body):
+    # eu acho que isso nao deveria ficar aqui entro by Lucas
     body['created_at'] = body.get('created_at', datetime.now())
     body['updated_at'] = body.get('updated_at', datetime.now())
     # Falta criar a situação onde as datas vem vazias, Exemplo: updated_at: ''
@@ -55,6 +88,13 @@ def registrar_ordem_servico(body):
 
 
 def atualizar_ordem_servico(_id, atualizacao):
+    # isso nao deve ficar aqui dentro by Lucas
+
+    # if 'equipamento_id' in atualizacao:
+    #     equipamento = equipamento_service.listar_equipamento_by_id(
+    #     atualizacao['equipamento_id'])
+    #     atualizacao['equipamento_id'] = equipamento
+
     ordem_servico_model.OrdemServico.objects.get(id=_id).update(**atualizacao)
 
 
@@ -95,7 +135,7 @@ def registrar_equipamento_foto(body):
 
 
 def deletar_ordem_servico(_id):
-    ordem_servico_model.OrdemServico.objects.get(id=_id).delete()
+    ordem_servico_model.OrdemServico.objectsget(id=_id).delete()
 
 
 def listar_ordem_servico_status(status):
@@ -127,3 +167,37 @@ def registrar_equipamento_vazio():
     ordem_servico.triagem = triagem
     ordem_servico.status = 'tmp'
     return ordem_servico.save()
+
+
+def deserealize_ordem_servico(body):
+    ordem_servico = ordem_servico_model.OrdemServico()
+
+    for att_name, att_value in body.items():
+        if "created_at" is att_name:
+            ordem_servico.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+            continue
+
+        if "updated_at" is att_name:
+            ordem_servico.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+            continue
+
+        try:
+            setattr(ordem_servico, att_name, att_value)
+        except:
+            continue
+
+    return ordem_servico
+
+    # ordem_servico = ordem_servico_model.OrdemServico()
+    # if "numero_ordem_servico" in body: ordem_servico.numero_ordem_servico =
+    # body["numero_ordem_servico"]
+    # if "equipamento_id" in body: ordem_servico.equipamento_id = body[
+    # "equipamento_id"].id
+    # if "created_at" in body: ordem_servico.created_at = datetime.strptime(
+    # body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+    # if "updated_at" in body: ordem_servico.updated_at = datetime.strptime(
+    # body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+    # if "status" in body: ordem_servico.status = body["status"]
+    # if "triagem" in body: ordem_servico.triagem = body["triagem"]
+    # if "diagnostico" in body: ordem_servico.diagnostico = body["diagnostico"]
+    # return ordem_servico

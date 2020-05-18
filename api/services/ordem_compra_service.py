@@ -1,5 +1,8 @@
+from datetime import datetime
+
 from api.models import ordem_compra_model
-from ..utils.query_parser import OrdemServicoQueryParser
+from api.utils import query_parser
+
 
 def listar_ordem_compras():
     """ Retorna todas as ordens de compra """
@@ -29,29 +32,28 @@ def registar_ordem_compra(body):
          e cadastra uma nova ordem de compra.
     """
     quantidade_itens = len(body['itens'])
-    if quantidade_itens < 7:
+    if quantidade_itens == 0:
         return {
             "error": True,
             "message": "Não foram enviados itens suficientes para ordem de compra"
         }
 
-    else:
-        qtd_ordem_compra = ordem_compra_model.OrdemCompra.objects.count()
-        numero_ordem_compra = str(qtd_ordem_compra + 1).zfill(4)
-        body['numero_ordem_compra'] = numero_ordem_compra
-        return ordem_compra_model.OrdemCompra(**body).save()
+    qtd_ordem_compra = ordem_compra_model.OrdemCompra.objects.count()
+    numero_ordem_compra = str(qtd_ordem_compra + 1).zfill(4)
+    body['numero_ordem_compra'] = numero_ordem_compra
+    return ordem_compra_model.OrdemCompra(**body).save()
 
 def atualizar_ordem_compra(id, atualizacao):
     """ Atualiza somnte o campo de itens """
     ordem_compra_model.OrdemCompra.objects.get(id=id).update(itens=atualizacao['itens'])
 
-def deletar_ordem_compra(id):
+def deletar_ordem_compra(_id):
     """ Deleta uma ordem de compra """
-    ordem_compra_model.OrdemCompra.objects.get(id=id).delete()
+    ordem_compra_model.OrdemCompra.objectsget(id=_id).delete()
 
 def ordem_compra_queries(body):
 
-    parsed_query_dt = OrdemServicoQueryParser.parse(body["where"])
+    parsed_query_dt = query_parser.parse(body["where"])
 
     if not "select" in body:
         body["select"] = []
@@ -59,3 +61,23 @@ def ordem_compra_queries(body):
     filted_ordem_compra_list = ordem_compra_model.OrdemCompra.objects(__raw__=parsed_query_dt).only(*body["select"])
 
     return filted_ordem_compra_list.to_json()
+
+
+def deserealize_ordem_compra(body):
+    ordem_compra = ordem_compra_model.OrdemCompra()
+
+    for att_name, att_value in body.items():
+
+        if "created_at" is att_name:
+            ordem_compra.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+
+        if "created_at" is att_name:
+            ordem_compra.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+
+        else:
+            try:
+                setattr(ordem_compra, att_name, att_value)
+            except:
+                continue
+
+    return ordem_compra

@@ -2,6 +2,7 @@ from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
 from ..schemas import ordem_servico_schema
 from ..services import ordem_servico_service, diagnostico_service
+from ..services.diagnostico_service import DiagnosticService
 
 
 class DiagnosticoDetail(Resource):
@@ -18,3 +19,10 @@ class DiagnosticoDetail(Resource):
         diagnostico_service.registar_diagnostico(_id, novo_diagnostico_body)
         ordem_servico_atualizada = ordem_servico_service.listar_ordem_servico_by_id(_id)
         return Response(ordem_servico_atualizada, mimetype="application/json", status=201)
+
+
+class DiagnosticoCrud(Resource):
+    def get(self):
+        ordem_servicos = DiagnosticService().getDiagnostics()
+        return Response(ordem_servicos, mimetype="application/json",
+                        status=200)

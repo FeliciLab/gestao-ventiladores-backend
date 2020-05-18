@@ -4,11 +4,11 @@ tags:
   - Ordem Compras
 
 parameters:
-        - in: path
-          name: _id
-          type: string
-          required: true
-          description: Id do documento.
+  - in: path
+    name: _id
+    type: string
+    required: true
+    description: Id do documento.
 
 responses:
   200:

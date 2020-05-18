@@ -3,6 +3,12 @@ Atualiza o fabricante passando os dados de fabricante.
 tags:
   - Fabricantes
 parameters:
+  - in: path
+    name: _id
+    type: string
+    required: true
+    description: Id do documento.
+
   - in: body
     name: Fabricantes
     schema:

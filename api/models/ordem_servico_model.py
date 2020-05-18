@@ -1,7 +1,6 @@
-from datetime import datetime
-
 from api.models.equipamento_model import Equipamento
 from config.db import db
+from datetime import datetime
 
 
 class Acessorio(db.EmbeddedDocument):
@@ -17,6 +16,7 @@ class Triagem(db.EmbeddedDocument):
     foto_antes_limpeza = db.StringField(required=False)
     foto_apos_limpeza = db.StringField(required=False)
 
+
 class Item(db.EmbeddedDocument):
     tipo = db.StringField(required=False)
     fabricante = db.StringField(required=False)
@@ -30,20 +30,20 @@ class Item(db.EmbeddedDocument):
 class Diagnostico(db.EmbeddedDocument):
     resultado_tecnico = db.StringField(required=False)
     demanda_servicos = db.StringField(required=False)
-    demanda_insumos = db.StringField(required=False)
-    acao_orientacao = db.StringField(required=False)
     observacoes = db.StringField(required=False)
     itens = db.EmbeddedDocumentListField(Item, required=False)
 
 
+class Calibragem(db.EmbeddedDocument):
+    status = db.StringField(required=False)
+
+
 class OrdemServico(db.Document):
     equipamento_id = db.ReferenceField(Equipamento)
-    numero_ordem_servico = db.StringField(required=False, unique=False)
+    numero_ordem_servico = db.StringField(required=False, unique=True)
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     status = db.StringField(required=False)
-
-    # FORMULARIO DE TRIAGEM DE EQUIPAMENTO
     triagem = db.EmbeddedDocumentField(Triagem, required=False)
-    # FORMULARIO DE DIAGNOSTICO DE EQUIPAMENTO
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)
+    calibragem = db.EmbeddedDocumentField(Calibragem, required=False)

@@ -8,8 +8,10 @@ definitions:
     properties:
       created_at:
         type: string
+        format: date-time
       updated_at:
         type: string
+        format: date-time
       numero_de_serie:
         type: string
       nome_equipamento:
