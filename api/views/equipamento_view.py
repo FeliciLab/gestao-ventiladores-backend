@@ -27,6 +27,7 @@ class EquipamentoList(Resource):
         except:
             return error_response("Não foi possível encontrar equipamento com o parâmetro enviado")
 
+
     @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
     def post(self):
         body = request.json
