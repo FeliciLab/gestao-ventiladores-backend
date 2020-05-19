@@ -6,7 +6,6 @@ O projeto tem como objetivo principal o desenvolvimento de soluções tecnológi
 Relacionados a este repositório, destaca-se o seguinte objetivo específico:
 - Implementar um sistema de gerenciamento e alocação dos ventiladores mecânicos.
 
-teste
 
 ## Tutorial
 ### Requisitos:
