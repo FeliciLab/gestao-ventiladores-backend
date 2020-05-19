@@ -40,7 +40,14 @@ Ubuntu
 ```
 export FLASK_APP=run.py
 ```
-### 4 - Execute a api:
+### 4 - Configure seu banco local:
+Crie o arquivo env_config.py dentro de gestao-ventiladores-backend e insira.
+```
+# env_config.py
+mongodb_host = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false'
+```
+
+### 5 - Execute a api:
 ```
 python run.py
 ```
