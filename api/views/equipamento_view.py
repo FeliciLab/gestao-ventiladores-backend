@@ -14,19 +14,23 @@ class EquipamentoList(Resource):
         body = request.args
         try:
             _id = body['_id']
-        except:
+        except Exception:
             _id = False
 
         if not _id:
             equipamentos = equipamento_service.listar_equipamentos()
-            return Response(equipamentos.to_json(), mimetype="application/json", status=200)
+            return Response(equipamentos.to_json(),
+                            mimetype="application/json",
+                            status=200)
 
         try:
             equipamento = equipamento_service.listar_equipamento_by_id(_id)
-            return Response(equipamento.to_json(), mimetype="application/json", status=200)
-        except:
-            return error_response("Não foi possível encontrar equipamento com o parâmetro enviado")
-
+            return Response(equipamento.to_json(),
+                            mimetype="application/json",
+                            status=200)
+        except Exception:
+            return error_response("Não foi possível encontrar" +
+                                  "equipamento com o parâmetro enviado")
 
     @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
     def post(self):
@@ -34,10 +38,12 @@ class EquipamentoList(Resource):
 
         try:
             _id = body["_id"]
-        except:
+        except Exception:
             _id = False
 
-        erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
+        erro_equipamento = equipamento_schema \
+            .EquipamentoSchema() \
+            .validate(body)
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
 
@@ -56,14 +62,21 @@ class EquipamentoList(Resource):
             )
 
         if not _id:
-            novo_equipamento_id = equipamento_service.registar_equipamento(body)
+            novo_equipamento_id = equipamento_service \
+                .registar_equipamento(body)
             resposta = json.dumps({"_id": novo_equipamento_id})
         else:
 
-            updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
-            old_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
-            log_service.registerLog("equipamento", old_body, updated_body,
-                                     ignored_fields=["created_at", "updated_at"], all_fields=False)
+            updated_body = json.loads(
+                equipamento_service.deserealize_equipamento(body).to_json())
+            old_body = json.loads(
+                equipamento_service.listar_equipamento_by_id(_id).to_json())
+            log_service.registerLog("equipamento",
+                                    old_body,
+                                    updated_body,
+                                    ignored_fields=["created_at",
+                                                    "updated_at"],
+                                    all_fields=False)
 
             try:
                 del body["_id"]
@@ -80,18 +93,21 @@ class EquipamentoList(Resource):
         body = request.args
         try:
             _id = body['_id']
-        except:
+        except Exception:
             return error_response('Identificador não encontrado')
 
         try:
             equipamento = equipamento_service.listar_equipamento_by_id(_id)
             if equipamento is None:
                 return error_response("Equipamento não encontrado.")
-        except:
-            return error_response("Não foi possível encontrar equipamento com o ID enviado.")
+        except Exception:
+            return error_response("Não foi possível encontrar " +
+                                  "equipamento com o ID enviado.")
 
         equipamento_service.deletar_equipamento(_id)
-        Response(jsonify({"ok": True}), mimetype="application/json", status=204)
+        Response(jsonify({"ok": True}),
+                 mimetype="application/json",
+                 status=204)
 
 
 class EquipamentoDetail(Resource):
@@ -100,7 +116,9 @@ class EquipamentoDetail(Resource):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrada..."), 404)
-        return Response(equipamento.to_json(), mimetype="application/json", status=200)
+        return Response(equipamento.to_json(),
+                        mimetype="application/json",
+                        status=200)
 
     @swag_from('../../documentacao/equipamento/equipamento_put.yml')
     def put(self, _id):
@@ -109,19 +127,28 @@ class EquipamentoDetail(Resource):
             return make_response(jsonify("Equipamento não encontrada..."), 400)
 
         body = request.get_json()
-        erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
+        erro_equipamento = equipamento_schema\
+            .EquipamentoSchema().validate(body)
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
 
-        updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
-        old_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
-        log_service.registerLog("equipamento", old_body, updated_body,
-                                ignored_fields=["created_at", "updated_at"], all_fields=False)
+        updated_body = json.loads(
+            equipamento_service.deserealize_equipamento(body).to_json())
+        old_body = json.loads(
+            equipamento_service.listar_equipamento_by_id(_id).to_json())
+        log_service.registerLog("equipamento",
+                                old_body,
+                                updated_body,
+                                ignored_fields=["created_at", "updated_at"],
+                                all_fields=False)
 
         equipamento_service.atualizar_equipamento(body, _id)
-        equipamento_atualizado = equipamento_service.listar_equipamento_by_id(_id)
+        equipamento_atualizado = equipamento_service \
+            .listar_equipamento_by_id(_id)
 
-        return Response(equipamento_atualizado.to_json(), mimetype="application/json", status=200)
+        return Response(equipamento_atualizado.to_json(),
+                        mimetype="application/json",
+                        status=200)
 
     @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
     def delete(self, _id):
@@ -139,9 +166,10 @@ class EquipamentoBulk(Resource):
             return error_response('Equipamentos não enviado')
 
         a = []
-        for equipamento in body['equipamentos']: #agora vai
+        # agora vai
+        for equipamento in body['equipamentos']:
             b = upsert_equipment(equipamento)
-            if b != False:
+            if b is not False:
                 a.append(b)
 
         return jsonify({"equipamentos": a})
@@ -150,7 +178,7 @@ class EquipamentoBulk(Resource):
 def upsert_equipment(body):
     try:
         _id = body["_id"]
-    except:
+    except Exception:
         _id = False
 
     erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
@@ -165,20 +193,15 @@ def upsert_equipment(body):
         return False
 
     if not _id:
-        novo_equipamento_id = equipamento_service.registar_equipamento_complete(body)
+        novo_equipamento_id = equipamento_service \
+            .registar_equipamento_complete(body)
         return json.loads(novo_equipamento_id.to_json())
 
-    # updated_body = json.loads(equipamento_service.deserealize_equipamento(body).to_json())
-    # old_ordem_servico_body = json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
-
-    # log_service.registerLog("ordem_servico", old_ordem_servico_body, updated_body,
-    #                         ignored_fields=["created_at", "updated_at"])
     try:
         del body["_id"]
     except KeyError:
         print("_id não está presente no body")
 
     equipamento_service.atualizar_equipamento(body, _id)
-    return json.loads(equipamento_service.listar_equipamento_by_id(_id).to_json())
-
-
+    return json.loads(
+        equipamento_service.listar_equipamento_by_id(_id).to_json())

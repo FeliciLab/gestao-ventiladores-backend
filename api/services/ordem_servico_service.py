@@ -38,16 +38,19 @@ def listar_ordem_servico():
 
     return dumps(docs)
 
+
 def gera_query_adaptada(current_key, currnet_value):
     query = {}
     if type(currnet_value) == dict:
         for k, v in currnet_value.items():
-            query.update(gera_query_adaptada(current_key + "__{}".format(k), v))
+            query.update(gera_query_adaptada(
+                current_key + "__{}".format(k), v))
 
     else:
         query[current_key] = currnet_value
 
     return query
+
 
 def atualiza_somente_campos_repassados(_id, atualizacao):
     query = {}
@@ -70,7 +73,7 @@ def listar_ordem_servico_by_numero_ordem_servico(numero_ordem_servico):
 def ordem_servico_queries(body):
     parsed_query_dt = query_parser.parse(body["where"])
 
-    if not "select" in body:
+    if "select" not in body:
         body["select"] = []
 
     filted_ordem_servico_list = ordem_servico_model.OrdemServico.objects(
@@ -144,7 +147,7 @@ def listar_ordem_servico_status(status):
 
 def atualizar_foto_ordem_servico(_id, atualizacao):
     ordem_servico = listar_ordem_servico_by_id(_id)
-    if atualizacao['triagem']['foto_apos_limpeza'] is "":
+    if atualizacao['triagem']['foto_apos_limpeza'] == "":
         ordem_servico.triagem.foto_antes_limpeza = atualizacao['triagem'][
             'foto_antes_limpeza']
         ordem_servico_model.OrdemServico.objects.get(id=_id).update(
@@ -173,17 +176,19 @@ def deserealize_ordem_servico(body):
     ordem_servico = ordem_servico_model.OrdemServico()
 
     for att_name, att_value in body.items():
-        if "created_at" is att_name:
-            ordem_servico.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+        if "created_at" == att_name:
+            ordem_servico.created_at = datetime \
+                .strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
             continue
 
-        if "updated_at" is att_name:
-            ordem_servico.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+        if "updated_at" == att_name:
+            ordem_servico.created_at = datetime \
+                .strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
             continue
 
         try:
             setattr(ordem_servico, att_name, att_value)
-        except:
+        except Exception:
             continue
 
     return ordem_servico

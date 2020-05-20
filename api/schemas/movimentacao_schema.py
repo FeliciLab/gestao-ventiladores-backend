@@ -1,5 +1,4 @@
 from marshmallow import Schema, fields
-
 from api.models import movimentacao_model
 
 
@@ -27,7 +26,8 @@ class MovimentacaoSchema(Schema):
         )
 
     tipo = fields.String(required=False)
-    #equipamento_id = fields.String(required=True) todo a gente nao sabe como ficaria
+    # equipamento_id = fields.String(required=True)
+    # Todo a gente nao sabe como ficaria
     instituicao_destino = fields.String(required=False)
     cidade_destino = fields.String(required=False)
     cnpj_destino = fields.String(required=False)

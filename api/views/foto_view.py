@@ -15,7 +15,8 @@ def get_extention(file_name):
 
 
 def save_photo(request):
-    # TODO fazer um tratamento para que nao surja o problema de ordem de servico vazios com os vazia
+    # TODO fazer um tratamento para que nao surja
+    # o problema de ordem de servico vazios com os vazios
     ordem_servico = ordem_servico_service.registrar_equipamento_vazio()
 
     final_name_file = None
@@ -58,7 +59,8 @@ def save_photo(request):
 
 def replace_photo(request):
     _id = request.form["_id"]
-    ordem_servico = json.loads(ordem_servico_service.listar_ordem_servico_by_id(_id).to_json())
+    ordem_servico = json.loads(
+        ordem_servico_service.listar_ordem_servico_by_id(_id).to_json())
 
     file = None
     final_name_file = None
@@ -75,7 +77,6 @@ def replace_photo(request):
         ordem_servico['triagem']['foto_antes_limpeza'] = final_name_file
 
     elif 'foto_apos_limpeza' in request.files:
-
         photo_type = "foto_apos_limpeza"
         file = request.files[photo_type]
 
@@ -91,10 +92,7 @@ def replace_photo(request):
 
     ordem_servico_service.atualizar_foto_ordem_servico(_id, ordem_servico)
 
-    file.save(
-        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'storage',
-                     secure_filename(final_name_file))
-    )
+    file.save(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'storage', secure_filename(final_name_file)))
 
     return _id
 
@@ -103,7 +101,7 @@ class TriagemImagem(Resource):
     def post(self):
         result = ""
 
-        if "_id" in request.form and not request.form["_id"] is "":
+        if "_id" in request.form and not request.form["_id"] == "":
             result = replace_photo(request)
         else:
             result = save_photo(request)
