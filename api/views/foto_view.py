@@ -50,8 +50,12 @@ def save_photo(request):
     # filename = secure_filename(final_name_file)
 
     file.save(
-        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'storage',
-                     secure_filename(final_name_file))
+        os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                    os.path.abspath(__file__))),
+            'storage',
+            secure_filename(final_name_file))
     )
 
     return str(ordem_servico.id)
@@ -92,7 +96,13 @@ def replace_photo(request):
 
     ordem_servico_service.atualizar_foto_ordem_servico(_id, ordem_servico)
 
-    file.save(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'storage', secure_filename(final_name_file)))
+    file.save(
+        os.path.join(
+            os.path.dirname(
+                os.path.dirname(
+                        os.path.abspath(__file__))),
+            'storage',
+            secure_filename(final_name_file)))
 
     return _id
 

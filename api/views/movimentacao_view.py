@@ -135,7 +135,8 @@ class MovimentacaoDetail(Resource):
                     body["equipamentos_id"] = equipamento_list
 
             updated_body = json.loads(
-                movimentacao_service.deserialize_movimentacao_service(body).to_json())
+                movimentacao_service.deserialize_movimentacao_service(
+                    body).to_json())
             old_movimentacao_body = json.loads(
                 movimentacao_cadastrada.to_json())
             if len(updated_body['equipamentos_id']) == 0:
