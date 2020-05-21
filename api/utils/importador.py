@@ -4,7 +4,9 @@ from ..schemas import ordem_servico_schema
 import numpy as np
 from datetime import datetime
 from flask import request
-from ..services import fabricante_service, ordem_servico_service, equipamento_service
+from ..services import (fabricante_service,
+                        ordem_servico_service,
+                        equipamento_service)
 
 
 def importar_triagem(triagem_body):
@@ -51,7 +53,8 @@ def importar_triagem(triagem_body):
                             .listar_equipamento_by_id(equipamento_id)
 
                 triagem_body = prepara_triagem_body(linha, equipamento)
-                triagem_body["equipamento_id"] = str(triagem_body["equipamento_id"].id)
+                triagem_body["equipamento_id"] = str(
+                    triagem_body["equipamento_id"].id)
                 erro_validacao = validacao(triagem_body)
 
                 if erro_validacao:
@@ -65,15 +68,17 @@ def importar_triagem(triagem_body):
                     # Atualizacao Forçada
                     if ordem_servico_ja_cadastrado:
                         ordem_servico_service\
-                            .atualizar_ordem_servico_importacao(ordem_servico_ja_cadastrado.id,
-                                                                triagem_body)
+                            .atualizar_ordem_servico_importacao(
+                                ordem_servico_ja_cadastrado.id, triagem_body)
                     else:
-                        ordem_servico_service.registrar_ordem_servico(triagem_body)
+                        ordem_servico_service.registrar_ordem_servico(
+                            triagem_body)
 
                 else:
                     # Atualiza se necessário
                     if ordem_servico_ja_cadastrado is None:
-                        ordem_servico_service.registrar_ordem_servico(triagem_body)
+                        ordem_servico_service.registrar_ordem_servico(
+                            triagem_body)
 
     except Exception:
         return {"erro": Exception.__traceback__}
@@ -94,10 +99,10 @@ def prepara_equipamento_body(linha):
         "modelo": linha["Selecione o modelo do equipamento"],
         "fabricante": linha["Selecione a marca do equipamento:"],
         "municipio_origem": linha["Informe Cidade de origem: "],
-        "nome_instituicao_origem": linha["Informe o nome da instituição de origem:"],
+        "nome_instituicao_origem": linha[
+            "Informe o nome da instituição de origem:"],
         "tipo_instituicao_origem": linha[
-            "Selecione a unidade de origem do equipamento:"
-        ],
+            "Selecione a unidade de origem do equipamento:"],
         "nome_responsavel": linha[
             "Informe o responsável e o contato da institução de origem:"
         ],
@@ -110,7 +115,8 @@ def prepara_equipamento_body(linha):
 def prepara_triagem_body(linha, id):
     return {
         "equipamento_id": id,
-        "numero_ordem_servico": str(linha["Número da Ordem de Serviço"]).zfill(4),
+        "numero_ordem_servico": str(
+            linha["Número da Ordem de Serviço"]).zfill(4),
         "created_at": __transformando_data(linha["Carimbo de data/hora"]),
         "updated_at": __transformando_data(linha["Carimbo de data/hora"]),
         "status": "triagem",
@@ -125,7 +131,8 @@ def prepara_triagem_body(linha, id):
                 "Fotografe o equipamento após a limpeza: "
             ),
             "acessorios": __get_acessorios(
-                linha["Selecione os acessórios do equipamento que o acompanha:"]
+                linha[
+                    "Selecione os acessórios do equipamento que o acompanha:"]
             ),
         },
     }
@@ -135,7 +142,10 @@ def validacao(triagem_body):
     if "triagem" in triagem_body or "diagnostico" in triagem_body:
         return ordem_servico_schema.OrdemServicoSchema().validate(triagem_body)
     else:
-        return 'Ordem de servico necessita das chave "triagem" ou "diagnostico"'
+        return '''
+                Ordem de servico necessita
+                das chave "triagem" ou "diagnostico"
+                '''
 
 
 def __transformando_data(data):
@@ -169,7 +179,8 @@ def __get_url_da_primeira_foto(url_fotos_string):
 
 
 def __adicionar_nova_marca_e_modelo(marca_nome, modelo_nome, fabricante_dt):
-    fabricante_dt["marcas"].append({"marca": marca_nome, "modelos": [modelo_nome]})
+    fabricante_dt["marcas"].append(
+        {"marca": marca_nome, "modelos": [modelo_nome]})
 
     del fabricante_dt["_id"]
 
@@ -194,7 +205,9 @@ def __update_fabricante_db(linha, fabricante_string):
     marca_nome = linha["Selecione a marca do equipamento:"].strip()
     modelo_nome = linha["Selecione o modelo do equipamento"].strip()
     fabricante_dt = json.loads(fabricante_string)
-    if not any(marca_dt["marca"] == marca_nome for marca_dt in fabricante_dt["marcas"]):
+    if not any(
+        marca_dt["marca"] == marca_nome for marca_dt in fabricante_dt["marcas"]
+    ):
         __adicionar_nova_marca_e_modelo(marca_nome, modelo_nome, fabricante_dt)
 
     elif not any(
@@ -219,7 +232,8 @@ def __add_fabricate_db(linha):
 def __insert_or_update_fabricante_db(linha):  # 10/04
     fabricante_nome = linha["Selecione a marca do equipamento:"].strip()
 
-    fabricante_string = fabricante_service.listar_fabricante_id(fabricante_nome)
+    fabricante_string = fabricante_service \
+        .listar_fabricante_id(fabricante_nome)
 
     if fabricante_string is not None:
         __update_fabricante_db(linha, fabricante_string)
@@ -228,7 +242,8 @@ def __insert_or_update_fabricante_db(linha):  # 10/04
 
 
 def __adapt_time(data_and_time_string):
-    datetime_object = datetime.strptime(data_and_time_string, "%m/%d/%Y %H:%M:%S")
+    datetime_object = datetime.strptime(
+        data_and_time_string, "%m/%d/%Y %H:%M:%S")
     return datetime_object.strftime("%Y-%m-%dT%H:%M:%S.000+00:00")
 
 
@@ -248,11 +263,13 @@ def importar_diagnostino(body):
                 body = prepara_diagnostico_body(linha)
 
                 # sera que eu tenho que verificar se existe ?
-                ordem_servico = ordem_servico_service.listar_ordem_servico_by_numero_ordem_servico(
-                    numero_ordem_servico
-                )
+                ordem_servico = ordem_servico_service \
+                    .listar_ordem_servico_by_numero_ordem_servico(
+                        numero_ordem_servico
+                    )
 
-                __atualizar_campo_update_at(str(ordem_servico.id), linha["Timestamp"])
+                __atualizar_campo_update_at(
+                    str(ordem_servico.id), linha["Timestamp"])
 
                 erro_validacao = validacao_diagnostico(body)
                 if erro_validacao:
