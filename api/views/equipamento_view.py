@@ -205,3 +205,4 @@ def upsert_equipment(body):
     equipamento_service.atualizar_equipamento(body, _id)
     return json.loads(
         equipamento_service.listar_equipamento_by_id(_id).to_json())
+        

@@ -9,3 +9,7 @@ def error_response(message, status=400):
         }),
         status
     )
+
+
+def page_not_found(e):
+  return jsonify(error=str(e)), 404

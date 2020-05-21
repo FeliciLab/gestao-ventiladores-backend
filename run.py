@@ -5,9 +5,10 @@ from env_config import mongodb_host
 from flask_cors import CORS
 from flasgger import Swagger
 from flask import Flask
+from api.utils.error_response import page_not_found
 
 app = Flask(__name__)
-
+app.register_error_handler(404, page_not_found)
 UPLOAD_FOLDER = '/storage'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 swagger = Swagger(app)
@@ -17,6 +18,7 @@ DB_URI = mongodb_host
 app.config["MONGODB_HOST"] = DB_URI
 db = MongoEngine(app)
 initialize_routes(api)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
