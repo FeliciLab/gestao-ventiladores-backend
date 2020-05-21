@@ -4,6 +4,7 @@ from ..schemas import fabricante_schema
 from ..services import fabricante_service
 from flasgger import swag_from
 
+
 class FabricanteList(Resource):
     @swag_from('../../documentacao/fabricante/fabricantes_get.yml')
     def get(self):
@@ -13,18 +14,25 @@ class FabricanteList(Resource):
     @swag_from('../../documentacao/fabricante/fabricantes_post.yml')
     def post(self):
         body = request.json
-        fabricante_cadastrado = fabricante_service.listar_fabricante_id(body["fabricante_nome"])
+        fabricante_cadastrado = fabricante_service \
+            .listar_fabricante_id(body["fabricante_nome"])
         if fabricante_cadastrado:
-            return make_response(jsonify("Fabricante já cadastrado..."), 403)
-        validacao_fabricante = fabricante_schema.FabricanteSchema().validate(request.json)
+            return make_response(
+                jsonify("Fabricante já cadastrado..."), 403)
+        validacao_fabricante = fabricante_schema \
+            .FabricanteSchema().validate(request.json)
         if validacao_fabricante:
             return make_response(jsonify(validacao_fabricante), 400)
         validacao_marca = fabricante_schema.MarcaSchema()
         for marca in request.json['marcas']:
             if validacao_marca.validate(marca):
                 return make_response(jsonify(validacao_marca), 400)
-        fabricante_registrado = fabricante_service.registar_fabricante(body)
-        return Response(fabricante_registrado, mimetype="application/json", status=201)
+        fabricante_registrado = fabricante_service \
+            .registar_fabricante(body)
+        return Response(fabricante_registrado,
+                        mimetype="application/json",
+                        status=201)
+
 
 class FabricanteDetail(Resource):
     @swag_from('../../documentacao/fabricante/fabricante_put.yml')

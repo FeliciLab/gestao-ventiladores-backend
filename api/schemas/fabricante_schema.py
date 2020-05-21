@@ -10,6 +10,7 @@ class MarcaSchema(Schema):
     marca = fields.String(required=True)
     modelos = fields.List(fields.String, required=True)
 
+
 class FabricanteSchema(Schema):
     class Meta:
         model = fabricante_model.Fabricante

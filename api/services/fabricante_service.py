@@ -7,19 +7,27 @@ def listar_fabricantes():
 
 def listar_fabricante_id(fabricante_nome):
     try:
-        fabricante = fabricante_model.Fabricante.objects.get(id=fabricante_nome).to_json()
-    except:
+        fabricante = fabricante_model \
+            .Fabricante \
+            .objects \
+            .get(id=fabricante_nome) \
+            .to_json()
+    except Exception:
         fabricante = None
     finally:
         return fabricante
 
 
 def registar_fabricante(body):
-    return fabricante_model.Fabricante(**body).save().to_json()
+    return fabricante_model \
+        .Fabricante(**body) \
+        .save() \
+        .to_json()
 
 
 def atualizar_fabricante(fabricante_nome, atualizacao):
-    fabricante_model.Fabricante.objects.get(id=fabricante_nome).update(**atualizacao)
+    fabricante_model.Fabricante.objects \
+        .get(id=fabricante_nome).update(**atualizacao)
 
 
 def deletar_fabricante(fabricante_nome):

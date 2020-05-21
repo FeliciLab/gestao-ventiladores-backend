@@ -132,3 +132,5 @@ dmypy.json
 env_config.py
 api/storage/*
 teste-gestao
+env/
+.vscode
