@@ -3,8 +3,7 @@ from datetime import datetime
 
 
 class Equipamento(db.Document):
-    meta = {'collecti'
-            'on': 'equipamento'}
+    meta = {'collection': 'equipamento'}
 
     numero_de_serie = db.StringField(required=True)
     nome_equipamento = db.StringField(required=False)

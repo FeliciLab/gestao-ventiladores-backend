@@ -1,0 +1,21 @@
+Replaces the equipment data according to the document id sent in the route. 
+---
+tags:
+  - Equipamentos
+
+parameters:
+  - in: path
+    name: _id
+    type: string
+    required: true
+    description: Document Id.
+
+  - in: body
+    name: Equipamento
+    description: You can send the fields as you wish to replace.
+    schema:
+        $ref: '#/definitions/Equipamento'
+
+responses:
+  200:
+    description: Empty body.

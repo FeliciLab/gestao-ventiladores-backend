@@ -1,0 +1,83 @@
+Returns all equipments registered. 
+---
+tags:
+  - Equipamentos
+definitions:
+  Equipamento:
+    type: object
+    properties:
+      id:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      numero_de_serie:
+        type: string
+      nome_equipamento:
+        type: string
+      status:
+        type: string
+      numero_do_patrimonio:
+        type: string
+      tipo:
+        type: string
+      marca:
+        type: string
+      modelo:
+        type: string
+      fabricante:
+        type: string
+      municipio_origem:
+        type: string
+      nome_instituicao_origem:
+        type: string
+      tipo_instituicao_origem:
+        type: string
+      nome_responsavel:
+        type: string
+      contato_responsavel:
+        type: string
+
+  EquipamentoPost:
+    type: object
+    properties:
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      numero_de_serie:
+        type: string
+      nome_equipamento:
+        type: string
+      status:
+        type: string
+      numero_do_patrimonio:
+        type: string
+      tipo:
+        type: string
+      marca:
+        type: string
+      modelo:
+        type: string
+      fabricante:
+        type: string
+      municipio_origem:
+        type: string
+      nome_instituicao_origem:
+        type: string
+      tipo_instituicao_origem:
+        type: string
+      nome_responsavel:
+        type: string
+      contato_responsavel:
+        type: string
+
+# Resposta
+responses:
+  200:
+    description: JSON

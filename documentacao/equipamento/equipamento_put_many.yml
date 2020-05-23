@@ -1,0 +1,17 @@
+Replaces the equipments data according to the documents id sent in json body. 
+---
+tags:
+  - Equipamentos
+
+parameters:
+  - in: body
+    name: Equipamento
+    description: You can send many objects with the fields you wish to replace.
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/Equipamento'
+
+responses:
+  200:
+    description: Empty body.

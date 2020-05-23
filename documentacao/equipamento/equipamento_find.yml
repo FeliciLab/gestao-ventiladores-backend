@@ -1,17 +1,23 @@
-Retorna os equipamentos cadastrados conforme o status procurado.
+Returns all the equipments registered, according to the query sent. 
 ---
 tags:
   - Equipamentos
+
 parameters:
   - in: body
+    description: You can send the fields you wish in "select" and "where".
     schema:
-      required:
-        - status
       properties:
-        status:
-          type: string
+        where:
+          type: object
+          properties:
+            key:
+              type: string
+        select:
+          type: array
+          items:
+            type: string
+
 responses:
   200:
-    description:
-    schema:
-      $ref: '#/definitions/Equipamento'
+    description: JSON

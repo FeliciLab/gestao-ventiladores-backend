@@ -13,12 +13,14 @@ from api.views import (
 
 
 def initialize_routes(api):
-    api.add_resource(equipamento_view.EquipamentoList,
-                     '/api/equipamentos')
+    api.add_resource(equipamento_view.EquipamentoOne,
+                     '/api/equipment/<_id>')
+    api.add_resource(equipamento_view.EquipamentoMany,
+                     '/api/equipments')
+    api.add_resource(equipamento_view.EquipamentoFind,
+                     '/api/equipment/find')
     api.add_resource(equipamento_view.EquipamentoBulk,
-                     '/api/equipamentos/bulk')
-    api.add_resource(equipamento_view.EquipamentoDetail,
-                     '/api/equipamento/<_id>')
+                     '/api/equipment/bulk')
 
     api.add_resource(ordem_servico_view.OrdemServicoList,
                      '/api/ordem_servicos')

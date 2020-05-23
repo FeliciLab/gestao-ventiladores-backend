@@ -1,0 +1,15 @@
+Deletes a sepecific equipment according to the document id sent.
+---
+tags:
+  - Equipamentos
+
+parameters:
+  - in: path
+    name: _id
+    type: string
+    required: true
+    description: Document Id
+
+responses:
+  200:
+    description: Empty body.

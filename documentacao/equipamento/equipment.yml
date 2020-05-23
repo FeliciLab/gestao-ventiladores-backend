@@ -1,0 +1,20 @@
+paths:
+  /equipamento/{_id}:
+    get:
+      summary: Gets a user by ID.
+      description: >
+        Retorna um equipamento
+      parameters:
+        - in: path
+          name: _id
+          type: string
+          required: true
+          description: Id do documento.
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/Equipamento'
+

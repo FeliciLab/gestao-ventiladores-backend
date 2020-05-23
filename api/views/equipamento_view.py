@@ -8,8 +8,8 @@ from api.utils.error_response import error_response
 from flasgger import swag_from
 
 
-class EquipamentoList(Resource):
-    @swag_from('../../documentacao/equipamento/equipamentos_get.yml')
+class EquipamentoMany(Resource):
+    @swag_from('../../documentacao/equipamento/equipamento_get_many.yml')
     def get(self):
         body = request.args
         try:
@@ -32,7 +32,8 @@ class EquipamentoList(Resource):
             return error_response("Não foi possível encontrar" +
                                   "equipamento com o parâmetro enviado")
 
-    @swag_from('../../documentacao/equipamento/equipamentos_post.yml')
+
+    @swag_from('../../documentacao/equipamento/equipamento_post_many.yml')
     def post(self):
         body = request.json
 
@@ -88,7 +89,18 @@ class EquipamentoList(Resource):
 
         return Response(resposta, mimetype="application/json", status=200)
 
-    # @swag_from('../../documentacao/equipamento/equipamento_delete_body.yml')
+
+    @swag_from('../../documentacao/equipamento/equipamento_put_many.yml')
+    def put(self):
+        pass
+
+
+    @swag_from('../../documentacao/equipamento/equipamento_patch_many.yml')
+    def patch(self):
+        pass
+
+
+    @swag_from('../../documentacao/equipamento/equipamento_delete_many.yml')
     def delete(self):
         body = request.args
         try:
@@ -110,8 +122,8 @@ class EquipamentoList(Resource):
                  status=204)
 
 
-class EquipamentoDetail(Resource):
-    @swag_from('../../documentacao/equipamento/equipamento_get.yml')
+class EquipamentoOne(Resource):
+    @swag_from('../../documentacao/equipamento/equipamento_get_one.yml')
     def get(self, _id):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
@@ -120,7 +132,8 @@ class EquipamentoDetail(Resource):
                         mimetype="application/json",
                         status=200)
 
-    @swag_from('../../documentacao/equipamento/equipamento_put.yml')
+
+    @swag_from('../../documentacao/equipamento/equipamento_put_one.yml')
     def put(self, _id):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
@@ -150,13 +163,25 @@ class EquipamentoDetail(Resource):
                         mimetype="application/json",
                         status=200)
 
-    @swag_from('../../documentacao/equipamento/equipamento_delete.yml')
+
+    @swag_from('../../documentacao/equipamento/equipamento_patch_one.yml')
+    def patch(self):
+        pass
+
+
+    @swag_from('../../documentacao/equipamento/equipamento_delete_one.yml')
     def delete(self, _id):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrado..."), 400)
         equipamento_service.deletar_equipamento(_id)
         return make_response('', 204)
+
+
+class EquipamentoFind(Resource):
+    @swag_from('../../documentacao/equipamento/equipamento_find.yml')
+    def post(self):
+        pass
 
 
 class EquipamentoBulk(Resource):
