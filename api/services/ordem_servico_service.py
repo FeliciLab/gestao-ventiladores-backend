@@ -4,6 +4,7 @@ from bson import ObjectId
 from bson.json_util import dumps
 from datetime import datetime
 from ..utils import query_parser
+from ..utils.descerialization_data_model_patch import deserialize_body_to_model
 
 
 def get_ordem_servico_equipamento_pipeline():
@@ -173,38 +174,7 @@ def registrar_equipamento_vazio():
 
 
 def deserealize_ordem_servico(body):
-    ordem_servico = ordem_servico_model.OrdemServico()
-    format_date = "%Y-%m-%dT%H:%M:%S.%fZ"
-    for att_name, att_value in body.items():
-        if "created_at" == att_name:
-            ordem_servico.created_at = datetime \
-                .strptime(body["created_at"], format_date)
-            continue
-
-        if "updated_at" == att_name:
-            ordem_servico.created_at = datetime.strptime(
-                body["updated_at"],
-                format_date
-            )
-            continue
-
-        try:
-            setattr(ordem_servico, att_name, att_value)
-        except Exception:
-            continue
-
-    return ordem_servico
-
-    # ordem_servico = ordem_servico_model.OrdemServico()
-    # if "numero_ordem_servico" in body: ordem_servico.numero_ordem_servico =
-    # body["numero_ordem_servico"]
-    # if "equipamento_id" in body: ordem_servico.equipamento_id = body[
-    # "equipamento_id"].id
-    # if "created_at" in body: ordem_servico.created_at = datetime.strptime(
-    # body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-    # if "updated_at" in body: ordem_servico.updated_at = datetime.strptime(
-    # body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-    # if "status" in body: ordem_servico.status = body["status"]
-    # if "triagem" in body: ordem_servico.triagem = body["triagem"]
-    # if "diagnostico" in body: ordem_servico.diagnostico = body["diagnostico"]
-    # return ordem_servico
+    return deserialize_body_to_model(
+        body=body,
+        model=ordem_servico_model.OrdemServico()
+    )
