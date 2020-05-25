@@ -1,12 +1,12 @@
-from ..application import app
+from application import app
 from unittest import TestCase
-from mongoengine import connect
+from config.db import db
 
 
 class BaseCase(TestCase):
     def setUp(self):
         self.app = app.test_client()
-        self.db = connect('db_test_scripts')
+        self.db = db
 
 
     def tearDown(self):

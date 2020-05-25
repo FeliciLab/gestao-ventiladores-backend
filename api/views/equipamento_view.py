@@ -1,7 +1,7 @@
 import json
 from flask import Response, request, make_response, jsonify
 from flask_restful import Resource
-from api.schemas import equipamento_schema
+from api.schemas.equipamento_schema import EquipamentoSchema
 from api.services import equipamento_service, log_service
 from bson.json_util import dumps
 from api.utils.error_response import error_response
@@ -11,67 +11,77 @@ from flasgger import swag_from
 class EquipamentoMany(Resource):
     @swag_from('../../documentacao/equipamento/equipamento_get_many.yml')
     def get(self):
-        body = request.args
-        try:
-            _id = body['_id']
-        except Exception:
-            _id = False
-
-        if not _id:
-            equipamentos = equipamento_service.listar_equipamentos()
-            return Response(equipamentos.to_json(),
-                            mimetype="application/json",
-                            status=200)
-
-        try:
-            equipamento = equipamento_service.listar_equipamento_by_id(_id)
-            return Response(equipamento.to_json(),
-                            mimetype="application/json",
-                            status=200)
-        except Exception:
-            return error_response("Não foi possível encontrar" +
-                                  "equipamento com o parâmetro enviado")
+        equipamentos_json = equipamento_service.listar_equipamentos().to_json()
+        equipamentos_dict = json.loads(equipamentos_json)
+        return jsonify(equipamentos_dict)
 
 
     @swag_from('../../documentacao/equipamento/equipamento_post_many.yml')
     def post(self):
-        body = request.json
+        body_array = request.json
+        resposta = []
 
-        try:
-            _id = body["_id"]
-        except Exception:
-            _id = False
+        for body in body_array:
+            erro_equipamento = EquipamentoSchema().validate(body)
+            if erro_equipamento:
+                resposta.append(erro_equipamento)
+                continue
 
-        erro_equipamento = equipamento_schema \
-            .EquipamentoSchema() \
-            .validate(body)
-        if erro_equipamento:
-            return make_response(jsonify(erro_equipamento), 400)
-
-        equipamento_existente = equipamento_service.consultar_numero_de_serie(
-            body["numero_de_serie"]
-        )
-
-        if not _id and equipamento_existente:
-            return make_response(
-                jsonify({
-                    "error": True,
-                    "message": "Número de série já cadastrado",
-                    "equipamento": dumps(equipamento_existente)
-                }),
-                400
+            equipamento_existente = equipamento_service.consultar_numero_de_serie(
+                body["numero_de_serie"]
             )
 
-        if not _id:
+            if equipamento_existente:
+                resposta.append({
+                    "error": True,
+                    "message": "Número de série já cadastrado",
+                    "numero_de_serie": equipamento_existente["numero_de_serie"],
+                    "status": 400
+                })
+                continue
+
             novo_equipamento_id = equipamento_service \
                 .registar_equipamento(body)
-            resposta = json.dumps({"_id": novo_equipamento_id})
-        else:
+            resposta.append({"_id": novo_equipamento_id, "status": 200})
+
+        return jsonify(resposta)
+
+
+    @swag_from('../../documentacao/equipamento/equipamento_put_many.yml')
+    def put(self):
+        body_array = request.json
+        resposta = []
+
+        for body in body_array:
+            if '_id' not in body:
+                resposta.append({"error": True, "message": "Id é campo obrigatório."})
+                continue
+
+            _id = body['_id']
+
+            erro_equipamento = EquipamentoSchema().validate(body)
+            if erro_equipamento:
+                resposta.append(erro_equipamento)
+                continue
+
+            equipamento_existente = equipamento_service.consultar_numero_de_serie(
+                body["numero_de_serie"]
+            )
+
+            if equipamento_existente is None:
+                resposta.append({
+                    "error": True,
+                    "message": "Equipamento não encontrado",
+                    "status": 400
+                })
+                continue
 
             updated_body = json.loads(
-                equipamento_service.deserealize_equipamento(body).to_json())
+                        equipamento_service.deserealize_equipamento(body).to_json())
+
             old_body = json.loads(
                 equipamento_service.listar_equipamento_by_id(_id).to_json())
+
             log_service.registerLog("equipamento",
                                     old_body,
                                     updated_body,
@@ -79,20 +89,11 @@ class EquipamentoMany(Resource):
                                                     "updated_at"],
                                     all_fields=False)
 
-            try:
-                del body["_id"]
-            except KeyError:
-                print("_id não está presente no body")
-
+            del body["_id"]
             equipamento_service.atualizar_equipamento(body, _id)
-            resposta = json.dumps({"_id": _id})
+            resposta.append({"_id": _id})
 
-        return Response(resposta, mimetype="application/json", status=200)
-
-
-    @swag_from('../../documentacao/equipamento/equipamento_put_many.yml')
-    def put(self):
-        pass
+        return jsonify(resposta)
 
 
     @swag_from('../../documentacao/equipamento/equipamento_patch_many.yml')
@@ -102,24 +103,31 @@ class EquipamentoMany(Resource):
 
     @swag_from('../../documentacao/equipamento/equipamento_delete_many.yml')
     def delete(self):
-        body = request.args
-        try:
-            _id = body['_id']
-        except Exception:
-            return error_response('Identificador não encontrado')
+        body_array = request.args
+        resposta = []
 
-        try:
+        for body in body_array:
+            if '_id' not in body:
+                resposta.append({"error": True, "message": "Id é campo obrigatório."})
+                continue
+
+            _id = body['_id']
+
             equipamento = equipamento_service.listar_equipamento_by_id(_id)
             if equipamento is None:
-                return error_response("Equipamento não encontrado.")
-        except Exception:
-            return error_response("Não foi possível encontrar " +
-                                  "equipamento com o ID enviado.")
+                resposta.append({
+                    "error": True,
+                    "message": "Equipamento não encontrado",
+                    "status": 400
+                })
+                continue
 
-        equipamento_service.deletar_equipamento(_id)
-        Response(jsonify({"ok": True}),
-                 mimetype="application/json",
-                 status=204)
+            equipamento_service.deletar_equipamento(_id)
+
+        if resposta:
+            return jsonify(resposta)
+
+        return jsonify('', 200)
 
 
 class EquipamentoOne(Resource):
@@ -140,8 +148,7 @@ class EquipamentoOne(Resource):
             return make_response(jsonify("Equipamento não encontrada..."), 400)
 
         body = request.get_json()
-        erro_equipamento = equipamento_schema\
-            .EquipamentoSchema().validate(body)
+        erro_equipamento = EquipamentoSchema().validate(body)
         if erro_equipamento:
             return make_response(jsonify(erro_equipamento), 400)
 
@@ -191,7 +198,6 @@ class EquipamentoBulk(Resource):
             return error_response('Equipamentos não enviado')
 
         a = []
-        # agora vai
         for equipamento in body['equipamentos']:
             b = upsert_equipment(equipamento)
             if b is not False:
@@ -206,7 +212,7 @@ def upsert_equipment(body):
     except Exception:
         _id = False
 
-    erro_equipamento = equipamento_schema.EquipamentoSchema().validate(body)
+    erro_equipamento = EquipamentoSchema().validate(body)
     if erro_equipamento:
         return False
 

@@ -2,6 +2,7 @@ Returns all equipments registered.
 ---
 tags:
   - Equipamentos
+
 definitions:
   Equipamento:
     type: object
@@ -76,8 +77,20 @@ definitions:
         type: string
       contato_responsavel:
         type: string
+paths:
+  /api/equipments:
+    get:
+      responses:
+        200:
+          description: JSON
 
-# Resposta
-responses:
-  200:
-    description: JSON
+  parameters:
+    - in: path
+      name: _id
+      type: string
+      required: true
+      description: Document Id.
+
+  responses:
+    200:
+      description: JSON
