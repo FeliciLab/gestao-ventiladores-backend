@@ -1,12 +1,23 @@
-Retorna todas as ordens de compras confome a query passada.
+Returns all the purchase orders registered, according to the query sent. 
 ---
 tags:
-  - Ordem Compras
+  - PurchaseOrders
 
 parameters:
   - in: body
-      name: OrdemCompra
+    description: You can send the fields you wish in "select" and "where".
+    schema:
+      properties:
+        where:
+          type: object
+          properties:
+            key:
+              type: string
+        select:
+          type: array
+          items:
+            type: string
 
 responses:
   200:
-    description: Retorna os dados da ordem de servico registrada
+    description: JSON

@@ -6,7 +6,7 @@ from flasgger import swag_from
 
 
 class OrdemCompraList(Resource):
-    @swag_from("../../documentacao/ordem_compra/ordem_compras_get.yml")
+    @swag_from('../../documentacao/ordem_compra/ordem_compra_get_many.yml')
     def get(self):
         """ Retorna todas as ordens de compra """
         ordem_compra_registrada = ordem_compra_service \
@@ -15,7 +15,7 @@ class OrdemCompraList(Resource):
                         mimetype="application/json",
                         status=200)
 
-    @swag_from("../../documentacao/ordem_compra/ordem_compra_post.yml")
+    @swag_from('../../documentacao/ordem_compra/ordem_compra_post_many.yml')
     def post(self):
         """
          Cadastra uma nova ordem de compra caso a requisição venha sem "_id"
@@ -52,15 +52,28 @@ class OrdemCompraList(Resource):
         return jsonify({"_id": str(nova_ordem_compra.id)})
 
 
+    @swag_from('../../documentacao/ordem_compra/ordem_compra_put_many.yml')
+    def put(self):
+        pass
+
+
+    @swag_from('../../documentacao/ordem_compra/ordem_compra_patch_many.yml')
+    def patch(self):
+        pass
+
+
+    @swag_from('../../documentacao/ordem_compra/ordem_compra_delete_many.yml')
+    def delete(self):
+        pass
+
+
 class OrdemCompraDetail(Resource):
-    @swag_from("../../documentacao/ordem_compra/ordem_compra_get.yml")
     def get(self, _id):
         """ Retorna uma ordem de compra específica conforme o id passado """
         ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(
             _id).to_json()
         return Response(ordem_compra, mimetype="application/json", status=200)
 
-    @swag_from("../../documentacao/ordem_compra/ordem_compra_put.yml")
     def put(self, _id):
         """ Atualiza a ordem de compra """
         body = request.json
@@ -85,7 +98,9 @@ class OrdemCompraDetail(Resource):
         nova_ordem_compra = ordem_compra_service.listar_ordem_compra_by_id(_id)
         return jsonify({"_id": str(nova_ordem_compra.id)})
 
-    @swag_from("../../documentacao/ordem_compra/ordem_compra_delete.yml")
+    def patch(self, _id):
+        pass
+
     def delete(self, _id):
         """ Remover uma ordem de compra """
         ordem_compra_service.deletar_ordem_compra(_id)
@@ -93,10 +108,11 @@ class OrdemCompraDetail(Resource):
 
 
 class OrdemCompraQuery(Resource):
-    #  @swag_from('../../documentacao/ordem_compra/ordem_compra_find.yml')
     def post(self, _id):
-        """ Retorna os dados da ordem de compra
-            conforme os campos passados no body """
+        """ 
+        Retorna os dados da ordem de compra
+        conforme os campos passados no body
+        """
         body = request.json
         dados_filtrados = ordem_compra_service.ordem_compra_queries(body)
         return Response(

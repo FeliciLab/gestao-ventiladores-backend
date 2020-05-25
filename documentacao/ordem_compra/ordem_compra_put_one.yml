@@ -1,0 +1,21 @@
+Replaces the purchase order data according to the document id sent in the route. 
+---
+tags:
+  - PurchaseOrders
+
+parameters:
+  - in: path
+    name: _id
+    type: string
+    required: true
+    description: Document Id.
+
+  - in: body
+    name: PurchaseOrder
+    description: You can send the fields as you wish to replace.
+    schema:
+        $ref: '#/definitions/PurchaseOrder'
+
+responses:
+  200:
+    description: Empty body.

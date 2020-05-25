@@ -1,0 +1,25 @@
+Returns all purchase orders registered. 
+---
+tags:
+  - PurchaseOrders
+
+definitions:
+  PurchaseOrder:
+    type: object
+    properties:
+      numero_ordem_compra:
+        type: string
+      type: array
+      itens:
+        type: string
+
+parameters:
+  - in: path
+    name: _id
+    type: string
+    required: true
+    description: Document Id.
+
+responses:
+  200:
+    description: JSON

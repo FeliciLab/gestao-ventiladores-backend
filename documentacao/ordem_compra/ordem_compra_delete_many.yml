@@ -1,0 +1,17 @@
+Deletes all the purchase orders, according to the documents id sent in json body.
+---
+tags:
+  - PurchaseOrders
+
+parameters: 
+  - in: body
+    name: PurchaseOrder
+    description: You can send as many documents id as you wish.
+    schema:
+      type: array
+      items:
+        type: string
+
+responses:
+  200:
+    description: Empty body.
