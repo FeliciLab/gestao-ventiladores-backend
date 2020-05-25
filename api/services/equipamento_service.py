@@ -1,5 +1,9 @@
 from datetime import datetime
 from api.models import equipamento_model
+from api.utils.descerialization_data_model_patch import (
+    date_from_model,
+    deserialize_body_to_model
+)
 
 
 def listar_equipamentos():
@@ -47,24 +51,7 @@ def deletar_equipamento(_id):
 
 
 def deserealize_equipamento(body):
-    equipamento = equipamento_model.Equipamento()
-
-    for att_name, att_value in body.items():
-
-        if "created_at" == att_name:
-            equipamento.created_at = datetime.strptime(
-                body["created_at"], "%Y-%m-%dT%H:%M:%S.%f"
-            )
-
-        if "created_at" == att_name:
-            equipamento.created_at = datetime.strptime(
-                body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f"
-            )
-
-        else:
-            try:
-                setattr(equipamento, att_name, att_value)
-            except Exception:
-                continue
-
-    return equipamento
+    return deserialize_body_to_model(
+        body=body,
+        model=equipamento_model.Equipamento()
+    )

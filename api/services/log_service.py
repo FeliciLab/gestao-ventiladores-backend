@@ -83,7 +83,7 @@ def check_fields(antigo, novo, all_fields, ignorated_fields=None):
 
             continue
 
-        if not isinstance(novo[campo], antigo[campo]):
+        if not isinstance(antigo[campo], type(novo[campo])):
             log[campo] = antigo[campo]
             continue
 

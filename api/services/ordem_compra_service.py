@@ -1,6 +1,8 @@
 from datetime import datetime
 from api.models import ordem_compra_model
 from api.utils import query_parser
+from api.utils.descerialization_data_model_patch import \
+    deserialize_body_to_model
 
 
 def listar_ordem_compras():
@@ -65,22 +67,7 @@ def ordem_compra_queries(body):
 
 
 def deserealize_ordem_compra(body):
-    ordem_compra = ordem_compra_model.OrdemCompra()
-
-    for att_name, att_value in body.items():
-
-        if "created_at" == att_name:
-            ordem_compra.created_at = datetime \
-                .strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-
-        if "created_at" == att_name:
-            ordem_compra.created_at = datetime \
-                .strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-
-        else:
-            try:
-                setattr(ordem_compra, att_name, att_value)
-            except Exception:
-                continue
-
-    return ordem_compra
+    return deserialize_body_to_model(
+        body=body,
+        model=ordem_compra_model.OrdemCompra()
+    )

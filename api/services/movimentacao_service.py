@@ -5,6 +5,8 @@ from api.models import movimentacao_model
 from api.models.equipamento_model import Equipamento
 from api.models.movimentacao_model import Movimentacao
 from api.utils import query_parser
+from api.utils.descerialization_data_model_patch import \
+    deserialize_body_to_model
 
 
 def listar_movimentacoes():
@@ -74,27 +76,19 @@ def movimentacao_queries(body):
 
 
 def deserialize_movimentacao_service(body):
-    movimetacao = Movimentacao()
+    return deserialize_body_to_model(
+        body=body,
+        model=Movimentacao(),
+        custom_deserialize=custom_deserialize
+    )
 
-    for att_name, att_value in body.items():
-        if "equipamentos_id" == att_name:
-            for equipamento in body["equipamentos_id"]:
-                movimetacao.equipamentos_id.append(equipamento.id)
 
-        elif "created_at" == att_name:
-            movimetacao.created_at = datetime.strptime(
-                body["created_at"], "%Y-%m-%dT%H:%M:%S.%f"
-            )
+def custom_deserialize(body, att_name):
+    if "equipamentos_id" == att_name:
+        data = []
+        for equipamento in body["equipamentos_id"]:
+            data.append(equipamento.id)
 
-        elif "updated_at" == att_name:
-            movimetacao.updated_at = datetime.strptime(
-                body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f"
-            )
+        return data
 
-        try:
-            setattr(movimetacao, att_name, att_value)
-        except Exception:
-            print("Problem setattr movimentacao")
-            continue
-
-    return movimetacao
+    return None
