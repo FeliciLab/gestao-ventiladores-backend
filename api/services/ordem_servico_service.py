@@ -174,16 +174,18 @@ def registrar_equipamento_vazio():
 
 def deserealize_ordem_servico(body):
     ordem_servico = ordem_servico_model.OrdemServico()
-
+    format_date = "%Y-%m-%dT%H:%M:%S.%fZ"
     for att_name, att_value in body.items():
         if "created_at" == att_name:
             ordem_servico.created_at = datetime \
-                .strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                .strptime(body["created_at"], format_date)
             continue
 
         if "updated_at" == att_name:
-            ordem_servico.created_at = datetime \
-                .strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+            ordem_servico.created_at = datetime.strptime(
+                body["updated_at"],
+                format_date
+            )
             continue
 
         try:
