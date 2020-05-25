@@ -1,5 +1,4 @@
 from typing import Dict
-
 from bson import ObjectId
 
 
@@ -31,5 +30,3 @@ def parse(query_body):
     if "_id" in adapted_query_body:
         adapted_query_body["_id"] = ObjectId(adapted_query_body["_id"])
     return adapted_query_body
-
-

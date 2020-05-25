@@ -2,6 +2,7 @@ from config.db import db
 from datetime import datetime
 from ..models.ordem_servico_model import Item
 
+
 class OrdemCompra(db.Document):
     meta = {'collection': 'ordem_compra'}
 
@@ -9,4 +10,3 @@ class OrdemCompra(db.Document):
     itens = db.EmbeddedDocumentListField(Item, required=False)
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
-

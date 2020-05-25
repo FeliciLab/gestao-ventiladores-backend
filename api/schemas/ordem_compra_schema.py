@@ -19,5 +19,3 @@ class OrdemCompraSchema(Schema):
 
     numero_ordem_compra = fields.String(required=False)
     itens = fields.List(fields.Nested(ItemSchema), required=False)
-
-

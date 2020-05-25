@@ -1,27 +1,24 @@
 from datetime import datetime
-
 from api.models import ordem_compra_model
 from api.utils import query_parser
 
 
 def listar_ordem_compras():
-    """ Retorna todas as ordens de compra """
     return ordem_compra_model.OrdemCompra.objects
 
 
 def listar_ordem_compra_by_id(id):
-    """ Retorna a ordem de compra pelo 'id' """
     try:
         return ordem_compra_model.OrdemCompra.objects.get(id=id)
-    except:
+    except Exception:
         return None
 
 
 def listar_ordem_compra_by_numero_ordem_compra(numero_ordem_compra):
-    """ Retorna a ordem de compra pelo 'numero_ordem_compra """
     try:
-        return ordem_compra_model.OrdemCompra.objects.get(numero_ordem_compra=numero_ordem_compra)
-    except:
+        return ordem_compra_model.OrdemCompra \
+            .objects.get(numero_ordem_compra=numero_ordem_compra)
+    except Exception:
         return None
 
 
@@ -35,7 +32,8 @@ def registar_ordem_compra(body):
     if quantidade_itens == 0:
         return {
             "error": True,
-            "message": "Não foram enviados itens suficientes para ordem de compra"
+            "message": "Não foram enviados itens suficientes" +
+                       "para ordem de compra"
         }
 
     qtd_ordem_compra = ordem_compra_model.OrdemCompra.objects.count()
@@ -43,22 +41,25 @@ def registar_ordem_compra(body):
     body['numero_ordem_compra'] = numero_ordem_compra
     return ordem_compra_model.OrdemCompra(**body).save()
 
+
 def atualizar_ordem_compra(id, atualizacao):
-    """ Atualiza somnte o campo de itens """
-    ordem_compra_model.OrdemCompra.objects.get(id=id).update(itens=atualizacao['itens'])
+    ordem_compra_model.OrdemCompra.objects \
+        .get(id=id).update(itens=atualizacao['itens'])
+
 
 def deletar_ordem_compra(_id):
-    """ Deleta uma ordem de compra """
     ordem_compra_model.OrdemCompra.objectsget(id=_id).delete()
+
 
 def ordem_compra_queries(body):
 
     parsed_query_dt = query_parser.parse(body["where"])
 
-    if not "select" in body:
+    if "select" not in body:
         body["select"] = []
 
-    filted_ordem_compra_list = ordem_compra_model.OrdemCompra.objects(__raw__=parsed_query_dt).only(*body["select"])
+    filted_ordem_compra_list = ordem_compra_model.OrdemCompra \
+        .objects(__raw__=parsed_query_dt).only(*body["select"])
 
     return filted_ordem_compra_list.to_json()
 
@@ -68,16 +69,18 @@ def deserealize_ordem_compra(body):
 
     for att_name, att_value in body.items():
 
-        if "created_at" is att_name:
-            ordem_compra.created_at = datetime.strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+        if "created_at" == att_name:
+            ordem_compra.created_at = datetime \
+                .strptime(body["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
 
-        if "created_at" is att_name:
-            ordem_compra.created_at = datetime.strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+        if "created_at" == att_name:
+            ordem_compra.created_at = datetime \
+                .strptime(body["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
 
         else:
             try:
                 setattr(ordem_compra, att_name, att_value)
-            except:
+            except Exception:
                 continue
 
     return ordem_compra

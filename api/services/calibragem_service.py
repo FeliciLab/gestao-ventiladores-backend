@@ -1,5 +1,4 @@
 from bson.json_util import dumps
-
 from api.models import ordem_servico_model
 from api.services.ordem_servico_service import \
     get_ordem_servico_equipamento_pipeline
