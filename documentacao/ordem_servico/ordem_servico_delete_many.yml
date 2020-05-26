@@ -1,7 +1,7 @@
-Deletes all the equipments, according to the documents id sent in json body.
+Deletes all the service orders, according to the documents id sent in json body.
 ---
 tags:
-  - Equipamentos
+  - Ordem Servicos
 
 parameters:
   - in: body

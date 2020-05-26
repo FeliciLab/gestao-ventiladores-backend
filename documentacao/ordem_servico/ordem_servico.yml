@@ -1,0 +1,109 @@
+Returns all services orders registered.
+---
+tags:
+  - Ordem Servicos
+
+definitions:
+  OrdemdeServico:
+    type: object
+    properties:
+      id:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      equipamento_id:
+        type: string
+      status:
+        type: string
+      triagem:
+        type: object
+        properties:
+          estado_de_conservacao: 
+            type: string
+          acessorios: 
+            type: array
+          foto_antes_limpeza: 
+            type: string
+          foto_apos_limpeza: 
+            type: string  
+      diagnostico:
+        type: object
+        properties:
+          resultado_tecnico:
+            type: string
+          demanda_servicos:
+            type: string
+          observacoes: 
+            type: string
+          itens: 
+            type: array
+      calibragem:
+        type: array
+        properties: 
+          status:
+            type: string
+
+  OrdemdeServicoPost:
+    type: object
+    properties:
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      equipamento_id:
+        type: string
+      status:
+        type: string
+      triagem:
+        type: object
+        properties:
+          estado_de_conservacao: 
+            type: string
+          acessorios: 
+            type: array
+          foto_antes_limpeza: 
+            type: string
+          foto_apos_limpeza: 
+            type: string  
+      diagnostico:
+        type: object
+        properties:
+          resultado_tecnicequipmento:
+            type: string
+          demanda_servicos:
+            type: string
+          observacoes: 
+            type: string
+          itens: 
+            type: array
+      calibragem:
+        type: array
+        properties: 
+          status:
+            type: string
+
+paths:
+  /api/service_orders:
+    get:
+      responses:
+        200:
+          description: JSON
+
+  /api/service_orders/{id}:
+    get:
+      parameters:
+        - in: path
+          name: _id
+          type: string
+          required: true
+          description: Document Id.
+
+      responses:
+        200:
+          description: JSON

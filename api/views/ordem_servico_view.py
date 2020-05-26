@@ -8,7 +8,7 @@ from flasgger import swag_from
 
 
 class OrdemServicoList(Resource):
-    @swag_from('../../documentacao/ordem_servico/ordem_servicos_get.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_get_many.yml')
     def get(self):
         """
             Retorna todos as ordens de servico com o equipamento relacionado
@@ -18,8 +18,7 @@ class OrdemServicoList(Resource):
                         mimetype="application/json",
                         status=200)
 
-    # todo Denis atualizar essa url do swag
-    # @swag_from('../../documentacao/ordem_servico/ordem_servico_post.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_post_many.yml')
     def post(self):
         """
             Se vinher '_id' no body será uma atualização da ordem
@@ -106,8 +105,23 @@ class OrdemServicoList(Resource):
         )
 
 
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_put_many.yml')
+    def put(self):
+        pass
+
+
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_patch_many.yml')
+    def patch(self):
+        pass
+
+    
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_delete_many.yml')
+    def delete(self):
+        pass
+
+
 class OrdemServicoDetail(Resource):
-    @swag_from('../../documentacao/ordem_servico/ordem_servico_get.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_get_one.yml')
     def get(self, _id):
         """
             Retorna uma ordem de serviço específica
@@ -122,7 +136,12 @@ class OrdemServicoDetail(Resource):
             mimetype="application/json",
             status=200)
 
-    # @swag_from('../../documentacao/ordem_servico/ordem_servico_put.yml')
+    
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_put_one.yml')
+    def put(self):
+        pass
+
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_patch_one.yml')
     def patch(self, _id):
         ordem_servico = ordem_servico_service.listar_ordem_servico_by_id(_id)
 
@@ -172,7 +191,7 @@ class OrdemServicoDetail(Resource):
             status=200
         )
 
-    @swag_from('../../documentacao/ordem_servico/ordem_servico_delete.yml')
+    @swag_from('../../documentacao/ordem_servico/ordem_servico_delete_one.yml')
     def delete(self, _id):
         """
             Deleta uma ordem de serviço específica
@@ -187,6 +206,8 @@ class OrdemServicoDetail(Resource):
         return make_response('', 204)
 
 
+# Mudar o nome para find
+#@swag_from('../../documentacao/ordem_servico/ordem_servico_find.yml')
 class OrdemServicoQuery(Resource):
     def post(self):
         body = request.json

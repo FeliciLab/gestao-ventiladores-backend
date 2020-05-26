@@ -1,16 +1,23 @@
-Retorna todas as ordens de servicos confome o status passado (triagem ou diagnostico).
+Returns all the service orders registered, according to the query sent. 
 ---
 tags:
   - Ordem Servicos
 
 parameters:
   - in: body
-    name: OrdemServico
-    description: Aonde está escrito string, você pode editar, passando o status triagem ou diagnostico.
-    properties:
-      status:
-        type: string
+    description: You can send the fields you wish in "select" and "where".
+    schema:
+      properties:
+        where:
+          type: object
+          properties:
+            key:
+              type: string
+        select:
+          type: array
+          items:
+            type: string
 
 responses:
   200:
-    description: Retorna os dados da ordem de servico registrada
+    description: JSON
