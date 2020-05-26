@@ -1,107 +1,91 @@
-Returns all service orders registered. 
+Returns all the service orders registered.
 ---
 tags:
   - Ordem Servicos
-
 definitions:
-  OrdemdeServico:
+  OrdemServico:
     type: object
     properties:
-      id:
+      equipamento_id:
+        type: string
+      numero_ordem_servico:
         type: string
       created_at:
         type: string
-        format: date-time
       updated_at:
-        type: string
-        format: date-time
-      equipamento_id:
         type: string
       status:
         type: string
       triagem:
         type: object
-        properties:
-          estado_de_conservacao: 
-            type: string
-          acessorios: 
-            type: array
-          foto_antes_limpeza: 
-            type: string
-          foto_apos_limpeza: 
-            type: string  
+        $ref: '#/definitions/Triagem'
       diagnostico:
         type: object
-        properties:
-          resultado_tecnico:
-            type: string
-          demanda_servicos:
-            type: string
-          observacoes: 
-            type: string
-          itens: 
-            type: array
-      calibragem:
-        type: object
-        properties: 
-          status:
-            type: string
+        $ref: '#/definitions/Diagnostico'
 
-  OrdemdeServicoPost:
+  Acessorio:
     type: object
     properties:
-      created_at:
+      descricao:
         type: string
-        format: date-time
-      updated_at:
+      acompanha:
         type: string
-        format: date-time
-      equipamento_id:
+      quantidade:
         type: string
-      status:
+      estado_de_conservacao:
         type: string
-      triagem:
-        type: object
-        properties:
-          estado_de_conservacao: 
-            type: string
-          acessorios: 
-            type: array
-          foto_antes_limpeza: 
-            type: string
-          foto_apos_limpeza: 
-            type: string  
-      diagnostico:
-        type: object
-        properties:
-          resultado_tecnico:
-            type: string
-          demanda_servicos:
-            type: string
-          observacoes: 
-            type: string
-          itens: 
-            type: array
-      calibragem:
-        type: object
-        properties: 
-          status:
-            type: string
 
-paths:
-  /api/service_orders:
-    get:
-      responses:
-        200:
-          description: JSON
+  Item:
+    type: object
+    properties:
+      fabricante:
+        type: string
+      codigo:
+        type: string
+      nome:
+        type: string
+      unidade_medida:
+        type: string
+      quantidade:
+        type: integer
+      tipo:
+        type: string
+      descricao:
+        type: string
 
-  parameters:
-    - in: path
-      name: _id
-      type: string
-      required: true
-      description: Document Id.
+  Triagem:
+    type: object
+    properties:
+      codigo:
+        type: string
+      nome:
+        type: string
+      unidade_medida:
+        type: string
+      acessorios:
+        type: array
+        items:
+          $ref: '#/definitions/Acessorio'
 
-  responses:
-    200:
-      description: JSON
+  Diagnostico:
+    type: object
+    properties:
+      resultado_tecnico:
+        type: string
+      demanda_servicos:
+        type: string
+      demanda_insumos:
+        type: string
+      acao_orientacao:
+        type: string
+      observacoes:
+        type: string
+      itens:
+        type: array
+        items:
+          $ref: '#/definitions/Item'
+
+# Resposta
+responses:
+  200:
+    description: JSON

@@ -85,6 +85,6 @@ definitions:
       required: true
       description: Document Id.
 
-  responses:
-    200:
-      description: JSON
+responses:
+  200:
+    description: JSON

@@ -1,7 +1,7 @@
-Replaces the service order data according to the document id sent in the route. 
+Replaces the movings data according to the document id sent in the route. 
 ---
 tags:
-  - Ordem Servicos
+  - Movimentacoes
 
 parameters:
   - in: path
@@ -11,10 +11,10 @@ parameters:
     description: Document Id.
 
   - in: body
-    name: Ordem de Servico
+    name: Movimentacao
     description: You can send the fields as you wish to replace.
     schema:
-        $ref: '#/definitions/OrdemServico'
+        $ref: '#/definitions/Movimentacao'
 
 responses:
   200:

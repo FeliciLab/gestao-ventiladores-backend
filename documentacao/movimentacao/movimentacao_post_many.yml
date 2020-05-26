@@ -1,16 +1,16 @@
-Register new service orders. 
+Register new movings.
 ---
 tags:
-  - Ordem Servicos
+  - Movimentacoes
 
 parameters: 
   - in: body
-    name: Ordem de Servico
+    name: Movimentacao
     description: You can send many objects with the fields you wish to create.
     schema:
       type: array
       items:
-        $ref: '#/definitions/OrdemServico'
+        $ref: '#/definitions/Movimentacao'
 
 responses:
   200:

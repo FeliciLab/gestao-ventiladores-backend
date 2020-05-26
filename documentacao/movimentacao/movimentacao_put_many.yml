@@ -1,16 +1,16 @@
-Replaces the servie orders data according to the documents id sent in json body. 
+Replaces the movings data according to the documents id sent in json body. 
 ---
 tags:
-  - Ordem Servicos
+  - Movimentacoes
 
 parameters:
   - in: body
-    name: Ordem de Servico
+    name: Movimentacao
     description: You can send many objects with the fields you wish to replace.
     schema:
       type: array
       items:
-        $ref: '#/definitions/OrdemServico'
+        $ref: '#/definitions/Movimentacao'
 
 responses:
   200:

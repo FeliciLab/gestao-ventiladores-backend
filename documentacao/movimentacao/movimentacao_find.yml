@@ -1,0 +1,23 @@
+Returns all the movings registered, according to the query sent. 
+---
+tags:
+  - Movimentacoes
+
+parameters:
+  - in: body
+    description: You can send the fields you wish in "select" and "where".
+    schema:
+      properties:
+        where:
+          type: object
+          properties:
+            key:
+              type: string
+        select:
+          type: array
+          items:
+            type: string
+
+responses:
+  200:
+    description: JSON

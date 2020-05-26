@@ -4,9 +4,11 @@ from flask_restful import Resource
 from ..utils.error_response import error_response
 from api.schemas import movimentacao_schema
 from api.services import movimentacao_service, equipamento_service, log_service
+from flasgger import swag_from
 
 
 class MovimentacaoList(Resource):
+    @swag_from('../../documentacao/movimentacao/movimentacao_get_many.yml')
     def get(self):
         movimentacao_list = movimentacao_service.listar_movimentacoes()
         return Response(movimentacao_list,
@@ -14,6 +16,7 @@ class MovimentacaoList(Resource):
                         status=200)
 
     # todo Refatorar esse metodo, muito codigo repetido by Lucas
+    @swag_from('../../documentacao/movimentacao/movimentacao_post_many.yml')
     def post(self):
         body = request.json
         movimentacao_validacao = movimentacao_schema \
@@ -92,8 +95,29 @@ class MovimentacaoList(Resource):
                         mimetype="application/json",
                         status=response_status)
 
+    @swag_from('../../documentacao/movimentacao/movimentacao_put_many.yml')
+    def put(self):
+        ...
+
+    @swag_from('../../documentacao/movimentacao/movimentacao_patch_many.yml')
+    def patch(self):
+        ...
+
+    @swag_from('../../documentacao/movimentacao/movimentacao_delete_many.yml')
+    def delete(self):
+        ...
+
 
 class MovimentacaoDetail(Resource):
+    @swag_from('../../documentacao/movimentacao/movimentacao_get_one.yml')
+    def get(self, _id):
+        movimentacao = movimentacao_service.listar_movimentacao_id(_id)
+        if movimentacao is not None:
+            return Response(json.dumps({"_id": _id}),
+                            mimetype="application/json",
+                            status=200)
+
+    @swag_from('../../documentacao/movimentacao/movimentacao_put_one.yml')               
     def put(self, _id):
         body = request.json
         movimentacao_validacao = movimentacao_schema \
@@ -157,13 +181,11 @@ class MovimentacaoDetail(Resource):
                             mimetype="application/json",
                             status=200)
 
-    def get(self, _id):
-        movimentacao = movimentacao_service.listar_movimentacao_id(_id)
-        if movimentacao is not None:
-            return Response(json.dumps({"_id": _id}),
-                            mimetype="application/json",
-                            status=200)
+    @swag_from('../../documentacao/movimentacao/movimentacao_patch_one.yml')
+    def patch(self, _id):
+        ...
 
+    @swag_from('../../documentacao/movimentacao/movimentacao_delete_one.yml')
     def delete(self, _id):
         movimentacao_cadastrada = movimentacao_service.listar_movimentacao_id(
             _id)
@@ -178,6 +200,7 @@ class MovimentacaoDetail(Resource):
 
 
 class MovimentacaoQuery(Resource):
+    @swag_from('../../documentacao/movimentacao/movimentacao_find.yml')
     def post(self):
         body = request.json
         dados_filtrados = movimentacao_service.movimentacao_queries(body)

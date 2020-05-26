@@ -1,0 +1,17 @@
+Deletes all the movings, according to the documents id sent in json body.
+---
+tags:
+  - Movimentacoes
+
+parameters:
+  - in: body
+    name: Movimentacao
+    description: You can send as many documents id as you wish.
+    schema:
+      type: array
+      items:
+        type: string
+ 
+responses:
+  200:
+    description: Empty body.

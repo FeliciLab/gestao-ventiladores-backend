@@ -1,0 +1,54 @@
+Returns all the movings registered.
+---
+tags:
+  - Movimentacoes
+
+definitions:
+  Acessorio:
+    type: object
+    properties:
+      id:
+        type: string
+      quantidade:
+        type: string
+
+  Movimentacao:
+    type: object
+    properties:
+      equipamentos_id:
+        type: array
+      instituicao_destino:
+        type: string
+      cidade_destino:
+        type: string
+      cnpj_destino:
+        type: string
+      endereco_destino:
+        type: string
+      nome_responsavel_destino:
+        type: string
+      contato_responsavel_destino:
+        type: string
+      nome_responsavel_transporte:
+        type: string
+      contato_responsavel_transporte:
+        type: string
+      data_entrega: 
+        type: string
+        formate: date-time
+      created_at: 
+        type: string
+        formate: date-time
+      updated_at: 
+        type: string
+        formate: date-time
+      codigo:
+        type: string
+      acessorios:
+        type: object
+        $ref: '#/definitions/Acessorio'
+      
+# Resposta
+responses:
+  200:
+    description: JSON
