@@ -1,16 +1,16 @@
 Register new movings.
 ---
 tags:
-  - Movimentacoes
+  - Movings
 
 parameters: 
   - in: body
-    name: Movimentacao
+    name: Moving
     description: You can send many objects with the fields you wish to create.
     schema:
       type: array
       items:
-        $ref: '#/definitions/Movimentacao'
+        $ref: '#/definitions/Moving'
 
 responses:
   200:

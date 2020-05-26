@@ -24,15 +24,15 @@ def listar_ordem_compra_by_numero_ordem_compra(numero_ordem_compra):
 
 def registar_ordem_compra(body):
     """
-        Se a lista de itens for vazia retorna um erro, se não, cria um
+        Se a lista de item for vazia retorna um erro, se não, cria um
         'número_ordem_compra' baseado na quantidade de documentos no banco
          e cadastra uma nova ordem de compra.
     """
-    quantidade_itens = len(body['itens'])
+    quantidade_itens = len(body['item'])
     if quantidade_itens == 0:
         return {
             "error": True,
-            "message": "Não foram enviados itens suficientes" +
+            "message": "Não foram enviados item suficientes" +
                        "para ordem de compra"
         }
 
@@ -44,7 +44,7 @@ def registar_ordem_compra(body):
 
 def atualizar_ordem_compra(id, atualizacao):
     ordem_compra_model.OrdemCompra.objects \
-        .get(id=id).update(itens=atualizacao['itens'])
+        .get(id=id).update(itens=atualizacao['item'])
 
 
 def deletar_ordem_compra(_id):

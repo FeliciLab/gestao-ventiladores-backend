@@ -30,6 +30,6 @@ definitions:
       descricao:
         type: string
 
-  responses:
-    200:
-      description: JSON
+responses:
+  200:
+    description: JSON

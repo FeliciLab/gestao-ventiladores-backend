@@ -13,13 +13,6 @@ definitions:
       itens:
         type: string
 
-parameters:
-  - in: path
-    name: _id
-    type: string
-    required: true
-    description: Document Id.
-
 responses:
   200:
     description: JSON

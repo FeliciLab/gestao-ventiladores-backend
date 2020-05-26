@@ -1,10 +1,10 @@
-Returns all the movings registered.
+Returns all movings registered.
 ---
 tags:
-  - Movimentacoes
+  - Movings
 
 definitions:
-  Acessorio:
+  Accessory:
     type: object
     properties:
       id:
@@ -12,11 +12,13 @@ definitions:
       quantidade:
         type: string
 
-  Movimentacao:
+  Moving:
     type: object
     properties:
       equipamentos_id:
         type: array
+        items:
+          type: string
       instituicao_destino:
         type: string
       cidade_destino:
@@ -33,22 +35,22 @@ definitions:
         type: string
       contato_responsavel_transporte:
         type: string
-      data_entrega: 
+      data_entrega:
         type: string
         formate: date-time
-      created_at: 
+      created_at:
         type: string
         formate: date-time
-      updated_at: 
+      updated_at:
         type: string
         formate: date-time
       codigo:
         type: string
       acessorios:
         type: object
-        $ref: '#/definitions/Acessorio'
-      
-# Resposta
+        $ref: '#/definitions/Accessory'
+
+
 responses:
   200:
     description: JSON

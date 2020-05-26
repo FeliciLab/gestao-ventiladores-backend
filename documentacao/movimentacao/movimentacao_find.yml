@@ -1,7 +1,7 @@
 Returns all the movings registered, according to the query sent. 
 ---
 tags:
-  - Movimentacoes
+  - Movings
 
 parameters:
   - in: body

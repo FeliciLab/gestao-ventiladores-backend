@@ -1,7 +1,7 @@
 Deletes a sepecific moving according to the document id sent.
 ---
 tags:
-  - Movimentacoes
+  - Movings
 
 parameters:
   - in: path

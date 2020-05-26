@@ -85,7 +85,6 @@ definitions:
         items:
           $ref: '#/definitions/Item'
 
-# Resposta
 responses:
   200:
     description: JSON
