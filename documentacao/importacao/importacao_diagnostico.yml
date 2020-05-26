@@ -1,21 +1,14 @@
-Importa os dados de diagnostico conforme a url passada.
+Import google form data for service order (diagnostic).
 ---
 tags:
-  - Importacoes
-
-definitions:
-  Importacao:
-    type: object
-    properties:
-      url:
-        type: string
+  - Imports
 
 parameters:
   - in: body
-    name: Importacao
+    name: Import
     schema:
-        $ref: '#/definitions/Importacao'
+        $ref: '#/definitions/Import'
 
 responses:
   200:
-    description: Importar diagnostico
+    description: Save in collection database service order the diagnostic data.

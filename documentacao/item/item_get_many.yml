@@ -1,0 +1,35 @@
+Returns all items registered.
+---
+tags:
+  - Items
+
+definitions:
+  Item:
+    type: object
+    properties:
+      id:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
+      tipo:
+        type: string
+      fabricante:
+        type: string
+      codigo:
+        type: string
+      nome:
+        type: string
+      unidade_medida:
+        type: string
+      quantidade:
+        type: int
+      descricao:
+        type: string
+
+  responses:
+    200:
+      description: JSON

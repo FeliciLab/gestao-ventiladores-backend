@@ -1,0 +1,21 @@
+Replaces the item data according to the document id sent in the route.
+---
+tags:
+  - Items
+
+parameters:
+  - in: path
+    name: _id
+    type: string
+    required: true
+    description: Document Id.
+
+  - in: body
+    name: Item
+    description: You can send the fields as you wish to replace.
+    schema:
+        $ref: '#/definitions/Item'
+
+responses:
+  200:
+    description: Empty body.

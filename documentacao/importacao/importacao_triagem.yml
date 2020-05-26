@@ -1,12 +1,21 @@
-Importa os dados de triagem conforme a url passada.
+Import google form data for service order (sort).
 ---
 tags:
-  - Importacoes
+  - Imports
+
+definitions:
+  Import:
+    type: object
+    properties:
+      url:
+        type: string
+
 parameters:
   - in: body
-    name: Importacao
+    name: Import
     schema:
-        $ref: '#/definitions/Importacao'
+        $ref: '#/definitions/Import'
+
 responses:
   200:
-    description: Importar diagnostico
+    description: Save in collection database service order the sort data.

@@ -1,0 +1,44 @@
+Returns all the items registered, according to the query sent.
+---
+tags:
+  - Logs
+
+definitions:
+  Log:
+    type: object
+    properties:
+      created_at:
+        type: string
+        format: date-time
+      last_updated_at:
+        type: string
+        format: date-time
+      collection:
+        type: string
+      document_id:
+        type: string
+      old_values:
+        type: string
+      user:
+        type: string
+
+parameters:
+  - in: body
+    description:
+      You can send the fields you wish in "select" and "where".
+      You can see the structure of log below in Models section.
+    schema:
+      properties:
+        where:
+          type: object
+          properties:
+            key:
+              type: string
+        select:
+          type: array
+          items:
+            type: string
+
+responses:
+  200:
+    description: JSON
