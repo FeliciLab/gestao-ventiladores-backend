@@ -25,4 +25,4 @@ _
 
 # Observações
 
-- Ainda não há um modelo visual no Figma mas é possível usar a tela de TRIAGEM como referência.
+_
