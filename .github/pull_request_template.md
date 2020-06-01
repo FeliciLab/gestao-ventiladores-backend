@@ -1,3 +1,10 @@
+---
+Issue: #numeroDaIssue
+Pessoas Contribuidoras: Pessoa A, Pessoa B
+Tipo: New,Refactory,Bug,...
+
+---
+
 # Resumo
 
 Pequena_descrição_do_PR
@@ -7,7 +14,7 @@ Pequena_descrição_do_PR
 Marque se os itens abaixo estão contemplados:
 
 - [ ] Testes foram implementados (novos ou não)
-- [ ] Issue foi definida no PR
+- [ ] Issue foi definida no PR (Linked Issue)
 
 # Descrição
 
