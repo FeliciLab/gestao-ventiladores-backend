@@ -1,7 +1,7 @@
 ---
-Pessoas Contribuidoras: @mencioneiPessoaA, @mencioneiPessoaB, ...
-Tipo: New,Refactory,Bug,...
-Issue: #numeroDaIssue
+Reponsáveis: '@PessoaA @PessoaB'
+Tipo: Bug,Feature,Refactory
+issue: '#numeroDaIssue'
 
 ---
 
@@ -15,6 +15,7 @@ Marque se os itens abaixo estão contemplados:
 
 - [ ] Testes foram implementados (novos ou não)
 - [ ] Issue foi definida no PR (Linked Issue)
+- [ ] Pessoas contribuidoras foram definidas no PR (Assigners)
 
 # Descrição
 
