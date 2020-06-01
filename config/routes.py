@@ -11,6 +11,8 @@ from api.views import (
     diagnostico_view, utils_view
 )
 
+from api.v2.views import item_view
+
 
 def initialize_routes(api):
     api.add_resource(equipamento_view.EquipamentoList,
@@ -54,3 +56,7 @@ def initialize_routes(api):
     api.add_resource(calibragem_view.CalibragemCrud, '/api/calibragem')
     api.add_resource(diagnostico_view.DiagnosticoCrud, '/api/diagnosticos')
     api.add_resource(utils_view.VersaoView, '/api/')
+
+    # Routes V2 
+
+    api.add_resource(item_view.ItemMany, '/v2/items')
