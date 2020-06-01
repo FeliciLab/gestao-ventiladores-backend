@@ -2,7 +2,7 @@
 name: Novas Issues
 about: Describe this issue template's purpose here.
 title: ''
-labels: back
+labels: back, v2
 assignees: ''
 
 ---
