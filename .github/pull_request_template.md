@@ -1,7 +1,7 @@
 ---
-Issue: #numeroDaIssue
-Pessoas Contribuidoras: Pessoa A, Pessoa B
+Pessoas Contribuidoras: @mencioneiPessoaA, @mencioneiPessoaB, ...
 Tipo: New,Refactory,Bug,...
+Issue: #numeroDaIssue
 
 ---
 
