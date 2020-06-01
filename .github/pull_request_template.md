@@ -1,8 +1,7 @@
 ---
-Reponsáveis: '@PessoaA @PessoaB'
+Reponsáveis: @PessoaA @PessoaB
 Tipo: Bug,Feature,Refactory
-issue: '#numeroDaIssue'
-
+issue: #numeroDaIssue
 ---
 
 # Resumo
