@@ -8,9 +8,7 @@ issue: #numeroDaIssue
 
 Pequena_descrição_do_PR
 
-# Checklist do PR
-
-Marque se os itens abaixo estão contemplados:
+# Checklist
 
 - [ ] Testes foram implementados (novos ou não)
 - [ ] Issue foi definida no PR (Linked Issue)
