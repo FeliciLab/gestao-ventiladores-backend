@@ -14,16 +14,3 @@ class TestItemsRoutes(unittest.TestCase):
     def test_items_has_get_route(self):
         response = self.client.get('/v2/items')
         self.assertEquals(response.status_code, 200)
-
-    def test_items_has_post_route(self):
-        response = self.client.post('/v2/items')
-        self.assertEquals(response.status_code, 200)
-
-    def test_items_has_put_route(self):
-        pass
-
-    def test_items_has_patch_route(self):
-        pass
-
-    def test_items_has_delete_route(self):
-        pass

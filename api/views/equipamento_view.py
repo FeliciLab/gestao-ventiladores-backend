@@ -117,7 +117,7 @@ class EquipamentoDetail(Resource):
         if equipamento is None:
             return make_response(jsonify("Equipamento não encontrado..."), 404)
 
-        return Response
+        return Response(
             equipamento.to_json(),
             mimetype="application/json",
             status=200

@@ -3,7 +3,8 @@
 ## Rotas
 ### Assinatura da rota
 * Cabeçalhos (Headers) se estão corretos:
-  * `Content-Type: application/json` é enviado
+  * `Content-Type: application/json` é enviado  
+    (verificar utilização de middleware)
 * Os métodos HTTP estão implementados:
   * One:
     * GET, PUT, PATCH, DELETE
@@ -11,18 +12,6 @@
     * GET, POST, PUT, PATCH, DELETE
   * Find:
     * POST
-
-### Validação dos Parameters
-* One:
-  * O _id tem que ser string
-  * O _id pode ser convertido para ObjectId
-  * O _id existe no banco
-* Many:
-  * Se o array não é vazio
-  * PUT/PATCH/DELETE:
-    * O campo _id existe
-    * O valor do campo _id é valido
-    * O _id existe no banco
 
 ### Responses
 * Se as respostas contêm um json
@@ -39,10 +28,31 @@
     * retorna somente o status 200 se OK
     * retorna status 400 com o erro dentro de `error`
 
+#### Validação dos Parameters
+* One:
+  * O _id tem que ser string
+  * O _id pode ser convertido para ObjectId
+  * O _id existe no banco
+* Many:
+  * GET
+    * Se deleted: 
+        * validar se o campo deleted é true or false
+  * POST/PUT/PATCH/DELETE:
+    * Verifica se há o campo `content`
+    * verificar se há array dentro do campo `content` no body
+  * PUT/PATCH/DELETE:
+    * O campo _id existe
+    * O valor do campo _id é valido
+    * O _id existe no banco
+
 
 ```
 { "error": [{ indice: 1 erro: "" }] }
 { "result": [] }
+
+#parametros
+{ "content": {} }
+[]
 
 if (data.result)
 
