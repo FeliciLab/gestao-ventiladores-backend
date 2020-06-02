@@ -115,10 +115,13 @@ class EquipamentoDetail(Resource):
     def get(self, _id):
         equipamento = equipamento_service.listar_equipamento_by_id(_id)
         if equipamento is None:
-            return make_response(jsonify("Equipamento não encontrada..."), 404)
-        return Response(equipamento.to_json(),
-                        mimetype="application/json",
-                        status=200)
+            return make_response(jsonify("Equipamento não encontrado..."), 404)
+
+        return Response
+            equipamento.to_json(),
+            mimetype="application/json",
+            status=200
+        )
 
     @swag_from('../../documentacao/equipamento/equipamento_put.yml')
     def put(self, _id):

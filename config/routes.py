@@ -11,7 +11,7 @@ from api.views import (
     diagnostico_view, utils_view
 )
 
-from api.v2.views import item_view
+from api.v2.controllers import item_controller
 
 
 def initialize_routes(api):
@@ -59,4 +59,4 @@ def initialize_routes(api):
 
     # Routes V2 
 
-    api.add_resource(item_view.ItemMany, '/v2/items')
+    api.add_resource(item_controller.ItemMany, '/v2/items')
