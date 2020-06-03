@@ -28,6 +28,7 @@
     * retorna somente o status 200 se OK
     * retorna status 400 com o erro dentro de `error`
 
+
 #### Validação dos Parameters
 * One:
   * O _id tem que ser string

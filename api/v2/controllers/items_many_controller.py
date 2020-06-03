@@ -14,7 +14,7 @@ class ItemsManyController(Resource):
         if invalid_deleted_parameter(args_deleted):
             return error_response("Parameter deleted is not equal true.", 400)
 
-        content = ItemService.fetch_items_list()
+        content = ItemService().fetch_items_list(args_deleted)
 
         response = {'content': content}
 
