@@ -1,11 +1,7 @@
-import unittest
-from run import app
-from config.db import db
-from time import sleep
 from ..base_case import BaseCase
 
-class TestItemsRoutes(BaseCase):
 
+class TestItemsRoutes(BaseCase):
     def test_items_has_get_route(self):
         response = self.client.get('/v2/items')
         self.assertEqual(response.status_code, 200)
