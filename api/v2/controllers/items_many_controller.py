@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import make_response, jsonify, request
 import json
-from ..helpers.error_response import error_response
+from ..helpers.helper_response import error_response, get_response
 from ..services.item_service import ItemService
 
 
@@ -16,9 +16,5 @@ class ItemsManyController(Resource):
 
         content = ItemService().fetch_items_list(args_deleted)
 
-        response = {'content': content}
-
-        response['deleted'] = True if args_deleted else False
-
-        return make_response(jsonify(response), 200)
+        return get_response(content, args_deleted)
   

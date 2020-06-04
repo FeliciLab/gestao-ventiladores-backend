@@ -8,3 +8,10 @@ def error_response(message, status=400):
         }),
         status
     )
+
+def get_response(content, deleted):
+    response = {'content': content}
+
+    response['deleted'] = True if deleted else False
+
+    return make_response(jsonify(response), 200)

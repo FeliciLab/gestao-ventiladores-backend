@@ -28,14 +28,24 @@ class TestItemsResponse(BaseCase):
     def test_get_items_has_no_mongo_oid(self):
         response = self.client.get('/v2/items')
         for document in response.json['content']:
-            with self.subTest(document=document):
-                self.assertIn(document['_id'], '$oid')
+            self.assertIn(document['_id'], '$oid')
 
-    def test_get_items_has_no_mongo_data(self):
-        pass
+    def test_get_items_has_no_mongo_date(self):
+        response = self.client.get('v2/items')
+        for document in response.json['content']:
+            self.assertNotIn('$date', document['created_at'])
+            self.assertNotIn('$date', document['updaed_at'])
+            if 'delted_at' in document:
+                self.assertNotIn('$date', document['deleted_at'])
 
-    def test_get_items_success_has_field_result(self):
-        pass
+    def test_get_items_success_has_field_content(self):
+        response = self.client.get('v2/items')
+        self.assertEqual(response.status_code, 200)
+        for document in response.json:
+            self.assertIn('content', document)
 
     def test_get_items_error_has_field_error(self):
-        pass
+        response = self.client.get('v2/items')
+        self.assertEqual(response.status_code, 400)
+        for document in response.json:
+            self.assertIn('error', document)

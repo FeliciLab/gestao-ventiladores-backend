@@ -13,20 +13,20 @@ from base_case import BaseCase
 
 class TestItemOne(BaseCase):
     def test_exist_route_get_items(self):
-        response = self.app.get('/v2/items')
+        response = self.client.get('/v2/items')
         self.assertEqual(response.status_code, 200)
 
     def test_get_return_is_list(self):
-        response = self.app.get('/v2/items')
+        response = self.client.get('/v2/items')
         self.assertEqual(type(response.json), list)
 
     def test_get_items_return_body_list_without_deleted_at(self):
-        items = self.app.get('/v2/items').json
+        items = self.client.get('/v2/items').json
         for item in items:
             self.assertEqual('deleted_at' in item.keys(), False)
 
     def test_get_items_deleted_return_body_list(self):
-        items = self.app.get('/v2/items?deleted=true').json
+        items = self.client.get('/v2/items?deleted=true').json
         # Criar um item
         # Deletar um item
         # Retornar o item "deletado"
@@ -34,7 +34,7 @@ class TestItemOne(BaseCase):
             self.assertEqual('deleted_at' in item.keys(), True)
 
     def test_get_items_status_200(self):
-        response = self.app.get('/v2/items')
+        response = self.client.get('/v2/items')
         self.assertEqual(200, response.status_code)
 
     def test_get_items_empty_collection(self):
