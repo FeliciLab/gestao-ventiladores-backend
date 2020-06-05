@@ -15,3 +15,6 @@ def get_response(content, deleted):
     response['deleted'] = True if deleted else False
 
     return make_response(jsonify(response), 200)
+
+def post_response(content):
+    return make_response(jsonify({'content': content}), 201)

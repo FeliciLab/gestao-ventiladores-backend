@@ -14,3 +14,7 @@ class ItemService(ServiceBase):
 
     def fetch_item_by_id(self, _id):
         return Item.objects(id=_id).first()
+
+    def register_item(self, body):
+        item = Item(**body).save()
+        return str(item.id)
