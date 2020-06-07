@@ -1,5 +1,7 @@
 from ..base_case import BaseCase
 from bson import ObjectId
+import json
+import ipdb
 
 class TestItemsResponse(BaseCase):
     # GET testes
@@ -38,17 +40,30 @@ class TestItemsResponse(BaseCase):
 
     # POST testes
     def test_post_items_has_json(self):
-        response = self.client.post('/v2/items', data={'content': [self.mock_items['valido']]})
+        payload = json.dumps({'content': [self.mock_items['valido']]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
         self.assertEqual(type(response.json), dict)
     
     def test_post_items_has_field_content_list(self):
-        response = self.client.post('/v2/items', data={'content': [self.mock_items['valido']]})
+        payload = json.dumps({'content': [self.mock_items['valido']]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
         self.assertIn('content', response.json)
         self.assertEqual(type(response.json['content']), list)
 
-    def test_post_items_has_valid_id(self):
-        response = self.client.post('/v2/items', data={'content': [self.mock_items['valido']]})
-        for _id in response.json['content']:
-            str_id = ObjectId(_id)
-            self.assertEqual(type(str_id), str)
+    # PUT
+    # def test_put_items_has_valid_id(self):
+    #     payload = json.dumps({'content': [self.mock_items['valido']]})
+    #     response = self.client.post(
+    #         '/v2/items',
+    #         headers={"Content-Type": "application/json"},
+    #         data=payload)
+    #     for _id in response.json['content']:
+    #         str_id = ObjectId(_id)
+    #         self.assertEqual(type(str_id), str)
 
