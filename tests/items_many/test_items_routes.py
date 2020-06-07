@@ -54,7 +54,6 @@ class TestItemsRoutes(BaseCase):
         self.assertEqual(response.status_code, 400)
         
     def test_items_valid_body(self):
-        # set_trace()
         payload = json.dumps({'content': [self.mock_items['valido']]})
         response = self.client.post(
             '/v2/items',
@@ -62,3 +61,18 @@ class TestItemsRoutes(BaseCase):
             data=payload)
         self.assertEqual(response.status_code, 201)
     
+    # PUT testes
+    def test_items_has_put_route(self):
+        response = self.client.put(
+            '/v2/items',
+            headers={"Content-Type": "application/json"})
+        self.assertNotEqual(response.status_code, 405)
+
+    def test_items_put_has_no_body(self):
+        payload = json.dumps({})
+        response = self.client.put(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+        self.assertEqual(response.status_code, 400)
+        self.assertNotEqual({}, payload)

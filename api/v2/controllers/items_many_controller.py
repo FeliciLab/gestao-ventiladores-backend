@@ -34,3 +34,7 @@ class ItemsManyController(Resource):
 
 
         return post_response(content)
+
+
+    def put(self):
+        return {}
