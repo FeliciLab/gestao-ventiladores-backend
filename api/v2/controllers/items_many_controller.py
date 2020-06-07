@@ -19,10 +19,10 @@ class ItemsManyController(Resource):
 
     def post(self):
         body = request.get_json()
-        validate = validate_post(body)
+        validate, message = validate_post(body)
         
-        if not validate[0]:
-            return error_response(validate[1])
+        if not validate:
+            return error_response(message)
     
         content = []
         for item in body['content']:

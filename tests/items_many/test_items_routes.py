@@ -1,5 +1,6 @@
 from ..base_case import BaseCase
-
+from ipdb import set_trace
+import json 
 
 class TestItemsRoutes(BaseCase):
     # GET testes
@@ -8,7 +9,7 @@ class TestItemsRoutes(BaseCase):
         self.assertNotEqual(response.status_code, 405)
 
     def test_get_items_if_there_is_parameter_deleted_is_not_equal_true(self):
-        response = self.client.get('/v2/pass?deleted=errei_no_trampo')
+        response = self.client.get('/v2/items?deleted=errei_no_trampo')
         self.assertEqual(response.status_code, 400)
         self.assertIn("error", response.json)
         self.assertEqual(response.json["error"], "Parameter deleted is not equal true.")
@@ -27,22 +28,37 @@ class TestItemsRoutes(BaseCase):
 
     # POST testes
     def test_items_has_post_route(self):
-        response = self.client.post('/v2/items', data=[self.mock_items['valido']])
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"})
         self.assertNotEqual(response.status_code, 405)
     
     def test_items_post_has_no_body(self):
-        response = self.client.post('/v2/items')
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"})
         self.assertEqual(response.status_code, 400)
 
     def test_items_post_has_empty_body(self):
-        response = self.client.post('/v2/items', data=[])
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=[])
         self.assertEqual(response.status_code, 400)
 
     def test_items_body_no_required_fields(self):
-        response = self.client.post('/v2/items', data={'content':[self.mock_items['sem_obrigatorios']]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data={'content':[self.mock_items['sem_obrigatorios']]})
         self.assertEqual(response.status_code, 400)
         
     def test_items_valid_body(self):
-        response = self.client.post('/v2/items', data={'content': [self.mock_items['valido']]})
+        # set_trace()
+        payload = json.dumps({'content': [self.mock_items['valido']]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
         self.assertEqual(response.status_code, 201)
     
