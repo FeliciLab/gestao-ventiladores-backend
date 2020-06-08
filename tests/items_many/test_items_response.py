@@ -55,15 +55,3 @@ class TestItemsResponse(BaseCase):
             data=payload)
         self.assertIn('content', response.json)
         self.assertEqual(type(response.json['content']), list)
-
-    # PUT
-    # def test_put_items_has_valid_id(self):
-    #     payload = json.dumps({'content': [self.mock_items['valido']]})
-    #     response = self.client.post(
-    #         '/v2/items',
-    #         headers={"Content-Type": "application/json"},
-    #         data=payload)
-    #     for _id in response.json['content']:
-    #         str_id = ObjectId(_id)
-    #         self.assertEqual(type(str_id), str)
-
