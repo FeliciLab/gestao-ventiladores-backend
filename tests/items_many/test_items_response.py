@@ -1,7 +1,7 @@
-from ..base_case import BaseCase
+from ipdb import set_trace
+from tests.base_case import BaseCase
 from bson import ObjectId
 import json
-import ipdb
 
 class TestItemsResponse(BaseCase):
     # GET testes
@@ -66,52 +66,79 @@ class TestItemsResponse(BaseCase):
         self.assertEqual(type(response.json), dict)
 
     def test_put_items_not_valid_body(self):
-        post_correct = json.dumps({'content': [self.mock_items['valido']]})
-        put_incorrect = self.mock_items['sem_obrigatorios']
-
-        response_post = self.client.post(
-        '/v2/items',
-        headers={"Content-Type": "application/json"},
-        data=post_correct)
-
-        id = response_post.json['content'][0]
-        put_incorrect['_id'] = id
-        put_incorrect = json.dumps({'content': put_incorrect})
-
-        response_put = self.client.put(
-            '/v2/items',
-            headers={"Content-Type": "application/json"},
-            data=put_incorrect)
-        
-        self.assertEqual(response_put.status_code, 400)
+        pass
     
     def test_put_items_has_not_content_in_body(self):
-        # payload_post = json.dumps({'somethind': [self.mock_items['invalido']]})
         pass
-
 
     def test_put_items_has_invalid_list_dict_items(self):
-        # payload_post = json.dumps({'content': [self.mock_items['invalido']]})
-        
-        # id = response_post.json['content'][0]
-        # payload_put = [id]
-
-        # response = self.client.put(
-        #     '/v2/items',
-        #     headers={"Content-Type": "application/json"},
-        #     data=payload_put)
-        # self.assertEqual(response.status_code, 200)
-
-        # self.assertEqual(type(response.json), dict)
-
-        # def test_put_items_has_valid_id(self):
-        #     payload = json.dumps({'content': [self.mock_items['valido']]})
-        #     response = self.client.post(
-        #         '/v2/items',
-        #         headers={"Content-Type": "application/json"},
-        #         data=payload)
-        #     for _id in response.json['content']:
-        #         str_id = ObjectId(_id)
-        #         self.assertEqual(type(str_id), str)
         pass
 
+    def test_put_items_has_valid_id(self):
+        pass
+
+    # PATCH
+    def test_patch_items_has_empty_body(self):
+        payload_post = json.dumps({'content': [self.mock_items['valido']]})
+
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload_post)
+
+        payload = self.mock_items['valido_patch']
+        id = response.json['content'][0]
+        payload['_id'] = id
+        payload = json.dumps({'content': [payload]})
+        
+        response = self.client.patch(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+        self.assertEqual(response.json, '')
+        self.assertEqual(response.status_code, 200)
+        
+
+    def test_patch_items_has_wrong_field(self):
+        payload = self.mock_items['invalido_patch']
+        payload = json.dumps({'content': [payload]})
+
+        response = self.client.patch(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+
+        for key, value in response.json['error']['0'].items():
+            if isinstance(value, list):
+                for message in value:
+                    self.assertEqual('Unknown field.', message)
+
+    def test_patch_items_has_invalid_id(self):
+        payload = self.mock_items['valido_patch']
+
+        id = 'aa202020'
+        payload['_id'] = id
+        payload = json.dumps({'content': [payload]})
+
+        response = self.client.patch(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+        
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Invalid ID', response.json['error'])
+
+    def test_patch_items_has_nonexistent_id(self):
+        payload = self.mock_items['valido_patch']
+
+        id = '5ecc5e521ef64069c005338a'
+        payload['_id'] = id
+        payload = json.dumps({'content': [payload]})
+
+        response = self.client.patch(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+        
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Nonexistent ID', response.json['error'])

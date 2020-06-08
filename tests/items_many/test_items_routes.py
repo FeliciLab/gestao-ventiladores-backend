@@ -1,5 +1,5 @@
-from ..base_case import BaseCase
 from ipdb import set_trace
+from tests.base_case import BaseCase
 import json 
 
 class TestItemsRoutes(BaseCase):
@@ -63,16 +63,21 @@ class TestItemsRoutes(BaseCase):
     
     # PUT testes
     def test_items_has_put_route(self):
-        response = self.client.put(
+        pass
+
+    def test_items_put_has_no_body(self):
+        pass
+
+    # PATCH testes
+    def test_items_has_patch_route(self):
+        response = self.client.patch(
             '/v2/items',
             headers={"Content-Type": "application/json"})
         self.assertNotEqual(response.status_code, 405)
 
-    def test_items_put_has_no_body(self):
-        payload = json.dumps({})
-        response = self.client.put(
+
+    def test_items_patch_has_no_body(self):
+        response = self.client.patch(
             '/v2/items',
-            headers={"Content-Type": "application/json"},
-            data=payload)
+            headers={"Content-Type": "application/json"})
         self.assertEqual(response.status_code, 400)
-        self.assertNotEqual({}, payload)
