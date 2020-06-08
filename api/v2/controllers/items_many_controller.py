@@ -1,0 +1,20 @@
+from flask_restful import Resource
+from flask import make_response, jsonify, request
+import json
+from ..helpers.helper_response import error_response, get_response
+from ..services.item_service import ItemService
+
+
+def invalid_deleted_parameter(param):
+    return param and param != "true"
+
+class ItemsManyController(Resource):
+    def get(self):
+        args_deleted = request.args.get('deleted')
+        if invalid_deleted_parameter(args_deleted):
+            return error_response("Parameter deleted is not equal true.", 400)
+
+        content = ItemService().fetch_items_list(args_deleted)
+
+        return get_response(content, args_deleted)
+  
