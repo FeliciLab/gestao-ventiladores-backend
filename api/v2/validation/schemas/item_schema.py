@@ -1,6 +1,7 @@
 from marshmallow import Schema, fields, ValidationError
 from ...models.item_model import Item
 
+
 class ItemSchema(Schema):
     class Meta:
         model = Item
@@ -32,5 +33,4 @@ class ItemSchema(Schema):
         try:
             self.load(item, partial=('nome', 'unidade_medida', 'quantidade'))
         except ValidationError as err:
-            return { index : err.messages }
-
+            return {index: err.messages}

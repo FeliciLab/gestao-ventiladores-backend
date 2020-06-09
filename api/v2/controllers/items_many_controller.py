@@ -5,7 +5,6 @@ from ..helpers.helper_update import delete_id
 from ..services.item_service import ItemService
 from ..validation.schemas.item_schema import ItemSchema
 from ..validation.validation_request import invalid_deleted_parameter, validate_id, validate_request, validate_post
-from ipdb import set_trace
 import json
 
 
@@ -30,12 +29,12 @@ class ItemsManyController(Resource):
         for index, item in enumerate(body['content']):
             validate, message = validate_post(item)
             if not validate:
-                errors.append({index : message})
+                errors.append({index: message})
                 continue
 
             erro_schema = ItemSchema().validate(item)
             if erro_schema:
-                errors.append({index : erro_schema})
+                errors.append({index: erro_schema})
 
         if errors:
             return error_response(errors)
@@ -45,7 +44,6 @@ class ItemsManyController(Resource):
             content.append(ItemService().register_item(item))
 
         return post_response(content)
-
 
     def put(self):
         body = request.get_json()

@@ -68,9 +68,9 @@ mock_items = {
         "quantidade": 5
     },
 
-    "invalido_patch":{
+    "invalido_patch": {
         "unidade": 5
-    }, 
+    },
 
     "campo_errado_put": {
         "nome": "teste",

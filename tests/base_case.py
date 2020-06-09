@@ -11,6 +11,5 @@ class BaseCase(TestCase):
         self.mock_items = mock_items
 
     def tearDown(self):
-        # Drop the database 'test' and all inside collection
         for collection in self.db.list_collection_names():
             self.db.drop_collection(collection)

@@ -20,4 +20,3 @@ def get_response(content, deleted):
 
 def post_response(content):
     return make_response(jsonify({'content': content}), 201)
-

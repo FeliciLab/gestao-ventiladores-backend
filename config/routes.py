@@ -57,7 +57,6 @@ def initialize_routes(api):
     api.add_resource(diagnostico_view.DiagnosticoCrud, '/api/diagnosticos')
     api.add_resource(utils_view.VersaoView, '/api/')
 
-    # Routes V2 
+    # Routes V2
 
     api.add_resource(items_many_controller.ItemsManyController, '/v2/items')
-    

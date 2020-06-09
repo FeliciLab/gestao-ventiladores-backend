@@ -8,7 +8,6 @@ def delete_id(data):
     return id
 
 
-
 def define_updated_fields(current_key, current_value):
     """
     current_key: String
