@@ -1,6 +1,6 @@
-from ..base_case import BaseCase
-from ipdb import set_trace
-import json 
+from tests.base_case import BaseCase
+import json
+import copy
 
 class TestItemsRoutes(BaseCase):
     # GET testes
@@ -47,18 +47,10 @@ class TestItemsRoutes(BaseCase):
         self.assertEqual(response.status_code, 400)
 
     def test_items_body_no_required_fields(self):
-        response = self.client.post(
-            '/v2/items',
-            headers={"Content-Type": "application/json"},
-            data={'content':[self.mock_items['sem_obrigatorios']]})
-        self.assertEqual(response.status_code, 400)
-        
-    def test_items_valid_body(self):
-        # set_trace()
-        payload = json.dumps({'content': [self.mock_items['valido']]})
+        payload = json.dumps({'content':[self.mock_items['sem_obrigatorios']]})
         response = self.client.post(
             '/v2/items',
             headers={"Content-Type": "application/json"},
             data=payload)
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 400)
     

@@ -3,7 +3,7 @@ from flask import make_response, jsonify, request
 from ..helpers.helper_response import error_response, get_response, post_response
 from ..services.item_service import ItemService
 from ..validation.schemas.item_schema import ItemSchema
-from ..validation.validation_request import validate_post, invalid_deleted_parameter
+from ..validation.validation_request import validate_request, validate_post, invalid_deleted_parameter
 import json
 
 class ItemsManyController(Resource):
@@ -19,18 +19,27 @@ class ItemsManyController(Resource):
 
     def post(self):
         body = request.get_json()
-        validate, message = validate_post(body)
-        
+
+        validate, message = validate_request(body)
         if not validate:
             return error_response(message)
-    
+
+        errors = []
+        for index, item in enumerate(body['content']):
+            validate, message = validate_post(item)
+            if not validate:
+                errors.append({index : message})
+                continue
+
+            erro_schema = ItemSchema().validate(item)
+            if erro_schema:
+                errors.append({index : erro_schema})
+
+        if errors:
+            return error_response(errors)
+
         content = []
         for item in body['content']:
-            erro_ = ItemSchema().validate(item)
-            if erro_: 
-                return error_response(f"Error on item {body['content'].index(item)}. {erro_}")
-            
             content.append(ItemService().register_item(item))
-
 
         return post_response(content)

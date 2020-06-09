@@ -1,7 +1,7 @@
-from ..base_case import BaseCase
+from tests.base_case import BaseCase
 from bson import ObjectId
+import copy
 import json
-import ipdb
 
 class TestItemsResponse(BaseCase):
     # GET testes
@@ -55,3 +55,22 @@ class TestItemsResponse(BaseCase):
             data=payload)
         self.assertIn('content', response.json)
         self.assertEqual(type(response.json['content']), list)
+
+    def test_items_valid_body(self):
+        payload_post2 = json.dumps({'content': [self.mock_items['valido']]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload_post2)
+        self.assertEqual(response.status_code, 201)
+    
+    def test_items_has_id_in_body(self):
+        payload = copy.deepcopy(self.mock_items['valido'])
+        payload['_id'] = '5edf7f75bc2462d2bcc12d8b5'
+        payload = json.dumps({'content': [payload]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+        self.assertIn('ID must not be sent', response.json['error'][0]['0'])
+
