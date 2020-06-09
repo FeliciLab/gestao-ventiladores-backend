@@ -59,13 +59,13 @@ mock_items = {
         "descricao": "",
     },
 
-    "valido_patch":{
+    "valido_patch": {
         "nome": "teste",
         "tipo": "teste_patch",
         "descricao": "Estou testando"
     },
 
-    "invalido_patch":{
+    "invalido_patch": {
         "unidade": 5
     }
 }

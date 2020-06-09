@@ -1,7 +1,8 @@
-from ipdb import set_trace
 from tests.base_case import BaseCase
 from bson import ObjectId
+import copy
 import json
+
 
 class TestItemsResponse(BaseCase):
     # GET testes
@@ -46,7 +47,7 @@ class TestItemsResponse(BaseCase):
             headers={"Content-Type": "application/json"},
             data=payload)
         self.assertEqual(type(response.json), dict)
-    
+
     def test_post_items_has_field_content_list(self):
         payload = json.dumps({'content': [self.mock_items['valido']]})
         response = self.client.post(
@@ -56,38 +57,23 @@ class TestItemsResponse(BaseCase):
         self.assertIn('content', response.json)
         self.assertEqual(type(response.json['content']), list)
 
-    # PUT
-    def test_put_items_has_empty_body(self):
-        payload_post = json.dumps({'content' : [self.mock_items['valido']]})
-
+    def test_items_valid_body(self):
+        payload_post2 = json.dumps({'content': [self.mock_items['valido']]})
         response = self.client.post(
             '/v2/items',
             headers={"Content-Type": "application/json"},
-            data=payload_post)
+            data=payload_post2)
+        self.assertEqual(response.status_code, 201)
 
-        payload = self.mock_items['valido_patch']
-        id = response.json['content'][0]
-        payload['_id'] = id
+    def test_items_has_id_in_body(self):
+        payload = copy.deepcopy(self.mock_items['valido'])
+        payload['_id'] = '5edf7f75bc2462d2bcc12d8b5'
         payload = json.dumps({'content': [payload]})
-        
-        response = self.client.put(
+        response = self.client.post(
             '/v2/items',
             headers={"Content-Type": "application/json"},
             data=payload)
-        self.assertEqual(response.json, '')
-        self.assertEqual(response.status_code, 200)
-
-    def test_put_items_not_valid_body(self):
-        pass
-    
-    def test_put_items_has_not_content_in_body(self):
-        pass
-
-    def test_put_items_has_invalid_list_dict_items(self):
-        pass
-
-    def test_put_items_has_valid_id(self):
-        pass
+        self.assertIn('ID must not be sent', response.json['error'][0]['0'])
 
     # PATCH
     def test_patch_items_has_empty_body(self):
@@ -102,14 +88,13 @@ class TestItemsResponse(BaseCase):
         id = response.json['content'][0]
         payload['_id'] = id
         payload = json.dumps({'content': [payload]})
-        
+
         response = self.client.patch(
             '/v2/items',
             headers={"Content-Type": "application/json"},
             data=payload)
         self.assertEqual(response.json, '')
         self.assertEqual(response.status_code, 200)
-        
 
     def test_patch_items_has_wrong_field(self):
         payload = self.mock_items['invalido_patch']
@@ -136,7 +121,7 @@ class TestItemsResponse(BaseCase):
             '/v2/items',
             headers={"Content-Type": "application/json"},
             data=payload)
-        
+
         self.assertEqual(response.status_code, 400)
         self.assertIn('Invalid ID', response.json['error'][0]['0'])
 
@@ -151,6 +136,6 @@ class TestItemsResponse(BaseCase):
             '/v2/items',
             headers={"Content-Type": "application/json"},
             data=payload)
-        
+
         self.assertEqual(response.status_code, 400)
         self.assertIn('Nonexistent ID', response.json['error'][0]['0'])
