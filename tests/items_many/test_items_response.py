@@ -57,13 +57,25 @@ class TestItemsResponse(BaseCase):
         self.assertEqual(type(response.json['content']), list)
 
     # PUT
-    def test_put_items_has_json(self):
-        payload = json.dumps({'content': [self.mock_items['valido']]})
+    def test_put_items_has_empty_body(self):
+        payload_post = json.dumps({'content' : [self.mock_items['valido']]})
+
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload_post)
+
+        payload = self.mock_items['valido_patch']
+        id = response.json['content'][0]
+        payload['_id'] = id
+        payload = json.dumps({'content': [payload]})
+        
         response = self.client.put(
             '/v2/items',
             headers={"Content-Type": "application/json"},
             data=payload)
-        self.assertEqual(type(response.json), dict)
+        self.assertEqual(response.json, '')
+        self.assertEqual(response.status_code, 200)
 
     def test_put_items_not_valid_body(self):
         pass
