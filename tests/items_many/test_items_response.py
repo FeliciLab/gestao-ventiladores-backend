@@ -79,7 +79,7 @@ class TestItemsResponse(BaseCase):
 
     # PATCH
     def test_patch_items_has_empty_body(self):
-        payload_post = json.dumps({'content' : [self.mock_items['valido']]})
+        payload_post = json.dumps({'content': [self.mock_items['valido']]})
 
         response = self.client.post(
             '/v2/items',
