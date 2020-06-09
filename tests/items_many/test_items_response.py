@@ -79,7 +79,7 @@ class TestItemsResponse(BaseCase):
 
     # PATCH
     def test_patch_items_has_empty_body(self):
-        payload_post = json.dumps({'content': [self.mock_items['valido']]})
+        payload_post = json.dumps({'content' : [self.mock_items['valido']]})
 
         response = self.client.post(
             '/v2/items',
@@ -126,7 +126,7 @@ class TestItemsResponse(BaseCase):
             data=payload)
         
         self.assertEqual(response.status_code, 400)
-        self.assertIn('Invalid ID', response.json['error'])
+        self.assertIn('Invalid ID', response.json['error'][0]['0'])
 
     def test_patch_items_has_nonexistent_id(self):
         payload = self.mock_items['valido_patch']
@@ -141,4 +141,4 @@ class TestItemsResponse(BaseCase):
             data=payload)
         
         self.assertEqual(response.status_code, 400)
-        self.assertIn('Nonexistent ID', response.json['error'])
+        self.assertIn('Nonexistent ID', response.json['error'][0]['0'])

@@ -1,6 +1,6 @@
 from bson import ObjectId
 from ..services.item_service import ItemService
-import ipdb
+
 
 def invalid_deleted_parameter(param):
     return param and param != "true"

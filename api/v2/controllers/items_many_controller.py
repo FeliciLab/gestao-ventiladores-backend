@@ -57,7 +57,7 @@ class ItemsManyController(Resource):
         if errors:
             return error_response(errors)
 
-        # TODO for para executar todos items
-        ItemService().update_item_only_fields(item)
+        for index, item in enumerate(body['content']):
+            ItemService().update_item_only_fields(item)
 
         return '', 200
