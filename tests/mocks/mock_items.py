@@ -58,4 +58,14 @@ mock_items = {
         "codigo": "",
         "descricao": "",
     },
+
+    "valido_patch": {
+        "nome": "teste",
+        "tipo": "teste_patch",
+        "descricao": "Estou testando"
+    },
+
+    "invalido_patch": {
+        "unidade": 5
+    }
 }
