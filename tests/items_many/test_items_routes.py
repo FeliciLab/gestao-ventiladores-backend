@@ -63,13 +63,6 @@ class TestItemsRoutes(BaseCase):
             data=payload)
         self.assertEqual(response.status_code, 201)
 
-    # PUT testes
-    def test_items_has_put_route(self):
-        response = self.client.put(
-            '/v2/items',
-            headers={"Content-Type": "application/json"})
-        self.assertNotEqual(response.status_code, 405)
-
     # PATCH testes
     def test_items_has_patch_route(self):
         response = self.client.patch(
