@@ -1,15 +1,11 @@
-from ..base_case import BaseCase
+from tests.base_case import BaseCase
+from bson import ObjectId
+import copy
+import json
 
 
 class TestItemsResponse(BaseCase):
-    """def setUp(self):
-        self.client = app.test_client()
-        self.db = db.get_db()
-
-    def tearDown(self):
-        for collection in self.db.list_collection_names():
-            self.db.drop_collection(collection)"""
-
+    # GET testes
     def test_get_items_has_field_content_list(self):
         response = self.client.get('/v2/items')
         self.assertIn('content', response.json)
@@ -38,14 +34,43 @@ class TestItemsResponse(BaseCase):
             if 'delted_at' in document:
                 self.assertNotIn('$date', document['deleted_at'])
 
-    def test_get_items_success_has_field_content(self):
+    def test_get_items_has_field_content(self):
         response = self.client.get('v2/items')
         self.assertEqual(response.status_code, 200)
-        for document in response.json:
-            self.assertIn('content', document)
+        self.assertIn('content', response.json)
 
-    def test_get_items_error_has_field_error(self):
-        response = self.client.get('v2/items')
-        self.assertEqual(response.status_code, 400)
-        for document in response.json:
-            self.assertIn('error', document)
+    # POST testes
+    def test_post_items_has_json(self):
+        payload = json.dumps({'content': [self.mock_items['valido']]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+        self.assertEqual(type(response.json), dict)
+    
+    def test_post_items_has_field_content_list(self):
+        payload = json.dumps({'content': [self.mock_items['valido']]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+        self.assertIn('content', response.json)
+        self.assertEqual(type(response.json['content']), list)
+
+    def test_items_valid_body(self):
+        payload_post2 = json.dumps({'content': [self.mock_items['valido']]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload_post2)
+        self.assertEqual(response.status_code, 201)
+    
+    def test_items_has_id_in_body(self):
+        payload = copy.deepcopy(self.mock_items['valido'])
+        payload['_id'] = '5edf7f75bc2462d2bcc12d8b5'
+        payload = json.dumps({'content': [payload]})
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+        self.assertIn('ID must not be sent', response.json['error'][0]['0'])

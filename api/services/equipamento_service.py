@@ -1,7 +1,5 @@
-from datetime import datetime
 from api.models import equipamento_model
 from api.utils.descerialization_data_model_patch import (
-    date_from_model,
     deserialize_body_to_model
 )
 

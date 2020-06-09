@@ -1,12 +1,10 @@
 from flask_restful import Resource
 from flask import make_response, jsonify, request
-import json
-from ..helpers.helper_response import error_response, get_response
+from ..helpers.helper_response import error_response, get_response, post_response
 from ..services.item_service import ItemService
-
-
-def invalid_deleted_parameter(param):
-    return param and param != "true"
+from ..validation.schemas.item_schema import ItemSchema
+from ..validation.validation_request import validate_request, validate_post, invalid_deleted_parameter
+import json
 
 class ItemsManyController(Resource):
     def get(self):
@@ -17,4 +15,31 @@ class ItemsManyController(Resource):
         content = ItemService().fetch_items_list(args_deleted)
 
         return get_response(content, args_deleted)
-  
+    
+
+    def post(self):
+        body = request.get_json()
+
+        validate, message = validate_request(body)
+        if not validate:
+            return error_response(message)
+
+        errors = []
+        for index, item in enumerate(body['content']):
+            validate, message = validate_post(item)
+            if not validate:
+                errors.append({index : message})
+                continue
+
+            erro_schema = ItemSchema().validate(item)
+            if erro_schema:
+                errors.append({index : erro_schema})
+
+        if errors:
+            return error_response(errors)
+
+        content = []
+        for item in body['content']:
+            content.append(ItemService().register_item(item))
+
+        return post_response(content)

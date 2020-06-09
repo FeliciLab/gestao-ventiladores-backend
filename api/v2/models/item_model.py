@@ -11,5 +11,4 @@ class Item(db.Document):
     descricao = db.StringField(required=False)
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
-    deleted_at = db.DateTimeField(default=datetime.utcnow(), required=False)
-    
+    deleted_at = db.DateTimeField(required=False)
