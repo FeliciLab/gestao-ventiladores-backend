@@ -53,4 +53,3 @@ class TestItemsRoutes(BaseCase):
             headers={"Content-Type": "application/json"},
             data=payload)
         self.assertEqual(response.status_code, 400)
-    

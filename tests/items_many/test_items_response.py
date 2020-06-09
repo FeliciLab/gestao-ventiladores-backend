@@ -3,6 +3,7 @@ from bson import ObjectId
 import copy
 import json
 
+
 class TestItemsResponse(BaseCase):
     # GET testes
     def test_get_items_has_field_content_list(self):
@@ -73,4 +74,3 @@ class TestItemsResponse(BaseCase):
             headers={"Content-Type": "application/json"},
             data=payload)
         self.assertIn('ID must not be sent', response.json['error'][0]['0'])
-
