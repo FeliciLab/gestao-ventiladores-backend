@@ -3,7 +3,7 @@ from flask import make_response, jsonify, request
 from ..helpers.helper_response import error_response, get_response, post_response
 from ..services.item_service import ItemService
 from ..validation.schemas.item_schema import ItemSchema
-from ..validation.validation_request import validate_request, validate_post, invalid_deleted_parameter
+from ..validation.validation_request import validate_id, validate_request, validate_post, invalid_deleted_parameter
 import json
 
 
