@@ -63,8 +63,13 @@ class TestItemsRoutes(BaseCase):
     
     # PUT testes
     def test_items_has_put_route(self):
-        pass
+        response = self.client.put(
+            '/v2/items',
+            headers={"Content-Type": "application/json"})
+        self.assertNotEqual(response.status_code, 405)
 
+    # TODO esse teste já é feito no "teste_items_response.py"
+    # acho que faz mais sentido lá by Denis
     def test_items_put_has_no_body(self):
         pass
 
@@ -75,7 +80,8 @@ class TestItemsRoutes(BaseCase):
             headers={"Content-Type": "application/json"})
         self.assertNotEqual(response.status_code, 405)
 
-
+    # TODO esse teste já é feito no "teste_items_response.py"
+    # acho que faz mais sentido lá by Denis
     def test_items_patch_has_no_body(self):
         response = self.client.patch(
             '/v2/items',
