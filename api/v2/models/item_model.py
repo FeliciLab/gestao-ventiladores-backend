@@ -12,4 +12,3 @@ class Item(db.Document):
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     deleted_at = db.DateTimeField(required=False)
-    

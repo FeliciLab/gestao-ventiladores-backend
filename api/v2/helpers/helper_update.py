@@ -1,3 +1,14 @@
+def delete_id(data):
+    id = None
+    try:
+        id = data['_id']
+        del data['_id']
+    except Exception:
+        pass
+    return id
+
+
+
 def define_updated_fields(current_key, current_value):
     """
     current_key: String
@@ -21,10 +32,6 @@ def update_only_fields(_id, data, model):
     data: Dict
     model: Mongoengine.Document
     """
-    try:
-        del data['_id']
-    except Exception:
-        pass
     query = {}
     root_key = "set"
     root_value = data

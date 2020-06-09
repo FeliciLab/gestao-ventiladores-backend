@@ -47,31 +47,19 @@ class TestItemsRoutes(BaseCase):
         self.assertEqual(response.status_code, 400)
 
     def test_items_body_no_required_fields(self):
-        response = self.client.post(
-            '/v2/items',
-            headers={"Content-Type": "application/json"},
-            data={'content':[self.mock_items['sem_obrigatorios']]})
-        self.assertEqual(response.status_code, 400)
-        
-    def test_items_valid_body(self):
-        payload = json.dumps({'content': [self.mock_items['valido']]})
+        payload = json.dumps({'content':[self.mock_items['sem_obrigatorios']]})
         response = self.client.post(
             '/v2/items',
             headers={"Content-Type": "application/json"},
             data=payload)
-        self.assertEqual(response.status_code, 201)
-    
+        self.assertEqual(response.status_code, 400)
+
     # PUT testes
     def test_items_has_put_route(self):
         response = self.client.put(
             '/v2/items',
             headers={"Content-Type": "application/json"})
         self.assertNotEqual(response.status_code, 405)
-
-    # TODO esse teste já é feito no "teste_items_response.py"
-    # acho que faz mais sentido lá by Denis
-    def test_items_put_has_no_body(self):
-        pass
 
     # PATCH testes
     def test_items_has_patch_route(self):
@@ -80,10 +68,3 @@ class TestItemsRoutes(BaseCase):
             headers={"Content-Type": "application/json"})
         self.assertNotEqual(response.status_code, 405)
 
-    # TODO esse teste já é feito no "teste_items_response.py"
-    # acho que faz mais sentido lá by Denis
-    def test_items_patch_has_no_body(self):
-        response = self.client.patch(
-            '/v2/items',
-            headers={"Content-Type": "application/json"})
-        self.assertEqual(response.status_code, 400)

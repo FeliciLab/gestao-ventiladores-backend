@@ -21,5 +21,9 @@ class ItemService(ServiceBase):
         return str(item.id)
 
 
-    def update_item_only_fields(self, data):
-        update_only_fields(_id=data['_id'], data=data, model=Item)
+    def update_item_only_fields(self, id, data):
+        update_only_fields(_id=id, data=data, model=Item)
+
+    
+    def replace_fields(self, id, new_data):
+        Item.objects.get(id=id).update(**new_data)
