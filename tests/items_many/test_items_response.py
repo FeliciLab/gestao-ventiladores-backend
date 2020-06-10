@@ -113,8 +113,8 @@ class TestItemsResponse(BaseCase):
     def test_patch_items_has_invalid_id(self):
         payload = self.mock_items['valido_patch']
 
-        id = 'aa202020'
-        payload['_id'] = id
+        _id = 'aa202020'
+        payload['_id'] = _id
         payload = json.dumps({'content': [payload]})
 
         response = self.client.patch(
@@ -128,8 +128,8 @@ class TestItemsResponse(BaseCase):
     def test_patch_items_has_nonexistent_id(self):
         payload = self.mock_items['valido_patch']
 
-        id = '5ecc5e521ef64069c005338a'
-        payload['_id'] = id
+        _id = '5ecc5e521ef64069c005338a'
+        payload['_id'] = _id
         payload = json.dumps({'content': [payload]})
 
         response = self.client.patch(
@@ -139,3 +139,44 @@ class TestItemsResponse(BaseCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertIn('Nonexistent ID', response.json['error'][0]['0'])
+
+    # DELETE
+    def test_delete_items_has_empty_body(self):
+        payload_post = json.dumps({'content': [self.mock_items['valido']]})
+
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload_post)
+        _id = response.json['content'][0]
+        payload = json.dumps({'content': [_id]})
+
+        response = self.client.delete(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+
+        self.assertEqual(response.json, '')
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_accept_only_string_list(self):
+        payload = json.dumps({'sample': 'wrong'})
+        response = self.client.delete(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+        for item in response.json:
+            self.assertEqual(type(item), str)
+
+    def test_delete_items_has_invalid_id(self):
+        _id = 'aa202020'
+        payload = json.dumps({'content': [_id]})
+
+        response = self.client.delete(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertIn('Invalid ID', response.json['error'][0]['0'])
+

@@ -69,3 +69,10 @@ class TestItemsRoutes(BaseCase):
             '/v2/items',
             headers={"Content-Type": "application/json"})
         self.assertNotEqual(response.status_code, 405)
+
+    # DELETE testes
+    def test_items_has_delete_route(self):
+        response = self.client.delete(
+            '/v2/items',
+            headers={"Content-Type": "application/json"})
+        self.assertNotEqual(response.status_code, 405)
