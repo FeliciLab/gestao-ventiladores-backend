@@ -1,10 +1,10 @@
-def delete_id(data):
-    id = None
+def pop_id(data):
+    id = data['_id']
     try:
-        id = data['_id']
         del data['_id']
     except Exception:
         pass
+
     return id
 
 

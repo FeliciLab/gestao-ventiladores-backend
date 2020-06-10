@@ -19,7 +19,7 @@ class ItemService(ServiceBase):
         item = Item(**body).save()
         return str(item.id)
 
-    def update_item_only_fields(self, id, data):
+    def update_item_only_fields(self, data, id):
         update_only_fields(_id=id, data=data, model=Item)
 
     def replace_fields(self, id, new_data):
