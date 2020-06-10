@@ -59,7 +59,7 @@ class ItemsManyController(Resource):
 
             erro_schema = ItemSchema().validate(item)
             if erro_schema:
-                errors.append(error_response(erro_schema))
+                errors.append({index: erro_schema})
 
         if errors:
             return error_response(errors)

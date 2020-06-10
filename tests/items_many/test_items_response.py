@@ -112,7 +112,7 @@ class TestItemsResponse(BaseCase):
             headers={"Content-Type": "application/json"},
             data=payload)
 
-        for key, value in response_put.json['error'].items():
+        for key, value in response_put.json['error'][0].items():
             if isinstance(value, list):
                 for message in value:
                     self.assertEqual('Unknown field.', message)
@@ -133,7 +133,7 @@ class TestItemsResponse(BaseCase):
             '/v2/items',
             headers={"Content-Type": "application/json"},
             data=payload)
-        for key, value in response_put.json['error'].items():
+        for key, value in response_put.json['error'][0].items():
             if isinstance(value, list):
                 for message in value:
                     self.assertEqual(
@@ -166,12 +166,14 @@ class TestItemsResponse(BaseCase):
 
     # PATCH
     def test_patch_items_has_empty_body(self):
+        payload_post = json.dumps({'content': [self.mock_items['valido']]})
         response = self.client.post(
             '/v2/items',
             headers={"Content-Type": "application/json"},
             data=payload_post)
 
         payload = copy.deepcopy(self.mock_items['valido_patch'])
+
         id = response.json['content'][0]
         payload['_id'] = id
         payload = json.dumps({'content': [payload]})
