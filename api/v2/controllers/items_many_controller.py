@@ -56,6 +56,7 @@ class ItemsManyController(Resource):
             validate, message = validate_id(item)
             if not validate:
                 errors.append({index: message})
+                continue
 
             erro_schema = ItemSchema().validate(item)
             if erro_schema:
@@ -65,7 +66,7 @@ class ItemsManyController(Resource):
             return error_response(errors)
 
         for index, item in enumerate(body['content']):
-            id = delete_id(item)
+            id = pop_id(item)
             ItemService().replace_fields(id, item)
 
         return '', 200
