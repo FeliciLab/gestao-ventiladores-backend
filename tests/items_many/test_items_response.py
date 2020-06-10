@@ -105,7 +105,7 @@ class TestItemsResponse(BaseCase):
             headers={"Content-Type": "application/json"},
             data=payload)
 
-        for key, value in response.json['error']['0'].items():
+        for key, value in response.json['error'][0].items():
             if isinstance(value, list):
                 for message in value:
                     self.assertEqual('Unknown field.', message)

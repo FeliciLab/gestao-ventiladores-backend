@@ -1,6 +1,7 @@
 from flask_restful import Resource
 from flask import make_response, jsonify, request
 from ..helpers.helper_response import error_response, get_response, post_response
+from ..helpers.helper_update import pop_id
 from ..services.item_service import ItemService
 from ..validation.schemas.item_schema import ItemSchema
 from ..validation.validation_request import validate_id, validate_request, validate_post, invalid_deleted_parameter
@@ -55,15 +56,17 @@ class ItemsManyController(Resource):
             validate, message = validate_id(item)
             if not validate:
                 errors.append({index: message})
+                continue
 
             erro_schema = ItemSchema().validate_updates(item, index)
             if erro_schema:
-                return error_response(erro_schema)
+                errors.append({index: erro_schema})
 
         if errors:
             return error_response(errors)
 
         for index, item in enumerate(body['content']):
-            ItemService().update_item_only_fields(item)
+            id = pop_id(item)
+            ItemService().update_item_only_fields(data=item, id=id)
 
         return '', 200
