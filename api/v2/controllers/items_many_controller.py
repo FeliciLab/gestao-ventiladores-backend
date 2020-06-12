@@ -98,4 +98,8 @@ class ItemsManyController(Resource):
         if errors:
             return error_response(errors)
 
+
+        for _id in body['content']: 
+            ItemService().delete_item(_id)
+
         return "", 200

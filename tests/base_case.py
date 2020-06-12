@@ -2,6 +2,8 @@ from unittest import TestCase
 from run import app
 from config.db import db
 from .mocks.mock_items import mock_items
+import json
+from copy import deepcopy
 
 
 class BaseCase(TestCase):
@@ -11,5 +13,23 @@ class BaseCase(TestCase):
         self.mock_items = mock_items
 
     def tearDown(self):
-        for collection in self.db.list_collection_names():
-            self.db.drop_collection(collection)
+        # Não será apagado para testar performance do BD
+        # for collection in self.db.list_collection_names():
+        #     self.db.drop_collection(collection)
+        # for item in self.inserted_objects:
+        #     self.db.remove({'_id': item})
+        pass
+
+    def many_make_post(self, mock):
+        payload = json.dumps({'content': [mock]})
+
+        response = self.client.post(
+            '/v2/items',
+            headers={"Content-Type": "application/json"},
+            data=payload)
+
+        return response
+
+    def get_mock(self, tipo, nome):
+        if tipo == 'item':
+            return deepcopy(self.mock_items[nome])
