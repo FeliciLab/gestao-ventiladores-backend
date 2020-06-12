@@ -22,6 +22,9 @@ class ItemService(ServiceBase):
     def update_item_only_fields(self, data, id):
         update_only_fields(_id=id, data=data, model=Item)
 
+    def replace_fields(self, id, new_data):
+        Item.objects.get(id=id).update(**new_data)
+        
     def delete_item(self, _id):
         data = {'deleted_at': datetime.now()}
         update_only_fields(_id=_id, data=data, model=Item)

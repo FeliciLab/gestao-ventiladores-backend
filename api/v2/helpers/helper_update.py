@@ -31,7 +31,6 @@ def update_only_fields(_id, data, model):
     data: Dict
     model: Mongoengine.Document
     """
-
     query = {}
     root_key = "set"
     root_value = data
