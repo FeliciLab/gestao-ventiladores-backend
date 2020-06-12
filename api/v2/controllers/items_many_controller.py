@@ -45,6 +45,32 @@ class ItemsManyController(Resource):
 
         return post_response(content)
 
+    def put(self):
+        body = request.get_json()
+        validate, message = validate_request(body)
+        if not validate:
+            return error_response(message)
+
+        errors = []
+        for index, item in enumerate(body['content']):
+            validate, message = validate_id(item)
+            if not validate:
+                errors.append({index: message})
+                continue
+
+            erro_schema = ItemSchema().validate(item)
+            if erro_schema:
+                errors.append({index: erro_schema})
+
+        if errors:
+            return error_response(errors)
+
+        for index, item in enumerate(body['content']):
+            id = pop_id(item)
+            ItemService().replace_fields(id, item)
+
+        return '', 200
+
     def patch(self):
         body = request.get_json()
         validate, message = validate_request(body)
