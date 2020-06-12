@@ -1,7 +1,7 @@
 from ..models.item_model import Item
 from .service_base import ServiceBase
 from ..helpers.helper_update import define_updated_fields, update_only_fields
-
+from datetime import datetime
 
 class ItemService(ServiceBase):
     def fetch_items_list(self, deleted=False):
@@ -24,3 +24,7 @@ class ItemService(ServiceBase):
 
     def replace_fields(self, id, new_data):
         Item.objects.get(id=id).update(**new_data)
+        
+    def delete_item(self, _id):
+        data = {'deleted_at': datetime.now()}
+        update_only_fields(_id=_id, data=data, model=Item)

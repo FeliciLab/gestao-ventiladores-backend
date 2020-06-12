@@ -6,6 +6,24 @@ def invalid_deleted_parameter(param):
     return param and param != "true"
 
 
+def validate_is_list(body):
+    if isinstance(type(body), list):
+        return (False, 'Wrong format.')
+    return (True, 'OK')
+
+
+def validate_exists_id(id):
+    try:
+        ObjectId(id)
+    except Exception:
+        return (False, 'Invalid ID')
+
+    if not ItemService().fetch_item_by_id(id):
+        return (False, 'Nonexistent ID')
+
+    return (True, 'OK')
+
+
 def validate_post(body):
     if '_id' in body:
         return (False, 'ID must not be sent')
@@ -26,21 +44,50 @@ def validate_request(body):
         return (False, 'Empty list. Nothing to do.')
     for item in body['content']:
         if not item:
-            return (False, 'Some entry has no data to insert.')
+            return (False, 'Some entry has no data.')
 
     return (True, 'OK')
 
 
-def validate_id(entity):
+def validate_id_included(entity):
     if '_id' not in entity:
         return (False, 'Missing ID')
+    return (True, 'OK')
 
+
+def validate_id_objectID(_id):
     try:
-        ObjectId(entity['_id'])
+        ObjectId(_id)
     except Exception:
         return (False, 'Invalid ID')
+    return (True, 'OK')
 
-    if not ItemService().fetch_item_by_id(entity['_id']):
+
+def validate_item_id_exists(_id):
+    if not ItemService().fetch_item_by_id(_id):
         return (False, 'Nonexistent ID')
+    return (True, 'OK')
+
+
+def validate_request_dict_id(entity):
+    validate, message = validate_id_included(entity)
+    if not validate:
+        return (validate, message)
+
+    validate, message = validate_request_id(entity['_id'])    
+    if not validate:
+        return (validate, message)       
+    
+    return (True, 'OK')
+
+
+def validate_request_id(_id):
+    validate, message = validate_id_objectID(_id)
+    if not validate:
+        return (validate, message)
+
+    validate, message = validate_item_id_exists(_id)
+    if not validate:
+        return (validate, message)
 
     return (True, 'OK')
