@@ -32,3 +32,4 @@ six==1.14.0
 Werkzeug==1.0.1
 WTForms==2.2.1
 zipp==3.1.0
+mockito
