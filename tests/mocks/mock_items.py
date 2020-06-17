@@ -76,6 +76,7 @@ mock_items = {
         "created_at": "2020-06-05T15:46:37.204Z",
         "updated_at": "2020-06-05T15:46:37.204Z"
     },
+
     "campo_extra_errado": {
         "blabla": "blabla",
         "nome": "teste",
@@ -114,23 +115,46 @@ mock_items = {
         "created_at": "2020-06-05T15:46:37.204Z",
         "updated_at": "2020-06-05T15:46:37.204Z"
     },
+
     "triagem_um": {
         "descricao": "Mangueira de Oxigênio (verde)",
         "acompanha": "true",
         "quantidade": 1,
         "estado_de_conservacao": ""
     },
+
     "triagem_dois": {
         "descricao": "Mangueira de Oxigênio",
         "acompanha": "true",
         "quantidade": 1,
         "estado_de_conservacao": ""
     },
-    "triagem_formatado": { 
-        "descricao": "Traquéias", 
-        "acompanha": True, 
-        "quantidade": 49, 
-        "estado_de_conservacao": "", 
-        "reference_key": "traqueias"
+
+    "triagem_formatado": {
+        "traqueias": {
+            "descricao": "Traquéias",
+            "acompanha": True,
+            "quantidade": 49,
+            "estado_de_conservacao": "",
+            "reference_key": "traqueias"
+        }
     },
+
+    "objeto_item": {
+        'nome': 'Traquéias',
+        'quantidade': 49,
+        'unidade_medida': 'und',
+        'reference_key': 'traqueias'
+    },
+    "item_collection": {
+        'tipo': '',
+        'fabricante': '',
+        'codigo': '',
+        'nome': 'Traquéias',
+        'unidade_medida': 'und',
+        'quantidade': 1,
+        'descricao': '',
+        'reference_key': 'traqueias'
+    }
+
 }

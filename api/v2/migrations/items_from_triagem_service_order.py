@@ -4,11 +4,9 @@ from slugify import slugify
 from flask import request
 from run import app
 import json
-import pandas as pd
 
 class ItemsTriagemMigration():
     def fetch_items_from_triagem(self):
-
         """
         Refatorar funcao para dividir responsabilidades
         """
@@ -31,15 +29,26 @@ class ItemsTriagemMigration():
         reference_key = slugify(acessorio['descricao'], separator='')
         return reference_key
         
-    def generate_item(self, item):
-        pass 
+    def generate_item(self, items):
+        new_items = []
 
-    def group_items(self, items):
-        df = pd.DataFrame(items)
-        grouped = df.groupby(['reference_key', 'acompanha', 'descricao']).sum()
-        grouped = grouped.reset_index().to_dict('records')
+        for key, item in items.items():
+            aux = {}
+            aux['nome'] = item['descricao']
+            aux['quantidade'] = item['quantidade']
+            aux['unidade_medida'] = 'und'
+            aux['reference_key'] = item['reference_key']
+            new_items.append(aux)
 
-        return grouped
+        return new_items
+
+    def check_reference_key_in_collection(self, item_object):
+        items_from_collection = ItemService().fetch_items_list()
+
+        for item in items_from_collection:
+            if item_object['reference_key'] in item.values():
+                return False
+        return True
 
     def register_items(self, items):
         """

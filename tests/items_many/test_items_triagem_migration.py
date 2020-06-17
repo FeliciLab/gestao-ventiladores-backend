@@ -23,14 +23,19 @@ class TestItemsTriagemMigration(BaseCase):
     def test_object_is_valid_item(self):
         item_triagem = self.get_mock("item", "triagem_formatado") 
         generated_item = ItemsTriagemMigration().generate_item(item_triagem)
-        self.assertIn('nome', generated_item)
-        self.assertIn('quantidade', generated_item)
-        self.assertIn('unidade_medida', generated_item)
-        self.assertIn('reference_key', generated_item)
+        self.assertIn('nome', generated_item[0])
+        self.assertIn('quantidade', generated_item[0])
+        self.assertIn('unidade_medida', generated_item[0])
+        self.assertIn('reference_key', generated_item[0])
 
-    def test_collection_items_should_have_new_object_after_migration(self):
-        pass
-    
+    def test_reference_key_in_collection(self):
+        mock = self.get_mock("item","item_collection")
+        response = self.many_make_post(mock)
+        item_triagem = self.get_mock("item", "objeto_item")
+        response = ItemsTriagemMigration().\
+            check_reference_key_in_collection(item_triagem)
+        self.assertEqual(response, False)
+        
     def test_collection_items_should_have_one_key_per_name_of_item(self):
         pass
 
