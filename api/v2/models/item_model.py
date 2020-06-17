@@ -9,6 +9,7 @@ class Item(db.Document):
     unidade_medida = db.StringField(required=True)
     quantidade = db.IntField(required=True)
     descricao = db.StringField(required=False)
+    reference_key = db.StringField(required=False)
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     deleted_at = db.DateTimeField(required=False)
