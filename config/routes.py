@@ -12,6 +12,7 @@ from api.views import (
 )
 
 from api.v2.controllers import items_many_controller
+from api.v2.migrations import items_from_triagem_service_order
 
 
 def initialize_routes(api):
@@ -60,3 +61,4 @@ def initialize_routes(api):
     # Routes V2
 
     api.add_resource(items_many_controller.ItemsManyController, '/v2/items')
+    api.add_resource(items_from_triagem_service_order.ItemsTriagemMigration, '/v2/items/migrate')

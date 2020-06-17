@@ -34,10 +34,4 @@ class TestItemsTriagemMigration(BaseCase):
         item_triagem = self.get_mock("item", "objeto_item")
         response = ItemsTriagemMigration().\
             check_reference_key_in_collection(item_triagem)
-        self.assertEqual(response, False)
-        
-    def test_collection_items_should_have_one_key_per_name_of_item(self):
-        pass
-
-    
-    
+        self.assertEqual(response[0], False) 
