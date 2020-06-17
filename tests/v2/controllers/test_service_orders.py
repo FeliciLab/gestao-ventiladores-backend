@@ -43,3 +43,7 @@ class ServiceOrdersController(TestCase):
         content = response.json['content']
         self.assertEqual(content[0]['equipamento_id'], service_orders[0]['equipamento_id'])
 
+    def test_return_invalid_param_error(self):
+        response = self.client.get('/v2/service_orders?deleted=trueee')
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+        self.assertEqual(response.json['error'], 'Parameter deleted is not equal true.')
