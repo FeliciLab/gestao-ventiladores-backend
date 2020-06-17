@@ -11,7 +11,7 @@ class ServiceOrdersController(TestCase):
 
     def test_returns_service_orders_on_successful_request(self):
         service_orders = [{'equipamento_id': 1, 'numero_ordem_servico': '0400'}]
-        when(ServiceOrderService).fetch_all().thenReturn(service_orders)
+        when(ServiceOrderService).fetch_active().thenReturn(service_orders)
 
         response = self.client.get('/v2/service_orders')
         HTTP_SUCCESS = 200
@@ -26,7 +26,7 @@ class ServiceOrdersController(TestCase):
 
     def test_returns_empty_list(self):
         service_orders = []
-        when(ServiceOrderService).fetch_all().thenReturn(service_orders)
+        when(ServiceOrderService).fetch_active().thenReturn(service_orders)
 
         response = self.client.get('/v2/service_orders')
         HTTP_SUCCESS = 200
@@ -34,3 +34,14 @@ class ServiceOrdersController(TestCase):
         content = response.json['content']
 
         self.assertEqual(content, [])
+
+    def test_returns_deleted_service_orders_on_successful_request(self):
+        service_orders = [{'equipamento_id': 1, 'numero_ordem_servico': '0400'}]
+        when(ServiceOrderService).fetch_all().thenReturn(service_orders)
+
+        response = self.client.get('/v2/service_orders?deleted=true')
+        HTTP_SUCCESS = 200
+        self.assertEqual(response.status_code, HTTP_SUCCESS)
+        content = response.json['content']
+        self.assertEqual(content[0]['equipamento_id'], service_orders[0]['equipamento_id'])
+

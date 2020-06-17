@@ -41,9 +41,10 @@ class Calibragem(db.EmbeddedDocument):
 class OrdemServico(db.Document):
     equipamento_id = db.ReferenceField(Equipamento)
     numero_ordem_servico = db.StringField(required=False, unique=True)
-    created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
-    updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     status = db.StringField(required=False)
     triagem = db.EmbeddedDocumentField(Triagem, required=False)
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)
     calibragem = db.EmbeddedDocumentField(Calibragem, required=False)
+    created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
+    updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
+    deleted_at = db.DateTimeField(required=False)
