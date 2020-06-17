@@ -1,10 +1,11 @@
 from api.models.equipamento_model import Equipamento
+from api.v2.models.item_model import Item
 from config.db import db
 from datetime import datetime
 
 
 class Acessorio(db.EmbeddedDocument):
-    descricao = db.StringField(required=False)
+    item_id = db.ReferenceField(Item, required=False)
     acompanha = db.BooleanField(required=False)
     quantidade = db.IntField(required=False)
     estado_de_conservacao = db.StringField(required=False)
@@ -17,21 +18,16 @@ class Triagem(db.EmbeddedDocument):
     foto_apos_limpeza = db.StringField(required=False)
 
 
-class Item(db.EmbeddedDocument):
-    tipo = db.StringField(required=False)
-    fabricante = db.StringField(required=False)
-    codigo = db.StringField(required=False)
-    nome = db.StringField(required=False)
-    unidade_medida = db.StringField(required=False)
+class ItemDiagnostico(db.EmbeddedDocument):
+    item_id = db.ReferenceField(Item, required=False)
     quantidade = db.IntField(required=False)
-    descricao = db.StringField(required=False)
 
 
 class Diagnostico(db.EmbeddedDocument):
     resultado_tecnico = db.StringField(required=False)
     demanda_servicos = db.StringField(required=False)
     observacoes = db.StringField(required=False)
-    itens = db.EmbeddedDocumentListField(Item, required=False)
+    itens = db.EmbeddedDocumentListField(ItemDiagnostico, required=False)
 
 
 class Calibragem(db.EmbeddedDocument):
