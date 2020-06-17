@@ -4,7 +4,6 @@ from config.db import db
 from .mocks.mock_items import mock_items
 import json
 from copy import deepcopy
-from api.v2.migrations.itens_from_service_order import ItemsMigration
 
 
 class BaseCase(TestCase):
@@ -12,7 +11,6 @@ class BaseCase(TestCase):
         self.client = app.test_client()
         self.db = db.get_db()
         self.mock_items = mock_items
-        self.items_from_triagem = ItemsMigration().fetch_items_from_triagem()
 
     def tearDown(self):
         # Não será apagado para testar performance do BD
