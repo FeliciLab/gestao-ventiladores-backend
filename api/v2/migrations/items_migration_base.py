@@ -17,8 +17,8 @@ class ItemsMigrationBase(Resource):
 
         for item in items_from_collection:
             if obj['reference_key'] in item.values():
-                return False, item
-        return True, ''
+                return False
+        return True
 
     def register_items(self, key):
         items = []
@@ -30,9 +30,6 @@ class ItemsMigrationBase(Resource):
             items = ItemsDiagnosticoMigration().get_items()
 
         for item in items:
-            validate, obj = self.check_reference_key_in_collection(item)
-            if not validate:
-                data = {'quantidade': item['quantidade']+obj['quantidade']}
-                ItemService().update_item_only_fields(data, obj['_id'])
-                continue
-            ItemService().register_item(item)
+            validate = self.check_reference_key_in_collection(item)
+            if validate:
+                ItemService().register_item(item)
