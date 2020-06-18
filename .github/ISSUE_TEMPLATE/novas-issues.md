@@ -15,6 +15,10 @@ assignees: ''
 
 # Contexto
 
+## O que originou
+_
+
+## Qual a solução proposta
 _
 
 # Fora de Contexto
