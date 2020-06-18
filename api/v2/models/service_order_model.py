@@ -5,9 +5,9 @@ from datetime import datetime
 
 
 class Acessorio(db.EmbeddedDocument):
-    item_id = db.ReferenceField(Item, required=False)
-    acompanha = db.BooleanField(required=False)
-    quantidade = db.IntField(required=False)
+    item_id = db.ReferenceField(Item, required=True)
+    acompanha = db.BooleanField(required=True)
+    quantidade = db.IntField(required=True)
     estado_de_conservacao = db.StringField(required=False)
 
 
@@ -19,8 +19,8 @@ class Triagem(db.EmbeddedDocument):
 
 
 class ItemDiagnostico(db.EmbeddedDocument):
-    item_id = db.ReferenceField(Item, required=False)
-    quantidade = db.IntField(required=False)
+    item_id = db.ReferenceField(Item, required=True)
+    quantidade = db.IntField(required=True)
 
 
 class Diagnostico(db.EmbeddedDocument):
