@@ -8,7 +8,7 @@ from api.v2.services.item_service import ItemService
 class ItemsMigrationBase(Resource):
     def get(self):
         self.register_items('triagem')
-        #self.register_items('diagnostico')
+        self.register_items('diagnostico')
 
         return make_response(jsonify('Items migrated.'), 200)
 
@@ -27,7 +27,7 @@ class ItemsMigrationBase(Resource):
             items = ItemsTriagemMigration().get_items()
 
         elif key == 'diagnostico':
-            items = ItemsDiagnosticoMigration.get_items()
+            items = ItemsDiagnosticoMigration().get_items()
 
         for item in items:
             validate, obj = self.check_reference_key_in_collection(item)

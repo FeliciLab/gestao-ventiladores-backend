@@ -123,13 +123,6 @@ mock_items = {
         "estado_de_conservacao": ""
     },
 
-    "triagem_dois": {
-        "descricao": "Mangueira de Oxigênio",
-        "acompanha": "true",
-        "quantidade": 1,
-        "estado_de_conservacao": ""
-    },
-
     "triagem_formatado": {
         "traqueias": {
             "descricao": "Traquéias",
@@ -155,6 +148,28 @@ mock_items = {
         'quantidade': 1,
         'descricao': '',
         'reference_key': 'traqueias'
+    },
+
+    "diagnostico": {
+        "tipo": "insumo",
+        "fabricante": "",
+        "codigo": "",
+        "nome": "Mangueira PU 6mm",
+        "unidade_medida": "Metro",
+        "quantidade": 1,
+        "descricao": ""
+    },
+    "diagnostico_formatado":{
+        'mangueirapu6mm': {
+            'tipo': 'insumo',
+            'fabricante': '',
+            'codigo': '',
+            'nome': 'Mangueira PU 6mm',
+            'unidade_medida': 'Metro',
+            'quantidade': 3,
+            'descricao': '',
+            'reference_key': 'mangueirapu6mm'
+        }
     }
 
 }
