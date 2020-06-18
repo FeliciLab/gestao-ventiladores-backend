@@ -16,15 +16,41 @@ class ServiceBase():
         return json.loads(obj.to_json())
 
     def remove_oid(self, obj):
-        if '_id' in obj:
-            obj['_id'] = obj['_id']['$oid']
+        for key, value in obj.items():
+            if isinstance(value, dict):
+                self.remove_oid(value)
+
+            if isinstance(value, list):
+                for item in value:
+                    if isinstance(item, dict):
+                        self.remove_oid(item)
+
+            if key == '_id':
+                obj['_id'] = obj['_id']['$oid']
+
+            if key == 'equipamento_id':
+                obj['equipamento_id'] = obj['equipamento_id']['$oid']
+
+            if key == 'item_id':
+                obj['item_id'] = obj['item_id']['$oid']
 
     def remove_date(self, obj):
-        if 'created_at' in obj:
-            obj['created_at'] = obj['created_at']['$date']
+        for key, value in obj.items():
+            if isinstance(value, dict):
+                self.remove_date(value)
 
-        if 'updated_at' in obj:
-            obj['updated_at'] = obj['updated_at']['$date']
+            if isinstance(value, list):
+                for item in value:
+                    if isinstance(item, dict):
+                        self.remove_date(item)  
 
-        if 'deleted_at' in obj:
-            obj['deleted_at'] = obj['deleted_at']['$date']
+            if key == 'created_at':
+                obj['created_at'] = obj['created_at']['$date']
+            
+            if key == 'updated_at':
+                obj['updated_at'] = obj['updated_at']['$date']
+
+            if key == 'deleted_at' and obj['deleted_at']:
+                obj['deleted_at'] = obj['deleted_at']['$date']
+
+
