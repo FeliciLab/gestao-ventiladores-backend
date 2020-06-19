@@ -60,3 +60,4 @@ def initialize_routes(api):
     # Routes V2
 
     api.add_resource(items_many_controller.ItemsManyController, '/v2/items')
+    api.add_resource(define_route, '/v2/service_order/<id>/<file_name>')
