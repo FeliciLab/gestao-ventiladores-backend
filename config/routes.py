@@ -11,8 +11,7 @@ from api.views import (
     diagnostico_view, utils_view
 )
 
-from api.v2.controllers import items_many_controller
-
+from api.v2.controllers import items_many_controller, service_order_image_controller
 
 def initialize_routes(api):
     api.add_resource(equipamento_view.EquipamentoList,
@@ -60,4 +59,4 @@ def initialize_routes(api):
     # Routes V2
 
     api.add_resource(items_many_controller.ItemsManyController, '/v2/items')
-    api.add_resource(define_route, '/v2/service_order/<id>/<file_name>')
+    api.add_resource(service_order_image_controller.ServiceOrderImageController, '/v2/service_order/<id>/<file_name>')
