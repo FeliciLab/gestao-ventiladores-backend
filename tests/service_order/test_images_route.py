@@ -6,17 +6,19 @@ import json
 
 
 class TestImagesRoute(BaseCase):
-    def test_route_exists(self):
-        with open('tests/service_order/a.jpg', 'rb') as img:
-            imgByteIO = io.BytesIO(bytes(img.read()))
-
-        response_post = self.client.post('/api/importar/imagem',
-                                    content_type='multipart/form-data',
-                                    data={'foto_apos_limpeza': (
-                                        imgByteIO, 'a.jpg')},
-                                    follow_redirects=True)
-        _id = response_post.json
-        route = f'/v2/service_order/{_id}/{_id}_foto_apos_limpeza.jpg'
+    def access_route(self, id):
+        route = f'/v2/service_order/{id}/foto_antes_limpeza.jpg'
         response_get = self.client.get(route)
-        import ipdb; ipdb.set_trace()
-        self.assertNotEqual(response_get.status_code, 405)
+        return response_get
+
+    def test_route_exists(self):
+        response = self.access_route('123')
+        self.assertNotEqual(response.status_code, 405)
+
+    def test_image_exists(self):
+        response = access_route('123')
+        self.assertEqual(response.status_code, 200)
+
+    def test_image_not_exists(self):
+        response = self.access_route('4002')
+        self.assertEqual(response.status_code, 404)
