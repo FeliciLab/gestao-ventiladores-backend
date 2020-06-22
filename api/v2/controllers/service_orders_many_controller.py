@@ -18,3 +18,7 @@ class ServiceOrdersManyController(Resource):
             service_orders = ServiceOrderService().fetch_active()
 
         return get_response(service_orders, deleted_included)
+
+    def post(self):
+
+        return ''    
