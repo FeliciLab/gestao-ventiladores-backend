@@ -1,13 +1,6 @@
 # Nome unidade e quantidade (obrigatórios)
 mock_items = {
-    "sem_obrigatorios": {
-        "tipo": "",
-        "fabricante": "",
-        "codigo": "",
-        "descricao": "",
-        "created_at": "2020-06-05T15:46:37.204Z",
-        "updated_at": "2020-06-05T15:46:37.204Z"
-    },
+
 
     "valido": {
         "nome": "teste",
@@ -83,6 +76,7 @@ mock_items = {
         "created_at": "2020-06-05T15:46:37.204Z",
         "updated_at": "2020-06-05T15:46:37.204Z"
     },
+
     "campo_extra_errado": {
         "blabla": "blabla",
         "nome": "teste",
@@ -121,4 +115,61 @@ mock_items = {
         "created_at": "2020-06-05T15:46:37.204Z",
         "updated_at": "2020-06-05T15:46:37.204Z"
     },
+
+    "triagem_um": {
+        "descricao": "Mangueira de Oxigênio (verde)",
+        "acompanha": "true",
+        "quantidade": 1,
+        "estado_de_conservacao": ""
+    },
+
+    "triagem_formatado": {
+        "traqueias": {
+            "descricao": "Traquéias",
+            "acompanha": True,
+            "quantidade": 49,
+            "estado_de_conservacao": "",
+            "reference_key": "traqueias"
+        }
+    },
+
+    "objeto_item": {
+        'nome': 'Traquéias',
+        'quantidade': 49,
+        'unidade_medida': 'und',
+        'reference_key': 'traqueias'
+    },
+    "item_collection": {
+        'tipo': '',
+        'fabricante': '',
+        'codigo': '',
+        'nome': 'Traquéias',
+        'unidade_medida': 'und',
+        'quantidade': 1,
+        'descricao': '',
+        'reference_key': 'traqueias'
+    },
+
+    "diagnostico": {
+        "tipo": "insumo",
+        "fabricante": "",
+        "codigo": "",
+        "nome": "Mangueira PU 6mm",
+        "unidade_medida": "Metro",
+        "quantidade": 1,
+        "descricao": ""
+    },
+    "diagnostico_formatado":{
+        'mangueirapu6mm': {
+            'tipo': 'insumo',
+            'fabricante': '',
+            'codigo': '',
+            'nome': 'Mangueira PU 6mm',
+            'unidade_medida': 'Metro',
+            'quantidade': 3,
+            'descricao': '',
+            'reference_key': 'mangueirapu6mm'
+        }
+    }
+
 }

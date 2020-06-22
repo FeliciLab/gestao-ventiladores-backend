@@ -11,6 +11,7 @@ from api.views import (
     diagnostico_view, utils_view
 )
 
+from api.v2.migrations import items_migration_base
 from api.v2.controllers import ( 
     items_many_controller,
     service_orders_many_controller 
@@ -63,4 +64,5 @@ def initialize_routes(api):
     # Routes V2
 
     api.add_resource(items_many_controller.ItemsManyController, '/v2/items')
+    api.add_resource(items_migration_base.ItemsMigrationBase, '/v2/items/migrate')
     api.add_resource(service_orders_many_controller.ServiceOrdersManyController, '/v2/service_orders')
