@@ -10,7 +10,7 @@ from ..validation.validation_request import (
     invalid_deleted_parameter,
     validate_request_dict_id,
     validate_request_id,
-    validate_is_list
+    validate_is_list,
 )
 import json
 
@@ -60,7 +60,7 @@ class ItemsManyController(Resource):
 
         errors = []
         for index, item in enumerate(body['content']):
-            validate, message = validate_id(item)
+            validate, message = validate_request_dict_id(item)
             if not validate:
                 errors.append({index: message})
                 continue

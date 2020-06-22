@@ -13,6 +13,7 @@ class ItemSchema(Schema):
                   "unidade_medida",
                   "quantidade",
                   "descricao",
+                  "reference_key",
                   "created_at",
                   "updated_at",
                   "deleted_at")
@@ -25,6 +26,7 @@ class ItemSchema(Schema):
     unidade_medida = fields.String(required=True)
     quantidade = fields.Integer(required=True)
     descricao = fields.String(required=False)
+    reference_key = fields.String(required=False)
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)
     deleted_at = fields.DateTime(required=False)
