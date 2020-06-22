@@ -31,12 +31,12 @@ source <nome_da_virtualenv>/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3 - Export a variável de ambiente:
+### 3 - Exporte a variável de ambiente:
 Windows
 ```
 set FLASK_APP=run.py
 ```
-Ubuntu
+Ubuntu ou Mac
 ```
 export FLASK_APP=run.py
 ```
