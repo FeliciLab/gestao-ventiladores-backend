@@ -6,7 +6,7 @@ from api.v2.services.service_order_service import ServiceOrderService
 from http import HTTPStatus
 from flask import request
 from api.v2.models.schemas.service_order_schema import ServiceOrderSchema
-
+from api.v2.utils.util_response import error_response
 
 class ServiceOrdersManyController(Resource):
     def get(self):
@@ -31,12 +31,12 @@ class ServiceOrdersManyController(Resource):
 
         errors = []
         for index, service_order in enumerate(body["content"]):
-            validate, message = ServiceOrderSchema().validate_posts(service_order)
+            validate, message = ServiceOrderSchema().validate_post(service_order)
             if not validate:
                 errors.append({index: message})
                 continue
 
         if errors: 
-            return errors
+            return error_response(errors)
 
-        return ""
+        return ''
