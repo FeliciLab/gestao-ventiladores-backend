@@ -11,3 +11,7 @@ class ServiceOrderService(ServiceBase):
     def fetch_all(self):
         return self.parser_mongo_response_to_list(
             OrdemServico.objects())
+
+    def register_service_order(self, body):
+        service_order = Service_order(**body).save()
+        return str(service_order.id)

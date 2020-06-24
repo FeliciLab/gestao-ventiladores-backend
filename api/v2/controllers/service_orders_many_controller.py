@@ -1,12 +1,13 @@
 from flask_restful import Resource
-from ..helpers.helper_response import get_response, error_response
+from ..helpers.helper_response import get_response
 from ..validation.validation_request import invalid_deleted_parameter
 from api.v2.controllers.validators.validation_request import validate_request
 from api.v2.services.service_order_service import ServiceOrderService
 from http import HTTPStatus
 from flask import request
 from api.v2.models.schemas.service_order_schema import ServiceOrderSchema
-from api.v2.utils.util_response import error_response
+from api.v2.utils import error_response, success_response
+
 
 class ServiceOrdersManyController(Resource):
     def get(self):
@@ -36,7 +37,13 @@ class ServiceOrdersManyController(Resource):
                 errors.append({index: message})
                 continue
 
-        if errors: 
+        if errors:
             return error_response(errors)
 
-        return ''
+        # Testar se o id do item existe.
+
+        content = []
+        for service_order in body["content"]:
+            content.append(ServiceOrderService().register_service_order(service_order))
+
+        return success_response.post_response(content)
