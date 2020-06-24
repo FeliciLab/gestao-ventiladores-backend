@@ -1,20 +1,20 @@
 from marshmallow import ValidationError
 
 
-class SchemaBase():
+class SchemaBase:
     def validate_post(self, body):
-        if '_id' in body:
-            return False, 'Id must not be sent'
+        if "_id" in body:
+            return False, "Id must not be sent"
 
-        if 'updated_at' in body:
-            return False, 'Updated must not be sent'
+        if "updated_at" in body:
+            return False, "Updated must not be sent"
 
-        if 'deleted_at' in body:
-            return False, 'Deleted must not be sent'
+        if "deleted_at" in body:
+            return False, "Deleted must not be sent"
 
         try:
             self.load(body)
         except ValidationError as err:
             return False, err.messages
 
-        return True, 'OK'
+        return True, "OK"

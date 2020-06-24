@@ -12,21 +12,70 @@ class ServiceOrdersSchema(TestCase):
         self.client = app.test_client()
 
     def test_body_with_id_returns_error(self):
-        erro_schema = [{'0': 'Id must not be sent'}]
+        erro_schema = (False, "Id must not be sent")
         when(ServiceOrderSchema).validate_post(
-            mock_service_orders['service_order_with_id']
+            mock_service_orders["service_order_with_id"]
         ).thenReturn(erro_schema)
 
-        payload = json.dumps({'content': [mock_service_orders['service_order_with_id']]})
+        payload = json.dumps(
+            {"content": [mock_service_orders["service_order_with_id"]]}
+        )
 
-        # response = self.client.post(
-        #     '/v2/service_orders',
-        #     headers={"Content-Type": "application/json"},
-        #     data=payload)
+        response = self.client.post(
+            "/v2/service_orders",
+            headers={"Content-Type": "application/json"},
+            data=payload,
+        )
 
-        # error = response.json
-        # # self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
-        # self.assertIn('error', error)
-        # self.assertEqual(type(error['error']), list)
-        # self.assertIn('0', error['error'][0])
-        # self.assertEqual(error['error'][0]['0'], 'Id must not be sent')
+        error = response.json
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+        self.assertIn("error", error)
+        self.assertEqual(type(error["error"]), list)
+        self.assertIn("0", error["error"][0])
+        self.assertEqual(error["error"][0]["0"], "Id must not be sent")
+
+    def test_body_with_updated_returns_error(self):
+        erro_schema = (False, "Updated must not be sent")
+        when(ServiceOrderSchema).validate_post(
+            mock_service_orders["service_order_with_updated"]
+        ).thenReturn(erro_schema)
+
+        payload = json.dumps(
+            {"content": [mock_service_orders["service_order_with_updated"]]}
+        )
+
+        response = self.client.post(
+            "/v2/service_orders",
+            headers={"Content-Type": "application/json"},
+            data=payload,
+        )
+
+        error = response.json
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+        self.assertIn("error", error)
+        self.assertEqual(type(error["error"]), list)
+        self.assertIn("0", error["error"][0])
+        self.assertEqual(error["error"][0]["0"], "Updated must not be sent")
+
+    def test_body_with_deleted_returns_error(self):
+        erro_schema = (False, "Deleted must not be sent")
+        when(ServiceOrderSchema).validate_post(
+            mock_service_orders["service_order_with_deleted"]
+        ).thenReturn(erro_schema)
+
+        payload = json.dumps(
+            {"content": [mock_service_orders["service_order_with_deleted"]]}
+        )
+
+        response = self.client.post(
+            "/v2/service_orders",
+            headers={"Content-Type": "application/json"},
+            data=payload,
+        )
+
+        error = response.json
+        self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+        self.assertIn("error", error)
+        self.assertEqual(type(error["error"]), list)
+        self.assertIn("0", error["error"][0])
+        self.assertEqual(error["error"][0]["0"], "Deleted must not be sent")
