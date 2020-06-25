@@ -71,3 +71,12 @@ class ServiceOrdersManyController(Resource):
             content.append(ServiceOrderService().register_service_order(service_order))
 
         return post_response(content)
+
+    # this method is here for pr review purposes only 
+    def alternative_post(self):
+
+        service_order_request = ServiceOrderRequest(request)
+        
+        service_order = ServiceOrderService().save(service_order_request)
+
+        return ServiceOrderResponse(service_order)
