@@ -74,9 +74,10 @@ class ServiceOrdersManyController(Resource):
 
     # this method is here for pr review purposes only 
     def alternative_post(self):
+        service_orders_request = ServiceOrderRequest(request)
 
-        service_order_request = ServiceOrderRequest(request)
-        
-        service_order = ServiceOrderService().save(service_order_request)
-
-        return ServiceOrderResponse(service_order)
+        if service_orders_request.valid():
+            service_orders = ServiceOrderService().save_all(service_orders_request)
+            return post_response(service_orders)
+        else:
+            return error_response(service_orders_request.errors)
