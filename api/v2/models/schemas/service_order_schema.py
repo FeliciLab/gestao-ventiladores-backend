@@ -78,10 +78,11 @@ class ServiceOrderSchema(Schema, SchemaBase):
                   "tecnico",
                   "foto_equipamento_chegada",
                   "status",
-                  "diagnostico")
+                  "diagnostico", 
+                  "calibragem")
 
     equipamento_id = fields.String(required=False)
-    numero_ordem_servico = fields.String(required=True)
+    numero_ordem_servico = fields.Integer(required=True)
     created_at = fields.DateTime(required=False)
     updated_at = fields.DateTime(required=False)
     triagem = fields.Nested(ScreeningSchema, required=False)
