@@ -1,5 +1,6 @@
 from unittest import TestCase
 from api.v2.controllers.dtos.many_request import ManyRequest
+from api.v2.controllers.dtos.service_orders_request import ServiceOrdersRequest
 from unittest.mock import Mock
 
 class ManyRequestTest(TestCase):

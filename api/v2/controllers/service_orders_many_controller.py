@@ -8,7 +8,7 @@ from api.v2.services.service_order_service import ServiceOrderService
 from api.v2.models.schemas.service_order_schema import ServiceOrderSchema
 from api.v2.utils.util_response import error_response, post_response
 from .validators.validation_request import validate_request_id
-
+from .dtos.service_orders_request import ServiceOrderRequest
 
 class ServiceOrdersManyController(Resource):
     def get(self):
