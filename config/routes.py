@@ -66,5 +66,8 @@ def initialize_routes(api):
     api.add_resource(items_many_controller.ItemsManyController, '/v2/items')
     api.add_resource(service_order_image_controller.ServiceOrderImageController, '/v2/service_order/<id>/foto_antes_limpeza.jpg')
     api.add_resource(items_migration_base.ItemsMigrationBase, '/v2/items/migrate')
-    api.add_resource(service_orders_many_controller.ServiceOrdersManyController, '/v2/service_orders')
+    api.add_resource(service_orders_many_controller.ServiceOrdersManyController, *[
+        '/v2/service_orders/<int:id>',
+        '/v2/service_orders',
+    ])
 

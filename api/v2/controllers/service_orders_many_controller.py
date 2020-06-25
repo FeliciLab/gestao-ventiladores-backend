@@ -4,7 +4,7 @@ from ..validation.validation_request import invalid_deleted_parameter
 from ..services.service_order_service import ServiceOrderService
 from http import HTTPStatus
 from flask import request
-
+from .dtos.service_order_request import ServiceOrderRequest
 
 class ServiceOrdersManyController(Resource):
     def get(self):
@@ -18,3 +18,15 @@ class ServiceOrdersManyController(Resource):
             service_orders = ServiceOrderService().fetch_active()
 
         return get_response(service_orders, deleted_included)
+
+    def patch(self, id=None):
+        body = request.get_json()
+        
+        service_order_request = ServiceOrderRequest(body['content'])
+        so = service_order_request.get()
+
+        ServiceOrderService().update(so)
+        return "", 200
+                
+        
+        
