@@ -8,7 +8,7 @@ from api.v2.services.service_order_service import ServiceOrderService
 from api.v2.models.schemas.service_order_schema import ServiceOrderSchema
 from api.v2.utils.util_response import error_response, post_response
 from .validators.validation_request import validate_request_id
-from .dtos.service_orders_request import ServiceOrderRequest
+from .dtos.service_orders_request import ServiceOrdersRequest
 
 class ServiceOrdersManyController(Resource):
     def get(self):
@@ -74,7 +74,7 @@ class ServiceOrdersManyController(Resource):
 
     # this method is here for pr review purposes only 
     def alternative_post(self):
-        service_orders_request = ServiceOrderRequest(request)
+        service_orders_request = ServiceOrdersRequest(request)
 
         if service_orders_request.valid():
             service_orders = ServiceOrderService().save_all(service_orders_request)
