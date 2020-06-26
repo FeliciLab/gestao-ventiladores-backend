@@ -5,6 +5,7 @@ from mockito import when, mock
 from api.v2.services.service_order_service import ServiceOrderService
 from http import HTTPStatus
 from bson.objectid import ObjectId
+from unittest.mock import Mock
 
 
 class ServiceOrdersController(TestCase):
@@ -56,10 +57,13 @@ class ServiceOrdersController(TestCase):
 
     # POST tests
     def test_returns_list_id(self):
-        service_order_id = '5ee37c19d86b6a8893d1a3a7' # Fake Id
-        when(ServiceOrderService).register().thenReturn(service_order_id)
+        payload = json.dumps({'content': [{"equipamento_id": "1"}]})
 
-        response = self.client.post('/v2/service_orders')
+        service_order_id = '5ee37c19d86b6a8893d1a3a7' # Fake Id
+        when(ServiceOrderService).create_service_order_number(service_order_id).thenReturn(service_order_id)
+
+        response = self.client.post('/v2/service_orders', data=payload)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertEqual(type(response.json['content']), list)
         for id in response.json['content']:
             self.assertEqual(ObjectId.is_valid(id), True)
