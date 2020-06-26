@@ -12,6 +12,9 @@ jobs:
       - python/install-deps
       - python/save-cache
       - run:
+        command: echo "mongodb_host = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false'" >> env_config.py
+        name: Setup env variables
+      - run:
           command: python -m unittest discover -st tests -p "test_*"
           name: Test
 
