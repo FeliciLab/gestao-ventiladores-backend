@@ -11,6 +11,10 @@ class BaseRequest():
         if self.valid == None:
             self.valid = True
 
+    def valid(self):
+        self.validate()
+        return self.valid
+
     def content(self):
         try: 
             return self.body['content']
