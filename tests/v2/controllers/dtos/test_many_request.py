@@ -37,7 +37,7 @@ class ManyRequestTest(TestCase):
         self.assertEqual(many_request.errors, ["Unexpected format. <class 'list'> was expected"])
         self.assertEqual(many_request.valid, False)
 
-    def before_any_validation_is_done_it_is_not_valid(self):
+    def test_before_any_validation_is_done_it_is_not_valid(self):
         many_request = ManyRequest({})
         self.assertEqual(many_request.valid, None)
 
@@ -49,3 +49,12 @@ class ManyRequestTest(TestCase):
 
         self.assertEqual(many_request.valid, False)
         self.assertEqual(many_request.errors, ['ID must not be sent'])
+
+    def test_has_error_when_theres_no_body(self):
+        self.request.get_json.return_value = None
+
+        many_request = ManyRequest(self.request)
+        many_request.validate()
+
+        self.assertEqual(many_request.valid, False)
+        self.assertEqual(many_request.errors, ['No body found', 'No content found'])

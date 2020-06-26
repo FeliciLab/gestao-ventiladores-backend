@@ -1,7 +1,7 @@
 class BaseRequest():
     def __init__(self, request):
+        self.request = request
         self.method = request.method
-        self.body = request.get_json()
         self.errors = []
         self.valid = None
 
@@ -15,9 +15,15 @@ class BaseRequest():
         self.validate()
         return self.valid
 
+    def body(self):
+        if self.request.get_json() == None:
+            self.add_error("No body found")
+            return {}
+        return self.request.get_json()
+
     def content(self):
         try: 
-            return self.body['content']
+            return self.body()['content']
         except:
             self.add_error("No content found")
             return []
