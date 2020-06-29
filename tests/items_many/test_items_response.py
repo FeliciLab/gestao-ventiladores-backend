@@ -110,7 +110,7 @@ class TestItemsResponse(BaseCase):
             headers={"Content-Type": "application/json"},
             data=payload_post)
 
-        payload = copy.deepcopy(self.mock_items['sem_obrigatorios'])
+        payload = copy.deepcopy(self.mock_items['sem_um_obrigatorio'])
         id = response.json['content'][0]
         payload['_id'] = id
         payload = json.dumps({'content': [payload]})

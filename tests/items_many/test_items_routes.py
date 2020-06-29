@@ -52,7 +52,7 @@ class TestItemsRoutes(BaseCase):
         response = self.client.post(
             '/v2/items',
             headers={"Content-Type": "application/json"},
-            data={'content': [self.mock_items['sem_obrigatorios']]})
+            data={'content': [self.mock_items['sem_um_obrigatorio']]})
         self.assertEqual(response.status_code, 400)
 
     def test_items_valid_body(self):
