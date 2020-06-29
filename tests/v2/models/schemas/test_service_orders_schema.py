@@ -13,7 +13,7 @@ class ServiceOrdersSchema(TestCase):
 
     def test_body_with_id_returns_error(self):
         erro_schema = (False, "Id must not be sent")
-        when(ServiceOrderSchema).validate_post(
+        when(ServiceOrderSchema).validate_save(
             mock_service_orders["service_order_with_id"]
         ).thenReturn(erro_schema)
 
@@ -36,7 +36,7 @@ class ServiceOrdersSchema(TestCase):
 
     def test_body_with_updated_returns_error(self):
         erro_schema = (False, "Updated must not be sent")
-        when(ServiceOrderSchema).validate_post(
+        when(ServiceOrderSchema).validate_save(
             mock_service_orders["service_order_with_updated"]
         ).thenReturn(erro_schema)
 
@@ -59,7 +59,7 @@ class ServiceOrdersSchema(TestCase):
 
     def test_body_with_deleted_returns_error(self):
         erro_schema = (False, "Deleted must not be sent")
-        when(ServiceOrderSchema).validate_post(
+        when(ServiceOrderSchema).validate_save(
             mock_service_orders["service_order_with_deleted"]
         ).thenReturn(erro_schema)
 

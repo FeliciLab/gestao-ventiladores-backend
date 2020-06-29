@@ -9,7 +9,7 @@ def invalid_deleted_parameter(param):
 
 def validate_is_list(body):
     if isinstance(type(body), list):
-        return (False, "Wrong format.")
+        return (False, "Not a list.")
     return (True, "OK")
 
 

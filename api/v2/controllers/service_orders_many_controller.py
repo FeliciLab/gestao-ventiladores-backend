@@ -33,7 +33,7 @@ class ServiceOrdersManyController(Resource):
 
         errors = []
         for index, service_order in enumerate(body["content"]):
-            validate, message = ServiceOrderSchema().validate_post(service_order)
+            validate, message = ServiceOrderSchema().validate_save(service_order)
             if not validate:
                 errors.append({index: message})
                 continue
@@ -56,7 +56,7 @@ class ServiceOrdersManyController(Resource):
                 if not validate:
                     errors.append({index: message})
 
-            service_order["numero_ordem_servico"] = ServiceOrderService().create_service_order_number(
+            service_order["numero_ordem_servico"] = ServiceOrderService().format_service_order_number(
                 service_order["numero_ordem_servico"]
             )
 
@@ -68,6 +68,6 @@ class ServiceOrdersManyController(Resource):
 
         content = []
         for service_order in body["content"]:
-            content.append(ServiceOrderService().register_service_order(service_order))
+            content.append(ServiceOrderService().save_service_order(service_order))
 
         return post_response(content)

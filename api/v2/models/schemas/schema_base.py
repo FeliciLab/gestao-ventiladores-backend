@@ -2,7 +2,7 @@ from marshmallow import ValidationError
 
 
 class SchemaBase:
-    def validate_post(self, body):
+    def validate_save(self, body):
         if "_id" in body:
             return False, "Id must not be sent"
 
