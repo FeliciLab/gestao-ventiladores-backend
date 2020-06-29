@@ -11,6 +11,9 @@ class ServiceOrderService(ServiceBase):
     def fetch_all(self):
         return self.parser_mongo_response_to_list(OrdemServico.objects())
 
+    def fetch_service_order_by_id(self):
+        return OrdemServico.objects(id=_id).first()
+
     def update(self, id):
         pass
 

@@ -19,7 +19,7 @@ class ServiceOrdersController(TestCase):
         when(ServiceOrderService).fetch_active().thenReturn(service_orders)
 
         response = self.client.get("/v2/service_orders")
-api.add_resource(service_orders_many_controller.ServiceOrdersManyController, *[
+    api.add_resource(service_orders_many_controller.ServiceOrdersManyController, *[
         '/v2/service_orders/<int:id>',
         '/v2/service_orders',
     ])
@@ -67,8 +67,6 @@ api.add_resource(service_orders_many_controller.ServiceOrdersManyController, *[
 
         mock_method.assert_called_with(valid_service_order()['content'])
 
-        
-
     # POST tests
     def test_returns_list_with_the_saved_ids(self):
         service_order_id = "5ee37c19d86b6a8893d1a3a7"  # Fake Id
@@ -89,3 +87,25 @@ api.add_resource(service_orders_many_controller.ServiceOrdersManyController, *[
         self.assertEqual(type(response.json["content"]), list)
         for id in response.json["content"]:
             self.assertEqual(ObjectId.is_valid(id), True)
+
+    # PATCH tests
+    def test_service_order_has_patch_route(self):
+        response = self.client.patch(
+            '/v2/service_order',
+            headers={"Content-Type": "application/json"})
+        self.assertNotEqual(response.status_code, 405)
+
+    def test_patch_service_order_has_empty_body(self):
+        response = self.client.patch(
+            '/v2/service_order',
+            headers={"Content-Type": "application/json"})
+        self.assertNotEqual(response.status_code, 405)
+
+    def test_patch_service_order_has_wrong_field(self):
+        pass
+
+    def test_patch_service_order_has_invalid_id(self):
+        pass
+
+    def test_patch_service_order_has_nonexistent_id(self):
+        pass

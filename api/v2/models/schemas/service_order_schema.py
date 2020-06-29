@@ -90,3 +90,7 @@ class ServiceOrderSchema(Schema, SchemaBase):
     calibragem = fields.Nested(CalibrationSchema, required=True)
     status = fields.String(validate=validate.OneOf(["triagem", "diagnostico"]),
                            required=True)
+
+    def validate_updates(self, service_order: dict, index: int, fields: tuple):
+        fields = ('numero_ordem_servico', 'calibragem', 'status')
+        super().validate_updates(service_order, index, fields)

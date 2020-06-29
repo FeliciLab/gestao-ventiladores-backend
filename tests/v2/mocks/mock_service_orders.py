@@ -63,6 +63,9 @@ mock_service_orders = {
         "calibragem": {
             "status": "TESTE"
         }
-    }
+    },
+
+    'valid_patch':
+        
     
 }

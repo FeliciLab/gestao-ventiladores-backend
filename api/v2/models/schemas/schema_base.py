@@ -18,3 +18,9 @@ class SchemaBase:
             return False, err.messages
 
         return True, "OK"
+
+    def validate_updates(self, entity: dict, index: int, fields: tuple):
+        try:
+            self.load(entity, partial=fields)
+        except ValidationError as err:
+            return {index: err.messages}

@@ -4,11 +4,10 @@ from .dtos.service_order_request import ServiceOrderRequest
 from flask_restful import Resource
 from ..helpers.helper_response import get_response
 from ..validation.validation_request import invalid_deleted_parameter
-from api.v2.controllers.validators.validation_request import validate_request
+from api.v2.controllers.validators.validation_request import validate_request, validate_request_id, validate_request_dict_id
 from api.v2.services.service_order_service import ServiceOrderService
 from api.v2.models.schemas.service_order_schema import ServiceOrderSchema
 from api.v2.utils.util_response import error_response, post_response
-from .validators.validation_request import validate_request_id
 
 
 class ServiceOrdersManyController(Resource):
@@ -25,13 +24,26 @@ class ServiceOrdersManyController(Resource):
 
         return get_response(service_orders, deleted_included)
 
-    def patch(self, id=None):
+    def patch(self):
         body = request.get_json()
+        validade, message = validate_request(body)
+        if not validate: 
+            return error_response(message)
 
-        service_order_request = ServiceOrderRequest(body["content"])
-        so = service_order_request.get()
+        errors = []
+        for index, service_order in enumerate(body['content']):
+            validate, message = validate_request_dict_id('service_order', service_order)
+            if not validate: 
+                errors.append({index: message})
 
-        ServiceOrderService().update(so)
+        # ServiceOrderSchema().validate_updates(service_order, index)
+        # service_order_request = ServiceOrderRequest(body["content"])
+        # so = service_order_request.get()
+
+        # ServiceOrderService().update(so)
+        if errors:
+            return error_response(errors)
+
         return "", 200
 
     def post(self):
