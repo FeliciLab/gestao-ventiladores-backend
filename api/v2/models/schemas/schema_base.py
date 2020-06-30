@@ -1,7 +1,8 @@
 from marshmallow import ValidationError
+from marshmallow import Schema
 
 
-class SchemaBase:
+class SchemaBase(Schema):
     def validate_save(self, body):
         if "_id" in body:
             return False, "Id must not be sent"
@@ -22,5 +23,6 @@ class SchemaBase:
     def validate_updates(self, entity: dict, index: int, fields: tuple):
         try:
             self.load(entity, partial=fields)
+            return True, "OK"
         except ValidationError as err:
-            return {index: err.messages}
+            return False, err.messages

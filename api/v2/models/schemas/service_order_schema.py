@@ -65,7 +65,7 @@ class CalibrationSchema(Schema):
     status = fields.String(required=False)
 
 
-class ServiceOrderSchema(Schema, SchemaBase):
+class ServiceOrderSchema(SchemaBase):
     class Meta:
         model = service_order_model.OrdemServico
         fields = ("_id",
@@ -91,6 +91,6 @@ class ServiceOrderSchema(Schema, SchemaBase):
     status = fields.String(validate=validate.OneOf(["triagem", "diagnostico"]),
                            required=True)
 
-    def validate_updates(self, service_order: dict, index: int, fields: tuple):
+    def validate_updates(self, service_order: dict, index: int):
         fields = ('numero_ordem_servico', 'calibragem', 'status')
-        super().validate_updates(service_order, index, fields)
+        return super().validate_updates(service_order, index, fields)

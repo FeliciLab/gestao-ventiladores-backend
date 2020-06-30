@@ -32,6 +32,7 @@ def validate_request(body):
 
     if not len(body["content"]):
         return (False, "Empty list. Nothing to do.")
+
     for item in body["content"]:
         if not item:
             return (False, "Some entry has no data.")
@@ -65,7 +66,6 @@ def validate_id_exists(entity, _id):
     if entity == "service_order":
         if not ServiceOrderService().fetch_service_order_by_id(_id):
             return (False, "Nonexistent service order ID")
-
 
     return (True, "OK")
 
