@@ -102,28 +102,6 @@ class TestItemsResponse(BaseCase):
                 for message in value:
                     self.assertEqual('Unknown field.', message)
 
-    def test_put_items_has_not_required_fields(self):
-        payload_post = json.dumps({'content': [self.mock_items['valido']]})
-
-        response = self.client.post(
-            '/v2/items',
-            headers={"Content-Type": "application/json"},
-            data=payload_post)
-
-        payload = copy.deepcopy(self.mock_items['sem_um_obrigatorio'])
-        id = response.json['content'][0]
-        payload['_id'] = id
-        payload = json.dumps({'content': [payload]})
-        response_put = self.client.put(
-            '/v2/items',
-            headers={"Content-Type": "application/json"},
-            data=payload)
-        for key, value in response_put.json['error'][0].items():
-            if isinstance(value, list):
-                for message in value:
-                    self.assertEqual(
-                        'Missing data for required field.', message)
-
     def test_put_items_has_invalid_id(self):
         payload = copy.deepcopy(self.mock_items['invalido_id'])
 

@@ -7,10 +7,6 @@ class TestItemsDiagnosticoMigration(BaseCase):
         super(TestItemsDiagnosticoMigration, self).setUp()
         self.items_from_diagnostico = ItemsDiagnosticoMigration().fetch_items_from_diagnostico()
 
-    def test_items_from_diagnostico_is_non_empty_list(self):
-        response = self.items_from_diagnostico
-        self.assertTrue(len(response) > 0)
-
     def test_item_should_generate_reference_key(self):
         item_diagnostico = self.get_mock("item", "diagnostico") 
         generated_reference_key = ItemsDiagnosticoMigration().generate_reference_key(item_diagnostico)
