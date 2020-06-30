@@ -22,10 +22,6 @@ class ServiceOrdersController(TestCase):
         when(ServiceOrderService).fetch_active().thenReturn(service_orders)
 
         response = self.client.get("/v2/service_orders")
-        app.add_resource(
-            ServiceOrdersManyController,
-            *["/v2/service_orders/<int:id>", "/v2/service_orders",]
-        )
         self.assertEqual(response.status_code, HTTPStatus.OK)
         content = response.json["content"]
         self.assertEqual(type(content), list)
@@ -37,11 +33,12 @@ class ServiceOrdersController(TestCase):
 
     def test_get_returns_deleted_service_orders_on_successful_request(self):
         service_orders = [{"equipamento_id": 1, "numero_ordem_servico": "0400"}]
-        response = self.client.get("/v2/service_orders/?deleted=true")
+        when(ServiceOrderService).fetch_all().thenReturn(service_orders)
+
+        response = self.client.get("/v2/service_orders?deleted=true")
+
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         content = response.json["content"]
-        self.assertEqual(type(content), list)
-        self.assertIn("content", response.json)
-        self.assertIn("equipamento_id", content[0])
         self.assertEqual(
             content[0]["equipamento_id"], service_orders[0]["equipamento_id"]
         )
@@ -59,23 +56,6 @@ class ServiceOrdersController(TestCase):
         response = self.client.get("/v2/service_orders?deleted=trueee")
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
         self.assertEqual(response.json["error"], "Parameter deleted is not equal true.")
-
-    def test_patch_with_id(self):
-        payload = json.dumps(valid_service_order())
-
-        with patch.object(
-            ServiceOrderService, "update", return_value=None
-        ) as mock_method:
-            service = ServiceOrderService()
-            response = self.client.patch(
-                "/v2/service_orders",
-                headers={"Content-Type": "application/json"},
-                data=payload,
-            )
-
-        self.assertEqual(response.status_code, HTTPStatus.OK)
-
-        mock_method.assert_called_with(valid_service_order()["content"])
 
     # POST tests
     def test_returns_list_with_the_saved_ids(self):
@@ -158,15 +138,18 @@ class ServiceOrdersController(TestCase):
         self.assertEqual(response.json["error"][0]["0"], "Nonexistent service order ID")
 
     def test_patch_with_valid_request_has_success(self):
-        when(ServiceOrderService).fetch_service_order_by_id(
-            mock_service_orders["correct_patch"]["_id"]
-        ).thenReturn(mock_service_orders["correct_patch"])
+        id = mock_service_orders["correct_patch"]["_id"]
+        service_order = mock_service_orders["correct_patch"]
+
+        when(ServiceOrderService).fetch_service_order_by_id(id).thenReturn(
+            service_order
+        )
 
         when(ServiceOrderService).update(
-            mock_service_orders["correct_patch"]
+            id, mock_service_orders["correct_patch_mockito"]
         ).thenReturn(True)
 
-        payload = json.dumps({"content": [mock_service_orders["correct_patch"]]})
+        payload = json.dumps({"content": [service_order]})
 
         response = self.client.patch(
             "/v2/service_orders",
