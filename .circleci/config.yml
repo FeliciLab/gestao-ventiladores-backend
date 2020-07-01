@@ -5,14 +5,15 @@ jobs:
     docker:
       - image: circleci/python@0.2.1    
       - image: circleci/mongo:latest
-
-  build-and-test:
-    executor: python/default
     steps:
       - checkout
       - python/load-cache
       - python/install-deps
       - python/save-cache
+
+  test:
+    executor: python/default
+    steps:
       - run:
           command: echo "mongodb_host = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false'" >> env_config.py && python -m unittest discover -st tests -p "test_*"
           name: Test
