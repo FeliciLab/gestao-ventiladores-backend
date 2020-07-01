@@ -7,10 +7,6 @@ class TestItemsTriagemMigration(BaseCase):
         super(TestItemsTriagemMigration, self).setUp()
         self.items_from_triagem = ItemsTriagemMigration().fetch_items_from_triagem()
 
-    def test_items_from_triagem_is_non_empty_list(self):
-        response = self.items_from_triagem
-        self.assertTrue(len(response) > 0)
-
     def test_item_should_generate_reference_key(self):
         item_triagem = self.get_mock("item", "triagem_um") 
         generated_reference_key = ItemsTriagemMigration().generate_reference_key(item_triagem)
