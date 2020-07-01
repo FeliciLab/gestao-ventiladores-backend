@@ -5,7 +5,8 @@ orbs:
 
 jobs:
   build-and-test:
-    docker: 
+    docker:
+      - image: circleci/python:latest 
       - image: circleci/mongo:latest
     executor: python/default
     steps:
