@@ -1,6 +1,5 @@
 from http import HTTPStatus
 from flask import request
-from .dtos.service_order_request import ServiceOrderRequest
 from flask_restful import Resource
 from ..helpers.helper_response import get_response
 from ..validation.validation_request import invalid_deleted_parameter

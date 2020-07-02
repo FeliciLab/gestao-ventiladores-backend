@@ -3,7 +3,7 @@ def pop_id(data):
     try:
         del data['_id']
     except Exception:
-        pass
+        return Exception
 
     return id
 
