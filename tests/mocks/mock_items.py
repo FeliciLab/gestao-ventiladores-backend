@@ -132,7 +132,6 @@ mock_items = {
             "reference_key": "traqueias"
         }
     },
-
     "objeto_item": {
         'nome': 'Traquéias',
         'quantidade': 49,
@@ -170,6 +169,53 @@ mock_items = {
             'descricao': '',
             'reference_key': 'mangueirapu6mm'
         }
-    }
-
+    },
+    "itens_validos_para_merge": {
+        "content": {
+            "toUpdate": {
+                "tipo": "acessorio",
+                "fabricante": "u9bpp30a7v-6rouwqv084",
+                "codigo": "tow2kxy7sgi-emml55687w",
+                "nome": "Umidificador",
+                "unidade_medida": "e6rpwrfudyv-g80pwqru0x",
+                "quantidade": 5,
+                "descricao": "wks6rg7o7r-fae0aoo9ehl",
+                "_id": "5efb47e83ba34949f5e22e0c",
+                "created_at": 1593516020568,
+                "updated_at": 1593607084613
+            },
+            "toRemove": [
+                {
+                    "_id": "5efb47e83ba34949f5e22e0c",
+                    "codigo": "tow2kxy7sgi-emml55687w",
+                    "created_at": 1593516020568,
+                    "descricao": "wks6rg7o7r-fae0aoo9ehl",
+                    "fabricante": "u9bpp30a7v-6rouwqv084",
+                    "nome": "Umidificador",
+                    "quantidade": 4,
+                    "tipo": "acessorio",
+                    "unidade_medida": "e6rpwrfudyv-g80pwqru0x",
+                    "updated_at": 1593607084613
+                },
+                {
+                    "_id": "5efb47e83ba34949f5e22e0d",
+                    "codigo": "gcxo5f6lnhm-w43jnsu7d1c",
+                    "created_at": 1593516020568,
+                    "descricao": "u37lm583n78-7cbj14mvoj9",
+                    "fabricante": "yyqtomn30jc-ouy5nj7a6bk",
+                    "nome": "Jarra",
+                    "quantidade": 1,
+                    "tipo": "acessorio",
+                    "unidade_medida": "92ipw19b5h9-cw00rye96am",
+                    "updated_at": 1593516020568
+                }
+            ]
+        }
+    },
+    "itens_merge_sem_toUpdate":{},
+    "itens_merge_sem_toRemove":{},
+    "item_invalido_em_toUpdate":{},
+    "lista_vazia_toRemove": {},
+    "id_invalido_em_toRemove":{},
+    "itens_inexistentes_em_toRemove": {},
 }
