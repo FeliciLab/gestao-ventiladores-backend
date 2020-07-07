@@ -99,6 +99,15 @@ def validate_merge_items_request(body):
 
     if 'toUpdate' not in body['content']: 
         return False, 'Requisição sem campo toUpdate.'
+
+    if 'toRemove' not in body['content']: 
+        return False, 'Requisição sem campo toRemove.'
+
+    if not bool(body['content']['toUpdate']): 
+        return False, 'Campo toUpdate não pode ser objeto vazio.'
+    
+    if not bool(body['content']['toRemove']): 
+        return False, 'Campo toRemove não pode ser lista vazia.'
     
     return True, ''
     
