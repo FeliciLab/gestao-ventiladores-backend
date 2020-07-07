@@ -91,3 +91,15 @@ def validate_request_id(_id):
         return (validate, message)
 
     return (True, 'OK')
+
+
+def validate_merge_items_request(body):
+    if 'content' not in body: 
+        return False, 'Wrong format.'
+
+    if 'toUpdate' not in body['content']: 
+        return False, 'Requisição sem campo toUpdate.'
+    
+    return True, ''
+    
+

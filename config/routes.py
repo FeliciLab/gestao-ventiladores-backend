@@ -17,6 +17,7 @@ from api.v2.controllers import (
     items_many_controller,
     service_orders_many_controller,
     service_order_image_controller,
+    items_merge_controller
 )
 
 
@@ -63,4 +64,5 @@ def initialize_routes(api):
         service_order_image_controller.ServiceOrderImageController,
         "/v2/service_order/<id>/<img>",
     )
+    api.add_resource(items_merge_controller.ItensMergeController, "/v2/items/merge")
 

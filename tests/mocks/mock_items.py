@@ -133,20 +133,20 @@ mock_items = {
         }
     },
     "objeto_item": {
-        'nome': 'Traquéias',
-        'quantidade': 49,
-        'unidade_medida': 'und',
-        'reference_key': 'traqueias'
+        "nome": "Traquéias",
+        "quantidade": 49,
+        "unidade_medida": "und",
+        "reference_key": "traqueias"
     },
     "item_collection": {
-        'tipo': '',
-        'fabricante': '',
-        'codigo': '',
-        'nome': 'Traquéias',
-        'unidade_medida': 'und',
-        'quantidade': 1,
-        'descricao': '',
-        'reference_key': 'traqueias'
+        "tipo": "",
+        "fabricante": "",
+        "codigo": "",
+        "nome": "Traquéias",
+        "unidade_medida": "und",
+        "quantidade": 1,
+        "descricao": "",
+        "reference_key": "traqueias"
     },
 
     "diagnostico": {
@@ -159,15 +159,15 @@ mock_items = {
         "descricao": ""
     },
     "diagnostico_formatado":{
-        'mangueirapu6mm': {
-            'tipo': 'insumo',
-            'fabricante': '',
-            'codigo': '',
-            'nome': 'Mangueira PU 6mm',
-            'unidade_medida': 'Metro',
-            'quantidade': 3,
-            'descricao': '',
-            'reference_key': 'mangueirapu6mm'
+        "mangueirapu6mm": {
+            "tipo": "insumo",
+            "fabricante": "",
+            "codigo": "",
+            "nome": "Mangueira PU 6mm",
+            "unidade_medida": "Metro",
+            "quantidade": 3,
+            "descricao": "",
+            "reference_key": "mangueirapu6mm"
         }
     },
     "itens_validos_para_merge": {
@@ -212,7 +212,42 @@ mock_items = {
             ]
         }
     },
-    "itens_merge_sem_toUpdate":{},
+    "itens_merge_sem_toUpdate":{
+        "content": {
+            "toRemove": [
+                {
+                    "_id": "5efb47e83ba34949f5e22e0c",
+                    "codigo": "tow2kxy7sgi-emml55687w",
+                    "created_at": 1593516020568,
+                    "descricao": "wks6rg7o7r-fae0aoo9ehl",
+                    "fabricante": "u9bpp30a7v-6rouwqv084",
+                    "nome": "Umidificador",
+                    "quantidade": 4,
+                    "tipo": "acessorio",
+                    "unidade_medida": "e6rpwrfudyv-g80pwqru0x",
+                    "updated_at": 1593607084613
+                }
+            ]
+        }
+    },
+    "itens_merge_com_toUpdate_vazio":{
+        "content": {
+            "toRemove": [
+                {
+                    "_id": "5efb47e83ba34949f5e22e0c",
+                    "codigo": "tow2kxy7sgi-emml55687w",
+                    "created_at": 1593516020568,
+                    "descricao": "wks6rg7o7r-fae0aoo9ehl",
+                    "fabricante": "u9bpp30a7v-6rouwqv084",
+                    "nome": "Umidificador",
+                    "quantidade": 4,
+                    "tipo": "acessorio",
+                    "unidade_medida": "e6rpwrfudyv-g80pwqru0x",
+                    "updated_at": 1593607084613
+                }
+            ]
+        }
+    },
     "itens_merge_sem_toRemove":{},
     "item_invalido_em_toUpdate":{},
     "lista_vazia_toRemove": {},
