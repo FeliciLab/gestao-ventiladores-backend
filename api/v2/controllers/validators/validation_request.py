@@ -97,26 +97,26 @@ def validate_request_id(name_entity: str, _id: str):
 
 
 def validate_merge_items_request(body):
-    if 'content' not in body:
-        return False, 'Wrong format.'
+    if "content" not in body:
+        return False, "Wrong format."
 
-    if 'toUpdate' not in body['content']:
-        return False, 'Requisição sem campo toUpdate.'
+    if "toUpdate" not in body["content"]:
+        return False, "Request without field toUpdate."
 
-    if 'toRemove' not in body['content']:
-        return False, 'Requisição sem campo toRemove.'
+    if "toRemove" not in body["content"]:
+        return False, "Request without field toRemove."
 
-    if not bool(body['content']['toUpdate']):
-        return False, 'Campo toUpdate não pode ser objeto vazio.'
+    if not bool(body["content"]["toUpdate"]):
+        return False, "Field toUpdate can't be empty object."
 
-    if not bool(body['content']['toRemove']):
-        return False, 'Campo toRemove não pode ser lista vazia.'
+    if not bool(body["content"]["toRemove"]):
+        return False, "Field toRemove can't be empty list."
 
     errors = {}
 
     errors_toUpdate = ItemSchema().validate(body["content"]["toUpdate"])
     if errors_toUpdate:
-        errors['toUpdate'] = errors_toUpdate
+        errors["toUpdate"] = errors_toUpdate
 
     errors_toRemove = {}
     for index, item in enumerate(body["content"]["toRemove"]):
@@ -124,9 +124,9 @@ def validate_merge_items_request(body):
         if erro_schema:
             errors_toRemove[str(index)] = erro_schema
     if errors_toRemove:
-        errors['toRemove'] = errors_toRemove
+        errors["toRemove"] = errors_toRemove
 
     if errors:
         return False, errors
 
-    return True, ''
+    return True, ""

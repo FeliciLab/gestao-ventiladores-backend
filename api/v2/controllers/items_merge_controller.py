@@ -3,6 +3,7 @@ from flask import request
 from ..helpers.helper_response import error_response
 from .validators.validation_request import validate_merge_items_request
 
+
 class ItensMergeController(Resource):
 
     def post(self):
