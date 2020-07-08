@@ -2,6 +2,8 @@ from bson import ObjectId
 from api.v2.services.item_service import ItemService
 from api.services.equipamento_service import listar_equipamento_by_id
 from ...services.service_order_service import ServiceOrderService
+from ...validation.schemas.item_schema import ItemSchema
+from ...helpers.helper_response import error_response
 
 
 def invalid_deleted_parameter(param):
@@ -92,3 +94,39 @@ def validate_request_id(name_entity: str, _id: str):
         return validate, message
 
     return (True, "OK")
+
+
+def validate_merge_items_request(body):
+    if 'content' not in body:
+        return False, 'Wrong format.'
+
+    if 'toUpdate' not in body['content']:
+        return False, 'Requisição sem campo toUpdate.'
+
+    if 'toRemove' not in body['content']:
+        return False, 'Requisição sem campo toRemove.'
+
+    if not bool(body['content']['toUpdate']):
+        return False, 'Campo toUpdate não pode ser objeto vazio.'
+
+    if not bool(body['content']['toRemove']):
+        return False, 'Campo toRemove não pode ser lista vazia.'
+
+    errors = {}
+
+    errors_toUpdate = ItemSchema().validate(body["content"]["toUpdate"])
+    if errors_toUpdate:
+        errors['toUpdate'] = errors_toUpdate
+
+    errors_toRemove = {}
+    for index, item in enumerate(body["content"]["toRemove"]):
+        erro_schema = ItemSchema().validate(item)
+        if erro_schema:
+            errors_toRemove[str(index)] = erro_schema
+    if errors_toRemove:
+        errors['toRemove'] = errors_toRemove
+
+    if errors:
+        return False, errors
+
+    return True, ''
