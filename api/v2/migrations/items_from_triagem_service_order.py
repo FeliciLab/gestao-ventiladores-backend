@@ -14,6 +14,9 @@ class ItemsTriagemMigration():
             if 'triagem' in service_order:
                 if 'acessorios' in service_order['triagem']:
                     for acessorio in service_order['triagem']['acessorios']:
+                        if "item_id" in acessorio:
+                            continue
+
                         reference_key = self.generate_reference_key(acessorio)
                         acessorio['reference_key'] = reference_key
                         if not reference_key in items:
