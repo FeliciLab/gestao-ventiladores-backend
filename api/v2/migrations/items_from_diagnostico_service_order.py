@@ -18,6 +18,7 @@ class ItemsDiagnosticoMigration():
                             items[reference_key] = item
                             continue
                         items[reference_key]['quantidade'] += item['quantidade']
+
         return items
 
     def generate_reference_key(self, item):
@@ -28,6 +29,7 @@ class ItemsDiagnosticoMigration():
         new_items = []
 
         for key, item in items.items():
+            item['tipo'] = 'pecas'
             new_items.append(item)
 
         return new_items

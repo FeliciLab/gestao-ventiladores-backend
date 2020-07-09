@@ -23,8 +23,8 @@ class Item(db.EmbeddedDocument):
     codigo = db.StringField(required=False)
     nome = db.StringField(required=False)
     unidade_medida = db.StringField(required=False)
-    quantidade = db.IntField(required=False)
     descricao = db.StringField(required=False)
+    quantidade = db.IntField(required=False)
 
 
 class Diagnostico(db.EmbeddedDocument):

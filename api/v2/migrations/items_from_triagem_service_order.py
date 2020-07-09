@@ -15,22 +15,24 @@ class ItemsTriagemMigration():
                 if 'acessorios' in service_order['triagem']:
                     for acessorio in service_order['triagem']['acessorios']:
                         reference_key = self.generate_reference_key(acessorio)
+                        acessorio['reference_key'] = reference_key
                         if not reference_key in items:
-                            acessorio['reference_key'] = reference_key
                             items[reference_key] = acessorio
                             continue
-                        items[reference_key]['quantidade'] += acessorio['quantidade']
+
+                        items[reference_key]['quantidade'] += acessorio[
+                            'quantidade']
         return items
 
     def generate_reference_key(self, acessorio):
-        reference_key = slugify(acessorio['descricao'], separator='')
-        return reference_key
+        return slugify(acessorio['descricao'], separator='')
 
     def generate_item(self, items):
         new_items = []
 
         for key, item in items.items():
             aux = {}
+            aux['tipo'] = 'acessorio'
             aux['nome'] = item['descricao']
             aux['quantidade'] = item['quantidade']
             aux['unidade_medida'] = 'und'
@@ -42,5 +44,5 @@ class ItemsTriagemMigration():
     def get_items(self):
         items_from_collection = self.fetch_items_from_triagem()
         items = self.generate_item(items_from_collection)
-        
+
         return items
