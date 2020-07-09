@@ -18,7 +18,7 @@ class ItemsDiagnosticoMigration():
                             items[reference_key] = item
                             continue
                         items[reference_key]['quantidade'] += item['quantidade']
-        print(items)
+
         return items
 
     def generate_reference_key(self, item):
