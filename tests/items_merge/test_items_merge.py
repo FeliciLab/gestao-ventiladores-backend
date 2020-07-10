@@ -75,13 +75,14 @@ class TestItemsMerge(BaseCase):
         self.mock_bad_request("item_invalido_em_toRemove", message_marshmallow)
 
     def test_inexistent_items_in_toRemove_are_ignored(self):
-        item_inexistente = self.get_mock("item", "item_inexistente")
+        #item_inexistente = self.get_mock("item", "item_inexistente")
         #testar os métodos que vou implementar no controller
         #ItemsMergeController().merge_items([item_inexistente])
-        all_items = [] #substituir o all_items
-        when(ItemService).fetch_items_list().thenReturn(all_items)
-        all_items_ids = [item["_id"] for item in all_items]
-        self.assertNotIn(item_inexistente["_id"], all_items_ids)
+        #all_items = [] #substituir o all_items
+        #when(ItemService).fetch_items_list().thenReturn(all_items)
+        #all_items_ids = [item["_id"] for item in all_items]
+        #self.assertNotIn(item_inexistente["_id"], all_items_ids)
+        pass
 
     def test_valid_item_toUpdate_creates_new_item(self):
         pass

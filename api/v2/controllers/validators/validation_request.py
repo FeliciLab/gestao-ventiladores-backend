@@ -75,13 +75,13 @@ def validate_id_exists(entity, _id):
 def validate_request_dict_id(name_entity: str, entity: dict):
     validate, message = validate_id_included(entity)
     if not validate:
-        return (validate, message)
+        return validate, message
 
     validate, message = validate_request_id(name_entity, entity["_id"])
     if not validate:
-        return (validate, message)
+        return validate, message
 
-    return (True, "OK")
+    return True, "OK"
 
 
 def validate_request_id(name_entity: str, _id: str):
@@ -93,7 +93,7 @@ def validate_request_id(name_entity: str, _id: str):
     if not validate:
         return validate, message
 
-    return (True, "OK")
+    return True, "OK"
 
 
 def validate_merge_items_request(body):
@@ -112,21 +112,29 @@ def validate_merge_items_request(body):
     if not bool(body["content"]["toRemove"]):
         return False, "Field toRemove can't be empty list."
 
-    errors = {}
+    errors = dict()
+    to_remove_errors = validate_merge_item_to_remove(body)
+    if to_remove_errors:
+        errors["toRemove"] = to_remove_errors
 
-    errors_toUpdate = ItemSchema().validate(body["content"]["toUpdate"])
-    if errors_toUpdate:
-        errors["toUpdate"] = errors_toUpdate
-
-    errors_toRemove = {}
-    for index, item in enumerate(body["content"]["toRemove"]):
-        erro_schema = ItemSchema().validate(item)
-        if erro_schema:
-            errors_toRemove[str(index)] = erro_schema
-    if errors_toRemove:
-        errors["toRemove"] = errors_toRemove
+    to_update_errors = validate_merge_item_to_remove(body)
+    if to_update_errors:
+        errors["toRemove"] = to_update_errors
 
     if errors:
         return False, errors
-
     return True, ""
+
+
+def validate_merge_item_to_remove(body):
+    errors_to_remove = {}
+    for _id in body["content"]["toRemove"]:
+        valid, message = validate_id_objectID(_id)
+        if not valid:
+            errors_to_remove[_id] = message
+    if errors_to_remove:
+        return errors_to_remove
+
+
+def validate_merge_item_to_update(body):
+    return ItemSchema().validate(body["content"]["toUpdate"])
