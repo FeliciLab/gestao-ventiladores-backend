@@ -1,5 +1,8 @@
 import json
 from tests.base_case import BaseCase
+from mockito import when
+from api.v2.services.item_service import ItemService
+from api.v2.controllers.items_merge_controller import ItemsMergeController
 
 
 class TestItemsMerge(BaseCase):
@@ -43,7 +46,6 @@ class TestItemsMerge(BaseCase):
     def test_invalid_item_in_toUpdate_returns_status_400(self):
         message_marshmallow = {
             "toUpdate": {
-                "_id": ["Not a valid string."],
                 "codigo": ["Not a valid string."],
                 "created_at": ["Not a valid datetime."],
                 "descricao": ["Not a valid string."],
@@ -72,11 +74,17 @@ class TestItemsMerge(BaseCase):
         }
         self.mock_bad_request("item_invalido_em_toRemove", message_marshmallow)
 
-    def test_inexistent_itens_in_toRemove_are_ignored(self):
-        pass
+    def test_inexistent_items_in_toRemove_are_ignored(self):
+        item_inexistente = self.get_mock("item", "item_inexistente")
+        #testar os métodos que vou implementar no controller
+        #ItemsMergeController().merge_items([item_inexistente])
+        all_items = [] #substituir o all_items
+        when(ItemService).fetch_items_list().thenReturn(all_items)
+        all_items_ids = [item["_id"] for item in all_items]
+        self.assertNotIn(item_inexistente["_id"], all_items_ids)
+
     def test_valid_item_toUpdate_creates_new_item(self):
         pass
 
     def test_copy_item_id_of_toUpdate_to_toRemove(self):
         pass
-

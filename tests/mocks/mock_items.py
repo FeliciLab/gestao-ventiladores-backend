@@ -163,7 +163,6 @@ mock_items = {
                 "unidade_medida": "e6rpwrfudyv-g80pwqru0x",
                 "quantidade": 5,
                 "descricao": "wks6rg7o7r-fae0aoo9ehl",
-                "_id": "5efb47e83ba34949f5e22e0c",
                 "created_at": "2020-06-30T11:20:20.568Z",
                 "updated_at": "2020-07-01T12:38:04.613Z",
             },
@@ -242,7 +241,6 @@ mock_items = {
                 "unidade_medida": "e6rpwrfudyv-g80pwqru0x",
                 "quantidade": 5,
                 "descricao": "wks6rg7o7r-fae0aoo9ehl",
-                "_id": "5efb47e83ba34949f5e22e0c",
                 "created_at": "2020-06-30T11:20:20.568Z",
                 "updated_at": "2020-07-01T12:38:04.613Z",
             }
@@ -274,7 +272,6 @@ mock_items = {
                 "unidade_medida": 0,
                 "quantidade": 0,
                 "descricao": True,
-                "_id": 0,
                 "created_at": 1593516020568,
                 "updated_at": 1593607084613
             },
@@ -297,7 +294,6 @@ mock_items = {
     "item_invalido_em_toRemove": {
         "content": {
             "toUpdate": {
-                "_id": "5efb47e83ba34949f5e22e0c",
                 "codigo": "tow2kxy7sgi-emml55687w",
                 "created_at": "2020-06-30T11:20:20.568Z",
                 "descricao": "wks6rg7o7r-fae0aoo9ehl",
@@ -323,7 +319,18 @@ mock_items = {
             ]
         }
     },
-    "itens_inexistentes_em_toRemove": {},
+    "item_inexistente": {
+            "_id": "0000000000000000000000",
+            "tipo": "acessorio",
+            "fabricante": "u9bpp30a7v-6rouwqv084",
+            "codigo": "tow2kxy7sgi-emml55687w",
+            "nome": "Umidificador",
+            "unidade_medida": "e6rpwrfudyv-g80pwqru0x",
+            "quantidade": 4,
+            "descricao": "wks6rg7o7r-fae0aoo9ehl",
+            "created_at": "2020-06-30T11:20:20.568Z",
+            "updated_at": "2020-07-01T12:38:04.613Z",
+    },
     "collection_items": [
         {
             "_id": "5efb47e83ba34949f5e22e0c",

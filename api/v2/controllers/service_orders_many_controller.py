@@ -25,7 +25,6 @@ class ServiceOrdersManyController(Resource):
             service_orders = ServiceOrderService().fetch_all()
         else:
             service_orders = ServiceOrderService().fetch_active()
-
         return get_response(service_orders, deleted_included)
 
     def patch(self):
