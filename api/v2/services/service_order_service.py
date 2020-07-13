@@ -1,15 +1,29 @@
 from .service_base import ServiceBase
 from ..models.service_order_model import OrdemServico
 from ..utils.util_update import update_only_fields
+from api.v2.utils.service_order_utils import get_pipeline_join
+
 
 class ServiceOrderService(ServiceBase):
-    def fetch_active(self):
+    def fetch_all(self, join=None, deleted=None):
+        deleted = deleted == True
+        if join:
+            query = OrdemServico.objects(
+                status__ne='tmp',
+                deleted_at__exists=deleted
+            ).aggregate(get_pipeline_join(join))
+        else:
+            query = OrdemServico.objects(
+                status__ne='tmp',
+                deleted_at__exists=deleted
+            )
+
         return self.parser_mongo_response_to_list(
-            OrdemServico.objects(deleted_at__exists=False)
+            self.parse_query_aggregate_to_list(query_result=query)
         )
 
-    def fetch_all(self):
-        return self.parser_mongo_response_to_list(OrdemServico.objects())
+    def fetch_active(self, join):
+        return self.fetch_all(join=join, deleted=False)
 
     def fetch_service_order_by_id(self, _id):
         return OrdemServico.objects(id=_id).first()
