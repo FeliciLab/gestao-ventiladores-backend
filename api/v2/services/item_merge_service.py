@@ -14,25 +14,29 @@ class ItemsMergeService(ServiceBase):
 
     def handle_update_service_order(self, service_order, items_to_remove, new_item_id):
         to_update = False
+        to_update_diagnostico = False
+        to_update_triagem = False
 
         for item_to_remove in items_to_remove:
             if has_items_service_order(service_order):
-                for i in range(len(service_order['diagnostico']['itens'])):
-                    item = service_order['diagnostico']['itens'][i]
-                    if item["item_id"] == item_to_remove:
-                        item["item_id"] = new_item_id
-                        service_order['diagnostico']['itens'][i] = item
-                        to_update = True
+                to_update_diagnostico = self.loop_and_update(('diagnostico', 'itens'), service_order, item_to_remove,
+                                                             new_item_id)
 
             if has_accessories_service_order(service_order):
-                for i in range(len(service_order['triagem']['acessorios'])):
-                    item = service_order['triagem']['acessorios'][i]
-                    if item["item_id"] == item_to_remove:
-                        item["item_id"] = new_item_id
-                        service_order['triagem']['acessorios'][i] = item
-                        to_update = True
+                to_update_triagem = self.loop_and_update(('triagem', 'acessorios'), service_order, item_to_remove,
+                                                         new_item_id)
 
+        if to_update_diagnostico or to_update_triagem:
+            to_update = to_update_diagnostico
         return to_update, service_order
+
+    def loop_and_update(self, key_names, service_order, item_to_remove, new_item_id):
+        for i in range(len(service_order[key_names[0]][key_names[1]])):
+            item = service_order[key_names[0]][key_names[1]][i]
+            if item["item_id"] == item_to_remove:
+                item["item_id"] = new_item_id
+                service_order[key_names[0]][[key_names[1]][i]] = item
+                return True
 
     def delete_items_to_remove(self, to_remove):
         for item_id in to_remove:
