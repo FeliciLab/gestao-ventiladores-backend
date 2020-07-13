@@ -1,8 +1,12 @@
+from copy import deepcopy
+
 from api.v2.services.item_service import ItemService
 import api.v2.repositories.service_order_repository as service_order_repository
 from api.v2.services.service_order_service import ServiceOrderService
 from api.v2.utils.service_order_util import (has_accessories_service_order, has_items_service_order)
 from .service_base import ServiceBase
+from ..helpers.helper_update import pop_id
+
 
 class ItemsMergeService(ServiceBase):
     def create_new_item_from_to_update(self, item):
@@ -15,7 +19,7 @@ class ItemsMergeService(ServiceBase):
             if has_items_service_order(service_order):
                 for i in range(len(service_order['diagnostico']['itens'])):
                     item = service_order['diagnostico']['itens'][i]
-                    if item["item_id"]["$oid"] == item_to_remove:
+                    if item["item_id"] == item_to_remove:
                         item["item_id"] = new_item_id
                         service_order['diagnostico']['itens'][i] = item
                         to_update = True
@@ -23,7 +27,7 @@ class ItemsMergeService(ServiceBase):
             if has_accessories_service_order(service_order):
                 for i in range(len(service_order['triagem']['acessorios'])):
                     item = service_order['triagem']['acessorios'][i]
-                    if item["item_id"]["$oid"] == item_to_remove:
+                    if item["item_id"] == item_to_remove:
                         item["item_id"] = new_item_id
                         service_order['triagem']['acessorios'][i] = item
                         to_update = True
@@ -37,10 +41,12 @@ class ItemsMergeService(ServiceBase):
     def handle_removed_items(self, to_remove, new_item_id):
         ordens_servico = service_order_repository.fetch_all()
         for service_order in self.convert_mongo_to_dict(ordens_servico):
-            to_update, data = self.handle_update_service_order(service_order, to_remove, new_item_id)
+            service_order_copy = deepcopy(service_order)
+            self.remove_oid(service_order_copy)
+            to_update, data = self.handle_update_service_order(service_order_copy, to_remove, new_item_id)
             if to_update:
-                del data["_id"]
-                ServiceOrderService().update(service_order["_id"], data)
+                _id = pop_id(data)
+                ServiceOrderService().update(_id, data)
 
     def register_items(self, body):
         new_item_id = self.create_new_item_from_to_update(body["content"]["toUpdate"])
