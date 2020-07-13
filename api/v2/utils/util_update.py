@@ -21,7 +21,6 @@ def define_updated_fields(current_key, current_value):
 
     else:
         query[current_key] = current_value
-
     return query
 
 

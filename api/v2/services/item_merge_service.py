@@ -14,13 +14,13 @@ class ItemsMergeService(ServiceBase):
 
     def handle_update_service_order(self, service_order, items_to_remove, new_item_id):
         to_update = False
+        del service_order['numero_ordem_servico']
         for item_to_remove in items_to_remove:
             if has_items_service_order(service_order):
-                to_update = self.loop_and_update(('diagnostico', 'itens'), service_order, item_to_remove,
+                to_update = to_update or self.loop_and_update(('diagnostico', 'itens'), service_order, item_to_remove,
                                                              new_item_id)
-
             if has_accessories_service_order(service_order):
-                to_update = self.loop_and_update(('triagem', 'acessorios'), service_order, item_to_remove,
+                to_update = to_update or self.loop_and_update(('triagem', 'acessorios'), service_order, item_to_remove,
                                                          new_item_id)
 
         return to_update, service_order
@@ -35,6 +35,7 @@ class ItemsMergeService(ServiceBase):
                 item["item_id"] = new_item_id
                 triagem_or_diagnostico_items[i] = item
                 return True
+        return False
 
     def delete_items_to_remove(self, to_remove):
         for item_id in to_remove:
@@ -48,7 +49,8 @@ class ItemsMergeService(ServiceBase):
             to_update, data = self.handle_update_service_order(service_order_copy, to_remove, new_item_id)
             if to_update:
                 _id = pop_id(data)
-                ServiceOrderService().update(_id, data)
+
+                ServiceOrderService().update(_id, {'triagem': {'acessorios': data['triagem']['acessorios']} })
 
     def register_items(self, body):
         new_item_id = self.create_new_item_from_to_update(body["content"]["toUpdate"])
