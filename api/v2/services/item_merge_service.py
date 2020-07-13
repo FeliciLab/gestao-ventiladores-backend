@@ -14,28 +14,26 @@ class ItemsMergeService(ServiceBase):
 
     def handle_update_service_order(self, service_order, items_to_remove, new_item_id):
         to_update = False
-        to_update_diagnostico = False
-        to_update_triagem = False
-
         for item_to_remove in items_to_remove:
             if has_items_service_order(service_order):
-                to_update_diagnostico = self.loop_and_update(('diagnostico', 'itens'), service_order, item_to_remove,
+                to_update = self.loop_and_update(('diagnostico', 'itens'), service_order, item_to_remove,
                                                              new_item_id)
 
             if has_accessories_service_order(service_order):
-                to_update_triagem = self.loop_and_update(('triagem', 'acessorios'), service_order, item_to_remove,
+                to_update = self.loop_and_update(('triagem', 'acessorios'), service_order, item_to_remove,
                                                          new_item_id)
 
-        if to_update_diagnostico or to_update_triagem:
-            to_update = to_update_diagnostico
         return to_update, service_order
 
     def loop_and_update(self, key_names, service_order, item_to_remove, new_item_id):
-        for i in range(len(service_order[key_names[0]][key_names[1]])):
-            item = service_order[key_names[0]][key_names[1]][i]
+        triagem_or_diagnostico_items = service_order[key_names[0]][key_names[1]]
+        if isinstance(triagem_or_diagnostico_items, dict):
+            triagem_or_diagnostico_items = [triagem_or_diagnostico_items]
+        for i in range(len(triagem_or_diagnostico_items)):
+            item = triagem_or_diagnostico_items[i]
             if item["item_id"] == item_to_remove:
                 item["item_id"] = new_item_id
-                service_order[key_names[0]][[key_names[1]][i]] = item
+                triagem_or_diagnostico_items[i] = item
                 return True
 
     def delete_items_to_remove(self, to_remove):
