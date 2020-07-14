@@ -1,8 +1,8 @@
 import json
+
+from api.v2.services.item_merge_service import ItemsMergeService
 from tests.base_case import BaseCase
-from mockito import when
-from api.v2.services.item_service import ItemService
-from api.v2.controllers.items_merge_controller import ItemsMergeController
+from mongoengine.errors import ValidationError
 
 
 class TestItemsMerge(BaseCase):
@@ -43,49 +43,16 @@ class TestItemsMerge(BaseCase):
             "lista_vazia_toRemove", "Field toRemove can't be empty list."
         )
 
-    def test_invalid_item_in_toUpdate_returns_status_400(self):
-        message_marshmallow = {
-            "toUpdate": {
-                "codigo": ["Not a valid string."],
-                "created_at": ["Not a valid datetime."],
-                "descricao": ["Not a valid string."],
-                "fabricante": ["Field may not be null."],
-                "nome": ["Not a valid string."],
-                "unidade_medida": ["Not a valid string."],
-                "updated_at": ["Not a valid datetime."],
-            }
-        }
-        self.mock_bad_request("item_invalido_em_toUpdate", message_marshmallow)
+    def test_invalid_item_in_toUpdate_raises_validation_error(self):
+        body = self.get_mock("item", "item_invalido_em_toUpdate")
+        items_merge_service = ItemsMergeService()
+        self.assertRaises(ValidationError, items_merge_service.register_items, body)
 
     def test_invalid_id_item_in_toRemove_returns_status_400(self):
         message_marshmallow = {
             "toRemove": {
-                "0": {
-                    "_id": ["Not a valid string."],
-                    "codigo": ["Not a valid string."],
-                    "created_at": ["Not a valid datetime."],
-                    "descricao": ["Not a valid string."],
-                    "fabricante": ["Field may not be null."],
-                    "nome": ["Not a valid string."],
-                    "unidade_medida": ["Not a valid string."],
-                    "updated_at": ["Not a valid datetime."],
-                }
+                "0000000000000000000000": "Invalid ID",
+                "1111111111111111111111": "Invalid ID"
             }
         }
         self.mock_bad_request("item_invalido_em_toRemove", message_marshmallow)
-
-    def test_inexistent_items_in_toRemove_are_ignored(self):
-        #item_inexistente = self.get_mock("item", "item_inexistente")
-        #testar os métodos que vou implementar no controller
-        #ItemsMergeController().merge_items([item_inexistente])
-        #all_items = [] #substituir o all_items
-        #when(ItemService).fetch_items_list().thenReturn(all_items)
-        #all_items_ids = [item["_id"] for item in all_items]
-        #self.assertNotIn(item_inexistente["_id"], all_items_ids)
-        pass
-
-    def test_valid_item_toUpdate_creates_new_item(self):
-        pass
-
-    def test_copy_item_id_of_toUpdate_to_toRemove(self):
-        pass
