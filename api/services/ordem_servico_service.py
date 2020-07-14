@@ -19,8 +19,7 @@ def get_ordem_servico_equipamento_pipeline():
         }
     ]
 
-
-def listar_ordem_servico():
+def fetch_ordem_servico():
     pipeline = [
         {
             "$lookup": {
@@ -34,10 +33,14 @@ def listar_ordem_servico():
 
     docs = []
     for ordem in ordem_servico_model.OrdemServico.objects(
-            status__ne='tmp').aggregate(pipeline):
+        status__ne='tmp').aggregate(pipeline):
         docs.append(ordem)
 
-    return dumps(docs)
+    return docs
+
+
+def listar_ordem_servico():
+    return dumps(fetch_ordem_servico())
 
 
 def gera_query_adaptada(current_key, currnet_value):

@@ -109,6 +109,7 @@ mock_items = {
     },
     "triagem_formatado": {
         "traqueias": {
+            "tipo": "acessorio",
             "descricao": "Traquéias",
             "acompanha": True,
             "quantidade": 49,
@@ -117,21 +118,23 @@ mock_items = {
         }
     },
     "objeto_item": {
-        "nome": "Traquéias",
-        "quantidade": 49,
-        "unidade_medida": "und",
-        "reference_key": "traqueias",
+        'tipo': 'acessorio',
+        'nome': 'Traquéias',
+        'quantidade': 49,
+        'unidade_medida': 'und',
+        'reference_key': 'traqueias'
     },
     "item_collection": {
-        "tipo": "",
-        "fabricante": "",
-        "codigo": "",
-        "nome": "Traquéias",
-        "unidade_medida": "und",
-        "quantidade": 1,
-        "descricao": "",
-        "reference_key": "traqueias",
+        'tipo': 'acessorio',
+        'fabricante': '',
+        'codigo': '',
+        'nome': 'Traquéias',
+        'unidade_medida': 'und',
+        'quantidade': 49,
+        'descricao': '',
+        'reference_key': 'traqueias'
     },
+
     "diagnostico": {
         "tipo": "insumo",
         "fabricante": "",

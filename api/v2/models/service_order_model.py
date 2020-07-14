@@ -9,6 +9,7 @@ class Acessorio(db.EmbeddedDocument):
     acompanha = db.BooleanField(required=True)
     quantidade = db.IntField(required=True)
     estado_de_conservacao = db.StringField(required=False)
+    descricao = db.StringField(required=False)
 
 
 class Triagem(db.EmbeddedDocument):
@@ -21,6 +22,12 @@ class Triagem(db.EmbeddedDocument):
 class ItemDiagnostico(db.EmbeddedDocument):
     item_id = db.ReferenceField(Item, required=True)
     quantidade = db.IntField(required=True)
+    tipo = db.StringField(required=False)
+    fabricante = db.StringField(required=False)
+    codigo = db.StringField(required=False)
+    nome = db.StringField(required=False)
+    unidade_medida = db.StringField(required=False)
+    descricao = db.StringField(required=False)
 
 
 class Diagnostico(db.EmbeddedDocument):
