@@ -2,6 +2,8 @@ from bson import ObjectId
 from api.v2.services.item_service import ItemService
 from api.services.equipamento_service import listar_equipamento_by_id
 from ...services.service_order_service import ServiceOrderService
+from ...validation.schemas.item_schema import ItemSchema
+from ...helpers.helper_response import error_response
 
 
 def invalid_deleted_parameter(param):
@@ -73,13 +75,13 @@ def validate_id_exists(entity, _id):
 def validate_request_dict_id(name_entity: str, entity: dict):
     validate, message = validate_id_included(entity)
     if not validate:
-        return (validate, message)
+        return validate, message
 
     validate, message = validate_request_id(name_entity, entity["_id"])
     if not validate:
-        return (validate, message)
+        return validate, message
 
-    return (True, "OK")
+    return True, "OK"
 
 
 def validate_request_id(name_entity: str, _id: str):
@@ -91,4 +93,48 @@ def validate_request_id(name_entity: str, _id: str):
     if not validate:
         return validate, message
 
-    return (True, "OK")
+    return True, "OK"
+
+
+def validate_merge_items_request(body):
+    if "content" not in body:
+        return False, "Wrong format."
+
+    if "toUpdate" not in body["content"]:
+        return False, "Request without field toUpdate."
+
+    if "toRemove" not in body["content"]:
+        return False, "Request without field toRemove."
+
+    if not bool(body["content"]["toUpdate"]):
+        return False, "Field toUpdate can't be empty object."
+
+    if not bool(body["content"]["toRemove"]):
+        return False, "Field toRemove can't be empty list."
+
+    errors = dict()
+    to_remove_errors = validate_merge_item_to_remove(body)
+    if to_remove_errors:
+        errors["toRemove"] = to_remove_errors
+
+    to_update_errors = validate_merge_item_to_remove(body)
+    if to_update_errors:
+        errors["toRemove"] = to_update_errors
+
+    if errors:
+        return False, errors
+    return True, ""
+
+
+def validate_merge_item_to_remove(body):
+    errors_to_remove = {}
+    for _id in body["content"]["toRemove"]:
+        valid, message = validate_id_objectID(_id)
+        if not valid:
+            errors_to_remove[_id] = message
+    if errors_to_remove:
+        return errors_to_remove
+
+
+def validate_merge_item_to_update(body):
+    return ItemSchema().validate(body["content"]["toUpdate"])
