@@ -12,4 +12,5 @@ class TestItemsBaseMigration(BaseCase):
         item_triagem = self.get_mock("item", "objeto_item")
         response = ItemsMigrationBase().\
             check_reference_key_in_collection(item_triagem)
+
         self.assertEqual(response, False)

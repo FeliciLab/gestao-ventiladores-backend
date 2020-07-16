@@ -15,6 +15,7 @@ class TestItemsTriagemMigration(BaseCase):
     def test_object_is_valid_item(self):
         item_triagem = self.get_mock("item", "triagem_formatado") 
         generated_item = ItemsTriagemMigration().generate_item(item_triagem)
+        self.assertIn('tipo', generated_item[0])
         self.assertIn('nome', generated_item[0])
         self.assertIn('quantidade', generated_item[0])
         self.assertIn('unidade_medida', generated_item[0])

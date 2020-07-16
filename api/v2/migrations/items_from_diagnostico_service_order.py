@@ -12,12 +12,16 @@ class ItemsDiagnosticoMigration():
             if 'diagnostico' in service_order.keys():
                 if 'itens' in service_order['diagnostico']:
                     for item in service_order['diagnostico']['itens']:
+                        if "item_id" in item:
+                            continue
+
                         reference_key = self.generate_reference_key(item)
                         if not reference_key in items:
                             item['reference_key'] = reference_key
                             items[reference_key] = item
                             continue
                         items[reference_key]['quantidade'] += item['quantidade']
+
         return items
 
     def generate_reference_key(self, item):
@@ -28,6 +32,7 @@ class ItemsDiagnosticoMigration():
         new_items = []
 
         for key, item in items.items():
+            item['tipo'] = 'pecas'
             new_items.append(item)
 
         return new_items
