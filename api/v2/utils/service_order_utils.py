@@ -20,7 +20,7 @@ def get_pipeline_join(join):
                 'from': Item._get_collection_name(),
                 'localField': 'triagem.acessorios.item_id',
                 'foreignField': '_id',
-                'as': 'itens'
+                'as': 'triagem_acessorios'
             }
         })
 
@@ -29,7 +29,7 @@ def get_pipeline_join(join):
                 'from': Item._get_collection_name(),
                 'localField': 'diagnostico.itens.item_id',
                 'foreignField': '_id',
-                'as': 'itens'
+                'as': 'diagnosticos_itens'
             }
         })
 
