@@ -13,7 +13,6 @@ class ServiceBase():
         docs = []
         for obj in mongo_response:
             obj = self.convert_mongo_to_dict(obj) if type(obj) is not dict else json.loads(dumps(obj))
-            print(obj)
             self.remove_oid(obj)
             self.remove_date(obj)
             docs.append(obj)

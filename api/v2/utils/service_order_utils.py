@@ -20,10 +20,17 @@ def get_pipeline_join(join):
                 'from': Item._get_collection_name(),
                 'localField': 'triagem.acessorios.item_id',
                 'foreignField': '_id',
-                'as': 'items'
+                'as': 'itens'
             }
         })
 
-    print(pipeline)
+        pipeline.append({
+            '$lookup': {
+                'from': Item._get_collection_name(),
+                'localField': 'diagnostico.itens.item_id',
+                'foreignField': '_id',
+                'as': 'itens'
+            }
+        })
 
     return pipeline
