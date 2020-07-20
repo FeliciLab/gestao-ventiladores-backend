@@ -12,9 +12,7 @@ def error_response(message, status=400):
 
 def get_response(content, deleted):
     response = {'content': content}
-
     response['deleted'] = True if deleted else False
-
     return make_response(jsonify(response), HTTPStatus.OK)
 
 

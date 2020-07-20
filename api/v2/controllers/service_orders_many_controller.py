@@ -16,15 +16,21 @@ from ..utils.util_update import pop_id
 
 class ServiceOrdersManyController(Resource):
     def get(self):
+        join = None
+        if request.args.get("join"):
+            join = request.args.get("join").split(',')
+
         deleted_included = request.args.get("deleted")
         if invalid_deleted_parameter(deleted_included):
             return error_response(
                 "Parameter deleted is not equal true.", HTTPStatus.BAD_REQUEST
             )
+
         if deleted_included:
-            service_orders = ServiceOrderService().fetch_all()
+            service_orders = ServiceOrderService().fetch_all(join)
         else:
-            service_orders = ServiceOrderService().fetch_active()
+            service_orders = ServiceOrderService().fetch_active(join)
+
         return get_response(service_orders, deleted_included)
 
     def patch(self):
@@ -42,7 +48,8 @@ class ServiceOrdersManyController(Resource):
             if not validate:
                 errors.append({index: message})
 
-            validate, message = validate_request_dict_id("service_order", service_order)
+            validate, message = validate_request_dict_id("service_order",
+                                                         service_order)
             if not validate:
                 errors.append({index: message})
 
@@ -64,7 +71,8 @@ class ServiceOrdersManyController(Resource):
 
         errors = []
         for index, service_order in enumerate(body["content"]):
-            validate, message = ServiceOrderSchema().validate_save(service_order)
+            validate, message = ServiceOrderSchema().validate_save(
+                service_order)
             if not validate:
                 errors.append({index: message})
                 continue
@@ -77,7 +85,8 @@ class ServiceOrdersManyController(Resource):
 
             accessories = service_order["triagem"]["acessorios"]
             for accessory in accessories:
-                validate, message = validate_request_id("item", accessory["item_id"])
+                validate, message = validate_request_id("item",
+                                                        accessory["item_id"])
                 if not validate:
                     errors.append({index: message})
 
@@ -103,6 +112,7 @@ class ServiceOrdersManyController(Resource):
 
         content = []
         for service_order in body["content"]:
-            content.append(ServiceOrderService().save_service_order(service_order))
+            content.append(
+                ServiceOrderService().save_service_order(service_order))
 
         return post_response(content)
