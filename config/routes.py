@@ -17,7 +17,8 @@ from api.v2.controllers import (
     items_many_controller,
     service_orders_many_controller,
     service_order_image_controller,
-    items_merge_controller
+    items_merge_controller,
+    equipments_controller
 )
 
 
@@ -54,9 +55,13 @@ def initialize_routes(api):
     api.add_resource(utils_view.VersaoView, "/api/")
 
     # Routes V2
+    api.add_resource(equipments_controller.EquipmentsController, "/v2/equipments")
 
     api.add_resource(items_many_controller.ItemsManyController, "/v2/items")
+    api.add_resource(items_merge_controller.ItemsMergeController, "/v2/items/merge")
+
     api.add_resource(items_migration_base.ItemsMigrationBase, "/v2/items/migrate")
+
     api.add_resource(
         service_orders_many_controller.ServiceOrdersManyController, "/v2/service_orders"
     )
@@ -64,5 +69,6 @@ def initialize_routes(api):
         service_order_image_controller.ServiceOrderImageController,
         "/v2/service_order/<id>/<img>",
     )
-    api.add_resource(items_merge_controller.ItemsMergeController, "/v2/items/merge")
+
+
 
