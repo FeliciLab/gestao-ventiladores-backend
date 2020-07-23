@@ -7,5 +7,5 @@ class EquipmentsService(ServiceBase):
     def __init__(self):
         self.repository = EquipmentRepository()
 
-    def getAll(self):
+    def get_all(self):
         return self.repository.fetch_all()

@@ -297,9 +297,43 @@ mock_items = {
                 "updated_at": "2020-07-01T12:38:04.613Z"
             },
             "toRemove": [
-                 "0000000000000000000000",
-                 "1111111111111111111111"
+                "0000000000000000000000",
+                "1111111111111111111111"
             ]
         }
-    }
+    },
+    "dados_de_equipamentos": [
+        {
+            "numero_de_serie": "2016 - 34",
+            "nome_equipamento": "",
+            "status": "",
+            "numero_do_patrimonio": "0141520",
+            "tipo": "Ventilador pulmonar de transporte",
+            "marca": "Takaoka (KTK)",
+            "modelo": "Microtak",
+            "fabricante": "Takaoka (KTK)",
+            "municipio_origem": "ITAPAJÉ",
+            "nome_instituicao_origem": "PREFEITURA DE ITAPAJÉ",
+            "tipo_instituicao_origem": "Público",
+            "nome_responsavel": "MARIA DA SILVA",
+            "contato_responsavel": "",
+            "created_at": "2020-04-03T14:26:33.000Z",
+            "updated_at": "2020-04-03T14:26:33.000Z"
+        },
+        {
+            "numero_de_serie": "BBV03295, BBU01898",
+            "nome_equipamento": "",
+            "status": "",
+            "numero_do_patrimonio": "7012453",
+            "tipo": "Ventilador pulmonar de circuito duplo/ UTI/ COVID-19", "marca": "BIRD", "modelo": "AVEA",
+            "fabricante": "BIRD",
+            "municipio_origem": "IGUATU",
+            "nome_instituicao_origem": "HOSPITAL REGIONAL DE IGUATU",
+            "tipo_instituicao_origem": "Público",
+            "nome_responsavel": "REGIONAL DE SAÚDE DE IGUATU",
+            "contato_responsavel": "",
+            "created_at": "2020-04-06T10:19:03.000Z",
+            "updated_at": "2020-04-06T10:19:03.000Z"
+        }
+    ]
 }

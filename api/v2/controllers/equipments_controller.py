@@ -8,6 +8,6 @@ class EquipmentsController(Resource):
         self.service = EquipmentsService()
 
     def get(self):
-        all_equipments = self.service.getAll()
+        all_equipments = self.service.get_all()
         equipments_response = EquipmentsResponse(all_equipments).get_equipments
         return {'content': equipments_response}, 200
