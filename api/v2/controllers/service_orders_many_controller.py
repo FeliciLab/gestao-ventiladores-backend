@@ -83,18 +83,22 @@ class ServiceOrdersManyController(Resource):
             if not validate:
                 errors.append({index: message})
 
-            accessories = service_order["triagem"]["acessorios"]
-            for accessory in accessories:
-                validate, message = validate_request_id("item",
-                                                        accessory["item_id"])
-                if not validate:
-                    errors.append({index: message})
+            if "triagem" in service_order:
+                accessories = service_order["triagem"]["acessorios"]
+                for accessory in accessories:
+                    validate, message = validate_request_id("item",
+                                                            accessory[
+                                                                "item_id"])
+                    if not validate:
+                        errors.append({index: message})
 
-            items = service_order["diagnostico"]["itens"]
-            for item in items:
-                validate, message = validate_request_id("item", item["item_id"])
-                if not validate:
-                    errors.append({index: message})
+            if "diagnostico" in service_order:
+                items = service_order["diagnostico"]["itens"]
+                for item in items:
+                    validate, message = validate_request_id("item",
+                                                            item["item_id"])
+                    if not validate:
+                        errors.append({index: message})
 
             service_order[
                 "numero_ordem_servico"

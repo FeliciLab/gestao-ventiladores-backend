@@ -87,8 +87,8 @@ class ServiceOrderSchema(SchemaBase):
     updated_at = fields.DateTime(required=False)
     triagem = fields.Nested(ScreeningSchema, required=False)
     diagnostico = fields.Nested(DiagnosticSchema, required=False)
-    calibragem = fields.Nested(CalibrationSchema, required=True)
-    status = fields.String(validate=validate.OneOf(["triagem", "diagnostico"]),
+    calibragem = fields.Nested(CalibrationSchema, required=False)
+    status = fields.String(validate=validate.OneOf(["triagem", "diagnostico", "calibrado", "entregue"]),
                            required=True)
 
     def validate_updates(self, service_order: dict, index: int):
