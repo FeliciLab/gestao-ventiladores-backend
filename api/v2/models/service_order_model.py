@@ -47,7 +47,7 @@ class OrdemServico(db.Document):
     status = db.StringField(required=True)
     triagem = db.EmbeddedDocumentField(Triagem, required=False)
     diagnostico = db.EmbeddedDocumentField(Diagnostico, required=False)
-    calibragem = db.EmbeddedDocumentField(Calibragem, required=True)
+    calibragem = db.EmbeddedDocumentField(Calibragem, required=False)
     created_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     updated_at = db.DateTimeField(default=datetime.utcnow(), required=False)
     deleted_at = db.DateTimeField(required=False)
