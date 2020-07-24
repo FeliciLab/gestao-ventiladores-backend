@@ -334,6 +334,41 @@ mock_items = {
             "contato_responsavel": "",
             "created_at": "2020-04-06T10:19:03.000Z",
             "updated_at": "2020-04-06T10:19:03.000Z"
+        },
+        {
+            "numero_de_serie": "100711021070A1V",
+            "nome_equipamento": "",
+            "status": "",
+            "numero_do_patrimonio": "33040",
+            "tipo": "Ventilador pulmonar de circuito duplo/ UTI/ COVID-19",
+            "marca": "Dixtal",
+            "modelo": "DX3010",
+            "fabricante": "Dixtal",
+            "municipio_origem": "IGUATU",
+            "nome_instituicao_origem": "HOSPITAL REGIONAL DE IGUATU",
+            "tipo_instituicao_origem": "Público",
+            "nome_responsavel": "REGIONAL DE SAÚDE DE IGUATU",
+            "contato_responsavel": "",
+            "created_at": "2020-04-06T10:50:10.000Z",
+            "updated_at": "2020-04-06T10:50:10.000Z"
+        },
+        {
+            "numero_de_serie": "J16021",
+            "nome_equipamento": "",
+            "status": "",
+            "numero_do_patrimonio": "88536",
+            "tipo": "Ventilador pulmonar de transporte",
+            "marca": "Leistung",
+            "modelo": "PR4G",
+            "fabricante": "Leistung",
+            "municipio_origem": "IGUATU",
+            "nome_instituicao_origem": "HOSPITAL REGIONAL DE IGUATU ",
+            "tipo_instituicao_origem": "Público",
+            "nome_responsavel": "REGIONAL DE SAÚDE DE IGUATU ",
+            "contato_responsavel": "",
+            "created_at": "2020-04-06T11:11:52.000Z",
+            "updated_at": "2020-04-06T11:11:52.000Z",
+            "deleted_at": "2020-04-06T11:11:52.000Z"
         }
     ]
 }

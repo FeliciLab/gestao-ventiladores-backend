@@ -25,7 +25,7 @@ class EquipmentsControllerTest(TestCase):
     @patch.object(EquipmentsService, 'get_all', return_value=mock_equipaments())
     def test_controller_calls_get_method(self, mock_get_all):
         EquipmentsController().get()
-        mock_get_all.assrt_called_once()
+        mock_get_all.assert_called_once()
 
     def test_response_has_correct_format(self):
         list_equipments = mock_equipaments()
